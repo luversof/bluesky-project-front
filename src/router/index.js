@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import BlogIndex from '@/components/blog/BlogIndex'
 import BlogList from '@/components/blog/BlogList'
+import BlogView from '@/components/blog/BlogView'
 
 Vue.use(Router)
 
@@ -14,8 +16,18 @@ export default new Router({
     },
     {
       path: '/blog',
-      name: 'Blog',
+      name: 'BlogIndex',
+      component: BlogIndex
+    },
+    {
+      path: '/blog/:id',
+      name: 'BlogList',
       component: BlogList
+    },
+    {
+      path: '/blog/:blogId/view/:id',
+      name: 'BlogView',
+      component: BlogView
     }
   ]
 })
