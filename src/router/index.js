@@ -20,12 +20,12 @@ export default new Router({
       component: BlogIndex
     },
     {
-      path: '/blog/:id',
+      path: '/blog/:id/list',
       name: 'BlogList',
       component: BlogList
     },
     {
-      path: '/blog/:blogId/view/:id',
+      path: '/blog/:id/view/:articleId',
       name: 'BlogView',
       component: BlogView
     }

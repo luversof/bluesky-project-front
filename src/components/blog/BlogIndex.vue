@@ -10,10 +10,13 @@ export default {
     }
   },
   mounted: function () {
+    var _this = this
     this.$http.get('/api/blogs/search/myBlog').then(function (response) {
-      // this.$router.push('Home')
+      if (response.data !== '') {
+        console.log(response.data.id)
+        console.log(_this.$router.push('blog/' + response.data.id + '/list'))
+      }
     })
-
   }
 }
 </script>
