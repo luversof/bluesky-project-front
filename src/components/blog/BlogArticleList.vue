@@ -12,7 +12,8 @@
 
 <script>
 export default {
-  name: 'BlogList',
+  name: 'BlogArticleList',
+  props: ['blogId'],
   data () {
     return {
       fields: {
@@ -32,7 +33,12 @@ export default {
   },
   mounted: function () {
     var _this = this
-    this.$http.get('/api/blogArticles/search/findByBlogId?id=dff7b5ed-71d6-4036-8c1f-7f52dc47bac2')
+    console.log(this.blogId)
+    this.$http.get('/api/blogArticles/search/findByBlogId', {
+      params: {
+        id: this.blogId
+      }
+    })
       .then(function (response) {
         var data = response.data
         _this.blogListResponse = data
