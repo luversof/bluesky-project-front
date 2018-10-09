@@ -5,8 +5,7 @@
         <b-link :to="'view/' + data.item.id">{{data.item.title}}</b-link>
       </template>
     </b-table>
-    <b-pagination :total-rows="totalRows" v-model="currentPage" :per-page="perPage">
-    </b-pagination>
+    <b-pagination align="center" :total-rows="totalRows" v-model="currentPage" :per-page="perPage" />
   </div>
 </template>
 
@@ -17,10 +16,10 @@ export default {
   data () {
     return {
       fields: {
-        id: { key: 'id' },
-        title: { label: '제목' },
-        createdDate: { label: '생성일' },
-        viewCount: { label: '조회수' }
+        id: { label: this.$t('blog.article.id') },
+        title: { label: this.$t('blog.article.title') },
+        createdDate: { label: this.$t('blog.article.createdDate') },
+        viewCount: { label: this.$t('blog.article.viewCount') }
       },
       blogListResponse: null,
       blogArticles: [],

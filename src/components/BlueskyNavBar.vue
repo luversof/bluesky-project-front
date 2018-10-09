@@ -11,36 +11,40 @@
         <b-nav-item :to="'/blog'">Blog</b-nav-item>
       </b-navbar-nav>
 
-      <!-- Right aligned nav items
       <b-navbar-nav class="ml-auto">
-
-        <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+        <b-nav-form v-if="!loginInfo.login">
+          <b-form-input class="mr-1" name="username" :placeholder="$t('username')"/>
+          <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')"/>
+          <b-button class="mr-2" type="submit">{{ $t("login") }}</b-button>
+          <b-button class="mr-1" href="/oauth2/authorization/google"><font-awesome-icon :icon="{ prefix: 'fab', iconName: 'google' }" /></b-button>
+          <b-button class="mr-1" href="/oauth2/authorization/facebook"><font-awesome-icon :icon="{ prefix: 'fab', iconName: 'facebook' }" /></b-button>
+          <b-button class="mr-1" href="/oauth2/authorization/github"><font-awesome-icon :icon="{ prefix: 'fab', iconName: 'github' }" /></b-button>
+          <b-button class="mr-1" href="/oauth2/authorization/battlenet"><font-awesome-icon icon="bold" /></b-button>
         </b-nav-form>
 
-        <b-nav-item-dropdown text="Lang" right>
-          <b-dropdown-item href="#">EN</b-dropdown-item>
-          <b-dropdown-item href="#">ES</b-dropdown-item>
-          <b-dropdown-item href="#">RU</b-dropdown-item>
-          <b-dropdown-item href="#">FA</b-dropdown-item>
-        </b-nav-item-dropdown>
-
-        <b-nav-item-dropdown right>
-          <template slot="button-content">
-            <em>User</em>
-          </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Signout</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav> -->
-
+        <b-nav-form v-if="loginInfo.login" action="/logout" method="post">
+          <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
+          <b-button size="sm" type="submit">logout</b-button>
+        </b-nav-form>
+      </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
 export default {
-  name: 'BlueskyNavBar'
+  name: 'BlueskyNavBar',
+  data () {
+    return {
+      loginInfo: {}
+    }
+  },
+  mounted: function () {
+    var _this = this
+    this.$http.get('/api/user/loginInfo')
+      .then(function (response) {
+        _this.loginInfo = response.data
+      })
+  }
 }
 </script>
