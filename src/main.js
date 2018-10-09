@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import router from './router'
 
+import Vuex from 'vuex'
+import 'es6-promise/auto'
+
 import axios from 'axios'
 
 import VueI18n from 'vue-i18n'
@@ -19,6 +22,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import DefaultLayout from './layout/DefaultLayout'
+
+Vue.use(Vuex)
 
 Vue.prototype.$http = axios
 
