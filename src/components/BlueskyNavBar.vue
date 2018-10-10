@@ -12,7 +12,7 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-form v-if="!loginInfo.login">
+        <b-nav-form v-if="!this.$store.state.loginInfo.login">
           <b-form-input class="mr-1" name="username" :placeholder="$t('username')"/>
           <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')"/>
           <b-button class="mr-2" type="submit">{{ $t("login") }}</b-button>
@@ -22,9 +22,9 @@
           <b-button class="mr-1" href="/oauth2/authorization/battlenet"><font-awesome-icon icon="bold" /></b-button>
         </b-nav-form>
 
-        <b-nav-form v-if="loginInfo.login" action="/logout" method="post">
-          <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
-          <b-button size="sm" type="submit">logout</b-button>
+        <b-nav-form v-if="this.$store.state.loginInfo.login" action="/logout" method="post">
+          <b-nav-text class="mr-sm-2">{{ this.$store.state.loginInfo.name }}</b-nav-text>
+          <b-button size="sm" type="submit">{{ $t('logout') }}</b-button>
         </b-nav-form>
       </b-navbar-nav>
     </b-collapse>
@@ -34,16 +34,11 @@
 <script>
 export default {
   name: 'BlueskyNavBar',
-  data () {
-    return {
-      loginInfo: {}
-    }
-  },
   mounted: function () {
     var _this = this
     this.$http.get('/api/user/loginInfo')
       .then(function (response) {
-        _this.loginInfo = response.data
+        _this.$store.commit('setLoginInfo', response.data)
       })
   }
 }

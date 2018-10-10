@@ -2,13 +2,13 @@
   <div>
     <article>
       <h2 v-text="article.title"></h2>
-      <p><time pubdate="pubdate">{{ article.createdDate | moment("LLL") }}</time></p>
+      <p><time pubdate="pubdate" v-if="article.createdDate">{{ article.createdDate | moment("LLL") }}</time></p>
       <p><span>{{ $t("blog.article.viewCount") }} : </span><span v-text="article.viewCount"></span></p>
       <div v-html="article.content"></div>
     </article>
 
     <div class="text-center">
-      <blog-button-article-list />
+      <button-blog-article-list :blog-id='blogId' />
       <!--
       <slot><blog-article-modify-button /></slot>
       <slot><blog-article-delete-button /></slot>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import BlogButtonArticleList from '@/components/blog/BlogButtonArticleList'
+import ButtonBlogArticleList from '@/components/blog/ButtonBlogArticleList'
 export default {
   name: 'BlogArticleView',
   props: ['blogId', 'articleId'],
@@ -29,7 +29,7 @@ export default {
       article: {}
     }
   },
-  components: { BlogButtonArticleList },
+  components: { ButtonBlogArticleList },
   mounted: function () {
     var _this = this
     this.$http.get('/api/blogArticles/' + this.articleId, {

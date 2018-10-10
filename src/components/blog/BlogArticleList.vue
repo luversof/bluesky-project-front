@@ -32,7 +32,6 @@ export default {
   },
   mounted: function () {
     var _this = this
-    console.log(this.blogId)
     this.$http.get('/api/blogArticles/search/findByBlogId', {
       params: {
         id: this.blogId

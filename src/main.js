@@ -5,6 +5,7 @@ import router from './router'
 
 import Vuex from 'vuex'
 import 'es6-promise/auto'
+import { store } from './store'
 
 import axios from 'axios'
 
@@ -49,11 +50,11 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   i18n: i18n,
   components: { DefaultLayout },
   template: '<DefaultLayout/>',
   mounted: function () {
-    console.log('test ', this)
     // this.$moment.locale('ko')
   }
 })
