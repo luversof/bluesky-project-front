@@ -5,7 +5,7 @@
         <b-link :to="'view/' + data.item.id">{{data.item.title}}</b-link>
       </template>
     </b-table>
-    <b-pagination align="center" :total-rows="totalRows" v-model="currentPage" :per-page="perPage" />
+    <b-pagination align="center" v-if="totalRows" :total-rows="totalRows" v-model="currentPage" :per-page="perPage" />
   </div>
 </template>
 
