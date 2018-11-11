@@ -16,7 +16,8 @@
         "list" : "목록",
         "write" : "글쓰기",
         "modify" : "수정",
-        "delete" : "삭제"
+        "delete" : "삭제",
+        "cancel" : "취소"
       }
     }
   }

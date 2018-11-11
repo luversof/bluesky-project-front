@@ -8,7 +8,7 @@
     </article>
 
     <div class="text-center">
-      <button-blog-article-list :blog-id='blogId' />
+      <blog-button-article-list :blog-id='blogId' />
       <!--
       <slot><blog-article-modify-button /></slot>
       <slot><blog-article-delete-button /></slot>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ButtonBlogArticleList from '@/components/blog/ButtonBlogArticleList'
+import BlogButtonArticleList from '@/components/blog/BlogButtonArticleList'
 export default {
   name: 'BlogArticleView',
   props: ['blogId', 'articleId'],
@@ -29,7 +29,7 @@ export default {
       article: {}
     }
   },
-  components: { ButtonBlogArticleList },
+  components: { BlogButtonArticleList },
   mounted: function () {
     var _this = this
     this.$http.get('/api/blogArticles/' + this.articleId, {

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import BlogIndex from '@/components/blog/BlogIndex'
 import BlogArticleList from '@/components/blog/BlogArticleList'
 import BlogArticleView from '@/components/blog/BlogArticleView'
+import BlogArticleWrite from '@/components/blog/BlogArticleWrite'
 
 Vue.use(Router)
 
@@ -29,6 +30,12 @@ export default new Router({
       path: '/blog/:blogId/view/:articleId',
       name: 'BlogArticleView',
       component: BlogArticleView,
+      props: true
+    },
+    {
+      path: '/blog/:blogId/write',
+      name: 'BlogArticleWrite',
+      component: BlogArticleWrite,
       props: true
     }
   ]
