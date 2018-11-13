@@ -2,19 +2,18 @@
   <div></div>
 </template>
 <script>
+import blogMixin from '@/components/blog/blog.js'
 export default {
   name: 'BlogIndex',
+  mixins: [blogMixin],
   data () {
     return {
-      blogs: {}
     }
   },
   mounted: function () {
     var _this = this
-    this.$http.get('/api/blogs/search/myBlog').then(function (response) {
-      if (response.data !== '') {
-        _this.$router.push('blog/' + response.data.id + '/list')
-      }
+    this.getMyBlog().then(function () {
+      _this.$router.push('/blog/' + _this.$store.state.myBlog.id + '/list')
     })
   }
 }

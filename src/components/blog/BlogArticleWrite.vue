@@ -41,10 +41,14 @@ export default {
   },
   methods: {
     postArticle: function () {
+      this.$store.commit('initBlogArticleStateInfo')
+
       var _this = this
       this.$http.post('/api/blogArticles', {
-          title: this.title,
-          content: this.content
+        title: this.title,
+        content: this.content,
+        'blog_id': this.blogId
+
       })
         .then(function (response) {
           console.log('response : ' + response)
@@ -57,11 +61,10 @@ export default {
           if (error.response.data.result !== undefined && Array.isArray(error.response.data.result)) {
             for (var idx in error.response.data.result) {
               var errorMessage = error.response.data.result[idx]
-              console.log(errorMessage.field)
-              var targetField = blogArticleStateInfo[errorMessage.field];
+              var targetField = blogArticleStateInfo[errorMessage.field]
               if (targetField !== undefined) {
                 targetField.state = false
-                targetField.invalidFeedback = errorMessage.message;
+                targetField.invalidFeedback = errorMessage.message
               }
             }
           }
