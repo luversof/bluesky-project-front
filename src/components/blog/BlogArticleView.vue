@@ -9,6 +9,7 @@
 
     <div class="text-center">
       <blog-button-article-list :blog-id='blogId' />
+      <blog-button-article-modify :blog-id='blogId' :article-id='articleId' />
       <!--
       <slot><blog-article-modify-button /></slot>
       <slot><blog-article-delete-button /></slot>
@@ -21,15 +22,19 @@
 
 <script>
 import BlogButtonArticleList from '@/components/blog/BlogButtonArticleList'
+import BlogButtonArticleModify from '@/components/blog/BlogButtonArticleModify'
+import blogMixin from '@/components/blog/blog.js'
+
 export default {
   name: 'BlogArticleView',
+  components: { BlogButtonArticleList, BlogButtonArticleModify },
+  mixins: [blogMixin],
   props: ['blogId', 'articleId'],
   data () {
     return {
       article: {}
     }
   },
-  components: { BlogButtonArticleList },
   mounted: function () {
     var _this = this
     this.$http.get('/api/blogArticles/' + this.articleId, {

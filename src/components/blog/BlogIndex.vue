@@ -10,11 +10,17 @@ export default {
     return {
     }
   },
+  watch: {
+    '$store.state.myBlog': function (myBlog) {
+      this.moveMyBlogList()
+    }
+  },
   mounted: function () {
-    var _this = this
-    this.getMyBlog().then(function () {
-      _this.$router.push('/blog/' + _this.$store.state.myBlog.id + '/list')
-    })
+    if (this.$store.state.myBlog === null) {
+      this.getMyBlog()
+    } else {
+      this.moveMyBlogList()
+    }
   }
 }
 </script>

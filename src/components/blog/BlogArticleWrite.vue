@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-form>
     <b-form-group
       horizontal
       label-class="text-sm-right"
@@ -16,23 +17,29 @@
       :state="$store.state.blogArticleStateInfo.content.state">
       <b-form-textarea
         v-model="content"
-        :rows="3"
+        :rows="16"
         :max-rows="6">
       </b-form-textarea>
     </b-form-group>
     <div class="text-center">
         <b-button variant="primary" @click="postArticle">{{ $t("blog.article.write") }}</b-button>
-        <b-button>{{ $t("blog.article.cancel") }}</b-button>
+        <blog-button-article-list :blog-id='blogId' />
     </div>
+    </b-form>
   </div>
 </template>
 
 // TODO invalid 처리는 어떻게 해야하는지 확인 필요
 // TODO NUXT 공부하자
 <script>
+import BlogButtonArticleList from '@/components/blog/BlogButtonArticleList'
+import blogMixin from '@/components/blog/blog.js'
+
 export default {
   name: 'BlogArticleWrite',
+  mixins: [blogMixin],
   props: ['blogId'],
+  components: { BlogButtonArticleList },
   data () {
     return {
       title: '',
@@ -47,17 +54,14 @@ export default {
       this.$http.post('/api/blogArticles', {
         title: this.title,
         content: this.content,
-        'blog_id': this.blogId
+        blog: this.$store.state.myBlog._links.blog.href
 
       })
         .then(function (response) {
-          console.log('response : ' + response)
+          _this.moveMyBlogList()
         })
         .catch(function (error) {
-          // TODO error response 로 form invalid-feedback 설정하기
-
           var blogArticleStateInfo = _this.$store.state.blogArticleStateInfo
-          console.log(blogArticleStateInfo)
           if (error.response.data.result !== undefined && Array.isArray(error.response.data.result)) {
             for (var idx in error.response.data.result) {
               var errorMessage = error.response.data.result[idx]

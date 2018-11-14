@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
   state: {
     loginInfo: {},
     test: '',
-    myBlog: {}, // 내 블로그 정보
+    myBlog: null, // 내 블로그 정보
     blogArticleStateInfo: { // 효과적인 객체 관리 형태 고민 필요
       title: {
         state: false,
@@ -33,7 +33,7 @@ export const store = new Vuex.Store({
       state.blogArticleStateInfo = blogArticleStateInfo
     },
     initBlogArticleStateInfo (state) {
-      state.blogArticleStateInfo = { // 초기화 복붙 어떻게 해결하는거지?
+      state.blogArticleStateInfo = { // 초기화 복붙 어떻게 해결하는거지?, store 를 분리 관리 해야할까?
         title: {
           state: false,
           invalidFeedback: ''

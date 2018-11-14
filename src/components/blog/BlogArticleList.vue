@@ -6,12 +6,20 @@
       </template>
     </b-table>
     <b-pagination align="center" v-if="totalRows" :total-rows="totalRows" v-model="currentPage" :per-page="perPage" />
+    <div  class="text-center">
+      <blog-button-article-write :blog-id='blogId' />
+    </div>
   </div>
 </template>
 
 <script>
+import BlogButtonArticleWrite from '@/components/blog/BlogButtonArticleWrite'
+import blogMixin from '@/components/blog/blog.js'
+
 export default {
   name: 'BlogArticleList',
+  components: { BlogButtonArticleWrite },
+  mixins: [blogMixin],
   props: ['blogId'],
   data () {
     return {
@@ -34,7 +42,8 @@ export default {
     var _this = this
     this.$http.get('/api/blogArticles/search/findByBlogId', {
       params: {
-        id: this.blogId
+        id: this.blogId,
+        sort: 'id,desc'
       }
     })
       .then(function (response) {

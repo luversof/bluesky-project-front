@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <span>
     <b-button :to="getListLink()">{{ $t("blog.article.list") }}</b-button>
-  </div>
+  </span>
 </template>
 
 <script>
