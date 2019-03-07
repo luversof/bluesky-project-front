@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import BlogIndex from '@/components/blog/BlogIndex'
-import BlogArticleList from '@/components/blog/BlogArticleList'
-import BlogArticleView from '@/components/blog/BlogArticleView'
-import BlogArticleWrite from '@/components/blog/BlogArticleWrite'
-import BlogArticleModify from '@/components/blog/BlogArticleModify'
+import Home from './views/Home.vue'
+import BlogIndex from './components/blog/BlogIndex'
+import BlogArticleList from './components/blog/BlogArticleList'
+import BlogArticleView from './components/blog/BlogArticleView'
+import BlogArticleWrite from './components/blog/BlogArticleWrite'
+import BlogArticleModify from './components/blog/BlogArticleModify'
 
 Vue.use(Router)
 
@@ -13,10 +13,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'home',
+      component: Home
     },
     {
+      path: '/about',
+      name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+	{
       path: '/blog',
       name: 'BlogIndex',
       component: BlogIndex

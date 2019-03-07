@@ -1,11 +1,10 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import App from './App.vue'
 import router from './router'
+import store from './store'
 
 import Vuex from 'vuex'
 import 'es6-promise/auto'
-import { store } from './store'
 
 import axios from 'axios'
 
@@ -22,7 +21,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import DefaultLayout from './layout/DefaultLayout'
+import DefaultLayout from './layout/DefaultLayout.vue'
 
 Vue.use(Vuex)
 
@@ -46,15 +45,13 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
+
+
 new Vue({
-  el: '#app',
   router,
   store,
   i18n: i18n,
   components: { DefaultLayout },
   template: '<DefaultLayout/>',
-  mounted: function () {
-    // this.$moment.locale('ko')
-  }
-})
+  render: h => h(DefaultLayout)
+}).$mount('#app')

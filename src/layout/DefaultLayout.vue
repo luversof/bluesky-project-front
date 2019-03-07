@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app">asdfasdfd
     <BlueskyNavBar />
 
     <router-view />
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BlueskyNavBar from '@/components/BlueskyNavBar'
+import BlueskyNavBar from '@/components/BlueskyNavBar.vue'
 export default {
   name: 'DefaultLayout',
   components: { BlueskyNavBar }
