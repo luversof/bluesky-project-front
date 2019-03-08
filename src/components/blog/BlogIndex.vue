@@ -2,25 +2,25 @@
   <div></div>
 </template>
 <script>
-import blogMixin from '@/components/blog/blog.js'
+import blogMixin from "@/components/blog/blog.js";
+
 export default {
-  name: 'BlogIndex',
+  name: "BlogIndex",
   mixins: [blogMixin],
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
   watch: {
-    '$store.state.myBlog': function (myBlog) {
-      this.moveMyBlogList()
+    myBlog: function() {
+      this.moveMyBlogList();
     }
   },
-  mounted: function () {
-    if (this.$store.state.myBlog === null) {
-      this.getMyBlog()
+  mounted: function() {
+    if (this.myBlog === null) {
+      this.getMyBlog();
     } else {
-      this.moveMyBlogList()
+      this.moveMyBlogList();
     }
   }
-}
+};
 </script>
