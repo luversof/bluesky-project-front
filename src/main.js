@@ -45,6 +45,19 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
+var BlueskyPlugin = {
+  install: function(Vue, options) {
+    Vue.commonErrorHandler = function(response) {
+      console.log("ERR ", response);
+      response.json().then(data => {
+        console.log("error body", data.result);
+      });
+    };
+  }
+};
+
+Vue.use(BlueskyPlugin);
+
 new Vue({
   router,
   store,

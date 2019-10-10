@@ -7,24 +7,25 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item :to="'/blog'">Blog</b-nav-item>
+        <b-nav-item :to="'/bookkeeping/index'">Bookkeeping</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
         <b-nav-form v-if="!loginInfo.login">
-          <b-form-input class="mr-1" name="username" :placeholder="$t('username')"/>
-          <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')"/>
+          <b-form-input class="mr-1" name="username" :placeholder="$t('username')" />
+          <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')" />
           <b-button class="mr-2" type="submit">{{ $t("login") }}</b-button>
           <b-button class="mr-1" href="/oauth2/authorization/google">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'google' }"/>
+            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'google' }" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/facebook">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'facebook' }"/>
+            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'facebook' }" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/github">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'github' }"/>
+            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'github' }" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/battlenet">
-            <font-awesome-icon icon="bold"/>
+            <font-awesome-icon icon="bold" />
           </b-button>
         </b-nav-form>
 
