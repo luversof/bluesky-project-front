@@ -9,14 +9,16 @@ export default {
   },
   mixins: [commonMixin],
   methods: {
-    ...mapMutations(["setMyBookkeepingInfo"]),
+    ...mapMutations({
+      setMyBookkeepingInfo: "bookkeeping/setMyBookkeepingInfo"
+    }),
     getMyBookkeeping: function() {
       if (this.myBookkeepingInfo != null) {
         return new Promise((resolve, reject) => {
           resolve(this.myBookkeepingInfo);
         });
       }
-      return fetch("/bookkeeping.json", {
+      return fetch("/api/bookkeeping.json", {
         method: "GET",
         credentials: "same-origin",
         headers: {
@@ -33,17 +35,29 @@ export default {
       this.$router.push("/blog/" + this.myBlog.id + "/list");
     },
     createBookkeeping: function(bookkeeping) {
-      return fetch("/bookkeeping.json", {
+      return fetch("/api/bookkeeping.json", {
         method: "POST",
         headers: {
           "Content-type": "application/json"
         },
         body: JSON.stringify(bookkeeping)
       }).then(this.commonResponseData);
+    },
+    deleteMyBookkeeping: function() {
+      return fetch("/api/bookkeeping.json", {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json"
+        }
+      }).then(response => {
+        console.log("Delete data :", response);
+        this.setMyBookkeepingInfo(null);
+        return response;
+      });
     }
   },
   created: function() {
-    if (this.myBlog === null) {
+    if (this.myBookkeepingInfo === null) {
       this.getMyBookkeeping();
     }
   }

@@ -7,7 +7,7 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item :to="'/blog'">Blog</b-nav-item>
-        <b-nav-item :to="'/bookkeeping/index'">Bookkeeping</b-nav-item>
+        <b-nav-item :to="'/bookkeeping/'">Bookkeeping</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -53,9 +53,8 @@ export default {
   methods: {
     ...mapMutations({ setLoginInfo: "loginInfo/setLoginInfo" })
   },
-  mounted: function() {
+  created: function() {
     var _this = this;
-    console.log("AASDFASDF", this);
     fetch("/api/user/loginInfo.json", {
       method: "GET",
       headers: {
@@ -64,8 +63,9 @@ export default {
     })
       .then(this.commonResponseData)
       .then(data => {
-        console.log("this : ", this);
-        this.setLoginInfo(data);
+        if (data.login) {
+          this.setLoginInfo(data);
+        }
         return data;
       });
     // this.$http.get("/api/user/loginInfo").then(function(response) {

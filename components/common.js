@@ -7,9 +7,7 @@ export default {
   methods: {
     ...mapMutations([]),
     commonErrorHandler: function(response) {
-      console.log("ERR ", response);
       response.json().then(data => {
-        console.log("error body", data.result);
         if (data.result === undefined) {
           alert("알수 없는 오류");
         }
@@ -17,7 +15,6 @@ export default {
         if (Array.isArray(data.result)) {
           var message = "";
           for (var i = 0; i < data.result.length; i++) {
-            console.log("errorMessage : ", data.result[i]);
             message += data.result[i].message + "\n";
           }
           alert(message);
