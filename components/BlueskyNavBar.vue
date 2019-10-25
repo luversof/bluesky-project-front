@@ -11,7 +11,10 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-form v-if="!loginInfo">
+        <b-button v-if="!loginInfo && !isLoaded" disabled>
+          <b-spinner small type="grow"></b-spinner>Loading...
+        </b-button>
+        <b-nav-form v-if="loginInfo && !loginInfo.login">
           <b-form-input class="mr-1" name="username" :placeholder="$t('username')" />
           <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')" />
           <b-button class="mr-2" type="submit">{{ $t("login") }}</b-button>
@@ -29,7 +32,7 @@
           </b-button>
         </b-nav-form>
 
-        <b-nav-form v-if="loginInfo" action="/logout" method="post">
+        <b-nav-form v-if="loginInfo && loginInfo.login" action="/logout" method="post">
           <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
           <b-button size="sm" type="submit">{{ $t('logout') }}</b-button>
         </b-nav-form>
@@ -46,7 +49,8 @@ export default {
   name: "BlueskyNavBar",
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo
+      loginInfo: state => state.loginInfo.loginInfo,
+      isLoaded: state => state.loginInfo.isLoaded
     })
   },
   mixins: [commonMixin],
@@ -63,9 +67,7 @@ export default {
     })
       .then(this.commonResponseData)
       .then(data => {
-        if (data.login) {
-          this.setLoginInfo(data);
-        }
+        this.setLoginInfo(data);
         return data;
       });
     // this.$http.get("/api/user/loginInfo").then(function(response) {

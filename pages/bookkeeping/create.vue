@@ -43,7 +43,7 @@ export default {
       setMyBookkeepingInfo: "bookkeeping/setMyBookkeepingInfo"
     }),
     create: function() {
-      this.createBookkeeping(this.bookkeeping)
+      this.createMyBookkeeping(this.bookkeeping)
         .then(data => {
           this.$router.push("/bookkeeping").catch(err => {});
         })
@@ -60,6 +60,7 @@ export default {
         return;
       }
       if (mutation.payload != null) {
+        alert(1);
         this.$router.push("/bookkeeping").catch(err => {});
       }
     });

@@ -1,17 +1,18 @@
 <template>
   <div>
-    bookkeeping index
-    <div v-text="myBookkeepingInfo"></div>
-    <b-button
-      v-if="myBookkeepingInfo == null"
-      to="/bookkeeping/create"
-      variant="outline-primary"
-    >{{ $t("bookkeeping.link.create") }}</b-button>
-    <b-button
-      v-if="myBookkeepingInfo != null"
-      @click="deleteBookkeeping"
-      variant="outline-primary"
-    >{{ $t("bookkeeping.button.delete") }}</b-button>
+    <b-row>
+      <b-col sm="2">
+        <b-list-group v-if="myBookkeepingInfo">
+          <b-list-group-item to="/bookkeeping/entry/">입력</b-list-group-item>
+          <b-list-group-item to="/bookkeeping/statistics/">통계</b-list-group-item>
+          <b-list-group-item to="/bookkeeping/asset/">자산</b-list-group-item>
+          <b-list-group-item to="/bookkeeping/config/">설정</b-list-group-item>
+        </b-list-group>
+      </b-col>
+      <b-col sm="10">
+        <nuxt-child />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -27,11 +28,7 @@ export default {
       myBookkeepingInfo: state => state.bookkeeping.myBookkeepingInfo
     })
   },
-  methods: {
-    deleteBookkeeping: function(event) {
-      this.deleteMyBookkeeping();
-    }
-  },
+
   mounted() {
     // this.$store.subscribe((mutation, state) => {
     //   if (mutation.type !== "bookkeeping/setMyBookkeepingInfo") {

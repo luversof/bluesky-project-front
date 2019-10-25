@@ -1,5 +1,5 @@
 
-export const vueI18n = {"fallbackLocale":"ko","messages":{"ko":{"login":"로그인","logout":"로그아웃","username":"계정","password":"비밀번호","blog":{"article":{"id":"번호","category":"분류","title":"제목","content":"내용","createdDate":"생성일","viewCount":"조회수","list":"목록","write":"글쓰기","modify":"수정","delete":"삭제","cancel":"취소"}},"bookkeeping":{"name":"가계부 이름","baseDate":"월 시작일","button":{"create":"생성","delete":"삭제"},"link":{"create":"생성하기"}}}}}
+export const vueI18n = {"fallbackLocale":"ko","messages":{"ko":{"login":"로그인","logout":"로그아웃","username":"계정","password":"비밀번호","blog":{"article":{"id":"번호","category":"분류","title":"제목","content":"내용","createdDate":"생성일","viewCount":"조회수","list":"목록","write":"글쓰기","modify":"수정","delete":"삭제","cancel":"취소"}},"bookkeeping":{"name":"가계부 이름","baseDate":"월 시작일","button":{"create":"생성","update":"변경","delete":"삭제"},"link":{"create":"생성하기","update":"수정하기"}}}}}
 
 export const vueI18nLoader = false
 

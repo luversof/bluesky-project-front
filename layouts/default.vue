@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <BlueskyNavBar />
     <nuxt />
   </div>
@@ -8,7 +8,6 @@
 <script>
 import BlueskyNavBar from "@/components/BlueskyNavBar.vue";
 export default {
-  name: "DefaultLayout",
   components: { BlueskyNavBar }
 };
 </script>

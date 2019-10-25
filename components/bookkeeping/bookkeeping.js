@@ -34,9 +34,18 @@ export default {
     moveMyBlogList: function() {
       this.$router.push("/blog/" + this.myBlog.id + "/list");
     },
-    createBookkeeping: function(bookkeeping) {
+    createMyBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
         method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(bookkeeping)
+      }).then(this.commonResponseData);
+    },
+    updateMyBookkeeping: function(bookkeeping) {
+      return fetch("/api/bookkeeping.json", {
+        method: "PUT",
         headers: {
           "Content-type": "application/json"
         },
