@@ -67,7 +67,8 @@ export default {
   },
   created: function() {
     if (this.myBookkeepingInfo === null) {
-      this.getMyBookkeeping();
+      this.getMyBookkeeping()
+      .catch(this.commonErrorHandler);
     }
   }
 };

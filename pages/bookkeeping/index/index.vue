@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isLogin">
     <div v-text="myBookkeepingInfo"></div>
     <b-button
       v-if="myBookkeepingInfo == null"
@@ -24,6 +24,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
+      isLogin: state => state.loginInfo.isLogin,
       myBookkeepingInfo: state => state.bookkeeping.myBookkeepingInfo
     })
   },

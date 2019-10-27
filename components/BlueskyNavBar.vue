@@ -2,12 +2,12 @@
   <b-navbar toggleable="md" type="dark" variant="dark">
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-    <b-navbar-brand :to="'/'">Bluesky</b-navbar-brand>
+    <b-navbar-brand to="/">Bluesky</b-navbar-brand>
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item :to="'/blog'">Blog</b-nav-item>
-        <b-nav-item :to="'/bookkeeping/'">Bookkeeping</b-nav-item>
+        <b-nav-item to="/blog">Blog</b-nav-item>
+        <b-nav-item to="/bookkeeping/">Bookkeeping</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -55,24 +55,19 @@ export default {
   },
   mixins: [commonMixin],
   methods: {
-    ...mapMutations({ setLoginInfo: "loginInfo/setLoginInfo" })
+    ...mapMutations({ setLoginInfo: "loginInfo/setLoginInfo", setLoaded : "loginInfo/setLoaded" })
   },
-  created: function() {
-    var _this = this;
+  mounted: function() {
     fetch("/api/user/loginInfo.json", {
       method: "GET",
-      headers: {
-        "Content-type": "application/json"
-      }
     })
       .then(this.commonResponseData)
       .then(data => {
         this.setLoginInfo(data);
+        this.setLoaded(true);
         return data;
       });
-    // this.$http.get("/api/user/loginInfo").then(function(response) {
-    //   _this.setLoginInfo(response.data);
-    // });
+
   }
 };
 </script>

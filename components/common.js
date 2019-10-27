@@ -2,12 +2,24 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   computed: {
-    ...mapState({})
+    ...mapState({
+      loginInfo: state => state.loginInfo.loginInfo,
+      isLoaded: state => state.loginInfo.isLoaded
+    })
   },
   methods: {
-    ...mapMutations([]),
+    ...mapMutations({}),
     commonErrorHandler: function(response) {
-      response.json().then(data => {
+      if(response.status == 401) {
+        if (this.isLoaded) {
+          location.reload();
+        } 
+        return response.json().then(data => {
+          return this.$nuxt.error({ statusCode: 401, message: data.result.message })
+        });
+      }
+      
+      return response.json().then(data => {
         if (data.result === undefined) {
           alert("알수 없는 오류");
         }

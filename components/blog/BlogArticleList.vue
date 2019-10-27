@@ -2,7 +2,7 @@
   <div>
     <b-table hover :fields="fields" :items="blogArticles">
       <template slot="title" slot-scope="data">
-        <b-link :to="'view/' + data.item.id">{{data.item.title}}</b-link>
+        <b-link :to="'/view/' + data.item.id">{{data.item.title}}</b-link>
       </template>
     </b-table>
     <b-pagination
