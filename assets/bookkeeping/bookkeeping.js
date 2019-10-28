@@ -1,5 +1,5 @@
 import { mapState, mapMutations } from "vuex";
-import commonMixin from "@/components/common.js";
+import commonMixin from "~/assets/common.js";
 
 export default {
   computed: {
@@ -63,12 +63,6 @@ export default {
         this.setMyBookkeepingInfo(null);
         return response;
       });
-    }
-  },
-  created: function() {
-    if (this.myBookkeepingInfo === null) {
-      this.getMyBookkeeping()
-      .catch(this.commonErrorHandler);
     }
   }
 };

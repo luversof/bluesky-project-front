@@ -21,7 +21,10 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import bookkeepingMixin from "~/assets/bookkeeping/bookkeeping.js";
+
 export default {
+  mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
       isLogin: state => state.loginInfo.isLogin,

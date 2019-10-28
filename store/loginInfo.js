@@ -1,6 +1,6 @@
 export const state = () => ({
   loginInfo: null,
-  isLogin: false,
+  isLogin: false, // 호출하기 쉽게 alias 처리
   isLoaded: false
 });
 

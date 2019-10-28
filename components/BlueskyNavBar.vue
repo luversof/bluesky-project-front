@@ -43,7 +43,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import commonMixin from "@/components/common.js";
+import commonMixin from "~/assets/common.js";
 
 export default {
   name: "BlueskyNavBar",
@@ -55,11 +55,14 @@ export default {
   },
   mixins: [commonMixin],
   methods: {
-    ...mapMutations({ setLoginInfo: "loginInfo/setLoginInfo", setLoaded : "loginInfo/setLoaded" })
+    ...mapMutations({
+      setLoginInfo: "loginInfo/setLoginInfo",
+      setLoaded: "loginInfo/setLoaded"
+    })
   },
-  mounted: function() {
+  created: function() {
     fetch("/api/user/loginInfo.json", {
-      method: "GET",
+      method: "GET"
     })
       .then(this.commonResponseData)
       .then(data => {
@@ -67,7 +70,6 @@ export default {
         this.setLoaded(true);
         return data;
       });
-
   }
 };
 </script>
