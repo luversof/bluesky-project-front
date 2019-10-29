@@ -37,13 +37,13 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.myBookkeeping
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
     })
   },
   methods: {
     ...mapMutations({
-      beforeChangeMyBookkeeping: "bookkeeping/beforeChangeMyBookkeeping",
-      resetMyBookkeeping: "bookkeeping/resetMyBookkeeping"
+      beforeChangeMyBookkeeping: "bookkeeping/bookkeeping/beforeChangeMyBookkeeping",
+      resetMyBookkeeping: "bookkeeping/bookkeeping/resetMyBookkeeping"
     }),
 
     update: function() {

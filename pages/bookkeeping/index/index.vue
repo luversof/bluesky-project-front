@@ -28,7 +28,7 @@ export default {
   computed: {
     ...mapState({
       isLogin: state => state.loginInfo.isLogin,
-      myBookkeeping: state => state.bookkeeping.myBookkeeping
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
     })
   },
   methods: {

@@ -4,13 +4,13 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.myBookkeeping
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/setMyBookkeeping"
+      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping"
     }),
     getMyBookkeeping: function() {
       if (this.myBookkeeping != null) {

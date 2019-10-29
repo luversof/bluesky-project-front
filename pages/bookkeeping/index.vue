@@ -24,7 +24,7 @@ export default {
   components: { BookkeepingNavBar },
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.myBookkeeping
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
     })
   }
 };

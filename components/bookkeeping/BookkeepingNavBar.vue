@@ -17,7 +17,7 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.myBookkeeping
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
     })
   },
   created() {

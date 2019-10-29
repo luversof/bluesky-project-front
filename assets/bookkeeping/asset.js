@@ -4,35 +4,35 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.myBookkeeping,
-      myAssetList: state => state.bookkeeping.AssetList
+      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"],
+      myAssetList: state => state.bookkeeping.asset["myAssetList"]
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/setMyBookkeeping",
-      setMyAssetList: "bookkeeping/setMyAssetList"
+      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping",
+      setMyAssetList: "bookkeeping/asset/setMyAssetList"
     }),
     getMyAssetList() {
       if (this.myAssetList != null) {
         return new Promise((resolve, reject) => {
           resolve(this.myAssetList);
         });
-
-        return fetch("/api/bookkeeping/asset.json", {
-          method: "GET",
-          credentials: "same-origin",
-          headers: {
-            "Content-type": "application/json"
-          }
-        })
-          .then(this.commonResponseData)
-          .then(data => {
-            this.setMyAssetList(data);
-            return data;
-          });
       }
+
+      return fetch("/api/bookkeeping/asset.json", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+        .then(this.commonResponseData)
+        .then(data => {
+          this.setMyAssetList(data);
+          return data;
+        });
     }
   }
 };
