@@ -1,18 +1,18 @@
 <template>
   <div v-if="isLogin">
-    <div v-text="myBookkeepingInfo"></div>
+    <div v-text="myBookkeeping"></div>
     <b-button
-      v-if="myBookkeepingInfo == null"
+      v-if="myBookkeeping == null"
       to="/bookkeeping/create"
       variant="outline-primary"
     >{{ $t("bookkeeping.link.create") }}</b-button>
     <b-button
-      v-if="myBookkeepingInfo != null"
+      v-if="myBookkeeping != null"
       @click="deleteBookkeeping"
       variant="outline-primary"
     >{{ $t("bookkeeping.button.delete") }}</b-button>
     <b-button
-      v-if="myBookkeepingInfo != null"
+      v-if="myBookkeeping != null"
       to="/bookkeeping/update"
       variant="outline-primary"
     >{{ $t("bookkeeping.link.update") }}</b-button>
@@ -28,7 +28,7 @@ export default {
   computed: {
     ...mapState({
       isLogin: state => state.loginInfo.isLogin,
-      myBookkeepingInfo: state => state.bookkeeping.myBookkeepingInfo
+      myBookkeeping: state => state.bookkeeping.myBookkeeping
     })
   },
   methods: {

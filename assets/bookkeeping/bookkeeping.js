@@ -4,18 +4,18 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeepingInfo: state => state.bookkeeping.myBookkeepingInfo
+      myBookkeeping: state => state.bookkeeping.myBookkeeping
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeepingInfo: "bookkeeping/setMyBookkeepingInfo"
+      setMyBookkeeping: "bookkeeping/setMyBookkeeping"
     }),
     getMyBookkeeping: function() {
-      if (this.myBookkeepingInfo != null) {
+      if (this.myBookkeeping != null) {
         return new Promise((resolve, reject) => {
-          resolve(this.myBookkeepingInfo);
+          resolve(this.myBookkeeping);
         });
       }
       return fetch("/api/bookkeeping.json", {
@@ -27,7 +27,7 @@ export default {
       })
         .then(this.commonResponseData)
         .then(data => {
-          this.setMyBookkeepingInfo(data);
+          this.setMyBookkeeping(data);
           return data;
         });
     },
@@ -60,7 +60,7 @@ export default {
         }
       }).then(response => {
         console.log("Delete data :", response);
-        this.setMyBookkeepingInfo(null);
+        this.setMyBookkeeping(null);
         return response;
       });
     }

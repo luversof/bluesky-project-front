@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-list-group v-if="myBookkeepingInfo">
+    <b-list-group v-if="myBookkeeping">
       <b-list-group-item to="/bookkeeping/entry/">입력</b-list-group-item>
       <b-list-group-item to="/bookkeeping/statistics/">통계</b-list-group-item>
       <b-list-group-item to="/bookkeeping/asset/">자산</b-list-group-item>
@@ -17,11 +17,11 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      myBookkeepingInfo: state => state.bookkeeping.myBookkeepingInfo
+      myBookkeeping: state => state.bookkeeping.myBookkeeping
     })
   },
   created() {
-    if (this.myBookkeepingInfo === null) {
+    if (this.myBookkeeping === null) {
       this.getMyBookkeeping().catch(this.commonErrorHandler);
     }
   }
