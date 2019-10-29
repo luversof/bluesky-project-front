@@ -18,13 +18,7 @@ export default {
           resolve(this.myBookkeeping);
         });
       }
-      return fetch("/api/bookkeeping.json", {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          "Content-type": "application/json"
-        }
-      })
+      return fetch("/api/bookkeeping")
         .then(this.commonResponseData)
         .then(data => {
           this.setMyBookkeeping(data);
@@ -35,7 +29,7 @@ export default {
       this.$router.push("/blog/" + this.myBlog.id + "/list");
     },
     createMyBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping.json", {
+      return fetch("/api/bookkeeping", {
         method: "POST",
         headers: {
           "Content-type": "application/json"
@@ -44,7 +38,7 @@ export default {
       }).then(this.commonResponseData);
     },
     updateMyBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping.json", {
+      return fetch("/api/bookkeeping", {
         method: "PUT",
         headers: {
           "Content-type": "application/json"
@@ -53,7 +47,7 @@ export default {
       }).then(this.commonResponseData);
     },
     deleteMyBookkeeping: function() {
-      return fetch("/api/bookkeeping.json", {
+      return fetch("/api/bookkeeping", {
         method: "DELETE",
         headers: {
           "Content-type": "application/json"

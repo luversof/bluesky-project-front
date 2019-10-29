@@ -21,18 +21,13 @@ export default {
         });
       }
 
-      return fetch("/api/bookkeeping/asset.json", {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          "Content-type": "application/json"
-        }
-      })
+      return fetch("/api/bookkeeping/asset")
         .then(this.commonResponseData)
         .then(data => {
           this.setMyAssetList(data);
           return data;
         });
     }
+
   }
 };

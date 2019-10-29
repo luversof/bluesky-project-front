@@ -61,9 +61,7 @@ export default {
     })
   },
   created: function() {
-    fetch("/api/user/loginInfo.json", {
-      method: "GET"
-    })
+    fetch("/api/user/loginInfo")
       .then(this.commonResponseData)
       .then(data => {
         this.setLoginInfo(data);
