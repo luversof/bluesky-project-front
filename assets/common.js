@@ -3,15 +3,14 @@ import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo,
-      isLoaded: state => state.loginInfo.isLoaded
+      loginInfo: state => state.loginInfo.loginInfo
     })
   },
   methods: {
     ...mapMutations({}),
     commonErrorHandler: function(response) {
       if(response.status == 401) {
-        if (this.isLoaded) {
+        if (this.loginInfo != null) {
           location.reload();
         } 
         return response.json().then(data => {

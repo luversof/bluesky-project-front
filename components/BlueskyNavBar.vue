@@ -11,21 +11,22 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-button v-if="!loginInfo && !isLoaded" disabled>
-          <b-spinner small type="grow"></b-spinner>Loading...
+        <b-button v-if="!loginInfo" class="mr-1" disabled>
+          <b-spinner small class="align-middle"></b-spinner>
+          <strong>Loading...</strong>
         </b-button>
         <b-nav-form v-if="loginInfo && !loginInfo.login">
           <b-form-input class="mr-1" name="username" :placeholder="$t('username')" />
           <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')" />
           <b-button class="mr-2" type="submit">{{ $t("login") }}</b-button>
           <b-button class="mr-1" href="/oauth2/authorization/google">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'google' }" />
+            <font-awesome-icon :icon="['fab', 'google']" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/facebook">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'facebook' }" />
+            <font-awesome-icon :icon="['fab', 'facebook']" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/github">
-            <font-awesome-icon :icon="{ prefix: 'fab', iconName: 'github' }" />
+            <font-awesome-icon :icon="['fab', 'github']" />
           </b-button>
           <b-button class="mr-1" href="/oauth2/authorization/battlenet">
             <font-awesome-icon icon="bold" />
@@ -49,15 +50,13 @@ export default {
   name: "BlueskyNavBar",
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo,
-      isLoaded: state => state.loginInfo.isLoaded
+      loginInfo: state => state.loginInfo.loginInfo
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setLoginInfo: "loginInfo/setLoginInfo",
-      setLoaded: "loginInfo/setLoaded"
+      setLoginInfo: "loginInfo/setLoginInfo"
     })
   },
   created: function() {
@@ -65,7 +64,6 @@ export default {
       .then(this.commonResponseData)
       .then(data => {
         this.setLoginInfo(data);
-        this.setLoaded(true);
         return data;
       });
   }

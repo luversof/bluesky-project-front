@@ -24,14 +24,20 @@
       "name": "가계부 이름",
       "baseDate": "월 시작일",
       "button": {
-        "create": "생성",
-        "update": "변경",
-        "delete": "삭제",
+        "create" : "생성",
+        "update" : "변경",
+        "delete" : "삭제",
         "reset": "리셋"
       },
       "link": {
         "create": "생성하기",
         "update": "수정하기"
+      },
+      "asset" : {
+        "button" : {
+          "create" : "생성",
+          "update" : "수정"
+        }
       }
     }
   }
