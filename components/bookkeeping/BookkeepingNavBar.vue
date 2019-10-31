@@ -22,7 +22,12 @@ export default {
   },
   created() {
     if (this.myBookkeeping === null) {
-      this.getMyBookkeeping().catch(this.commonErrorHandler);
+      this.getMyBookkeeping().then(data => {
+        if (data === null) {
+          this.$router.push("/bookkeeping").catch(err => {});
+        }
+        return data;
+      }).catch(this.commonErrorHandler);
     }
   }
 };

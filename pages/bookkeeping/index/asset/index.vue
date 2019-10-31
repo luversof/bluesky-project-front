@@ -48,9 +48,10 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import assetMixin from "~/assets/bookkeeping/asset.js";
+import assetGroupMixin from "~/assets/bookkeeping/assetGroup.js";
 
 export default {
-  mixins: [assetMixin],
+  mixins: [assetMixin, assetGroupMixin],
   data() {
     return {
       fields: ["id", "name", "amount", "assetType", "test"],
@@ -60,6 +61,7 @@ export default {
   computed: {
     ...mapState({
       myAssetList: state => state.bookkeeping.asset["myAssetList"],
+      myAssetGroupList: state => state.bookkeeping.assetGroup["myAssetGroupList"],
       isMyAssetListLoading: state =>
         state.bookkeeping.asset["myAssetList"] == null
     })
@@ -71,6 +73,7 @@ export default {
   },
   mounted: function() {
     this.getMyAssetList();
+    this.getMyAssetGroupList();
   }
 };
 </script>
