@@ -18,10 +18,10 @@
         max="28"
         class="mb-2 mr-sm-2 mb-sm-0"
       />
-      <b-button @click="update" variant="outline-primary">{{ $t("bookkeeping.button.update") }}</b-button>
+      <b-button @click="update" variant="outline-secondary">{{ $t("bookkeeping.button.update") }}</b-button>
       <b-button
         @click="resetMyBookkeeping"
-        variant="outline-primary"
+        variant="outline-secondary"
       >{{ $t("bookkeeping.button.reset") }}</b-button>
     </b-form>
     <div>{{myBookkeeping}}</div>

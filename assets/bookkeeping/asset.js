@@ -27,6 +27,18 @@ export default {
           this.setMyAssetList(data);
           return data;
         });
+    },
+    createMyAsset(asset) {
+      return fetch("/api/bookkeeping/asset", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(asset)
+      }).then(this.commponResponseData)
+      .then(data => {
+        return data;
+      });
     }
 
   }

@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="md" type="dark" variant="dark">
+  <b-navbar toggleable="md" type="light" variant="light">
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
     <b-navbar-brand to="/">Bluesky</b-navbar-brand>
@@ -35,7 +35,7 @@
 
         <b-nav-form v-if="loginInfo && loginInfo.login" action="/logout" method="post">
           <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
-          <b-button size="sm" type="submit">{{ $t('logout') }}</b-button>
+          <b-button  variant="outline-secondary" size="sm" type="submit">{{ $t('logout') }}</b-button>
         </b-nav-form>
       </b-navbar-nav>
     </b-collapse>

@@ -11,6 +11,27 @@
       empty-text="myAssetList is empty"
       show-empty
     >
+      <template v-if="showAddAssetForm" v-slot:thead-top="row">
+        <b-tr>
+          <b-th>-</b-th>
+          <b-th>
+            <b-form-input v-model="addAsset.name" v-focus class="mb-2 mr-sm-2 mb-sm-0" />
+          </b-th>
+          <b-th>0</b-th>
+          <b-th>
+            <b-form-select
+              v-model="addAsset.assetGroup.id"
+              :options="myAssetGroupList"
+              text-field="name"
+              value-field="id"
+            ></b-form-select>
+          </b-th>
+          <b-th>
+            <b-button variant="outline-secondary" @click="create">{{ $t("bookkeeping.asset.button.create")}}</b-button>
+          </b-th>
+        </b-tr>
+      </template>
+
       <template v-slot:table-busy>
         <div class="text-center my-2">
           <b-spinner class="align-middle"></b-spinner>
@@ -19,7 +40,7 @@
       </template>
 
       <template v-slot:head(test)="row">
-        <b-button variant="outline-primary" @click="toggleCreateForm">
+        <b-button variant="outline-secondary" @click="toggleAddAssetForm">
           <font-awesome-icon :icon="['fas', 'plus']" />
         </b-button>
       </template>
@@ -27,19 +48,17 @@
       <template v-slot:cell(name)="row">
         <b-form-input v-model="row.item.name" class="mb-2 mr-sm-2 mb-sm-0" />
       </template>
-      <template v-slot:cell(test)="row">
-        <b-button>{{ $t("bookkeeping.asset.button.update")}}</b-button>
+      <template v-slot:cell(assetGroup)="row">
+        <b-form-select
+          v-if="myAssetGroupList"
+          v-model="row.item.assetGroup.id"
+          :options="myAssetGroupList"
+          text-field="name"
+          value-field="id"
+        ></b-form-select>
       </template>
-
-      <template v-slot:thead-bottom="data">
-        <b-tr>
-          <b-th colspan="2">
-            <span class="sr-only">Name and ID</span>
-          </b-th>
-          <b-th variant="secondary">Type 1</b-th>
-          <b-th variant="primary" colspan="3">Type 2</b-th>
-          <b-th variant="danger">Type 3</b-th>
-        </b-tr>
+      <template v-slot:cell(test)="row">
+        <b-button variant="outline-secondary">{{ $t("bookkeeping.asset.button.update")}}</b-button>
       </template>
     </b-table>
   </div>
@@ -54,26 +73,41 @@ export default {
   mixins: [assetMixin, assetGroupMixin],
   data() {
     return {
-      fields: ["id", "name", "amount", "assetType", "test"],
-      myAssetList2: null
+      fields: ["id", "name", "amount", { key: "assetGroup" }, "test"],
+      addAsset: { name : null, assetGroup : {}},
+      showAddAssetForm: false
     };
   },
   computed: {
     ...mapState({
       myAssetList: state => state.bookkeeping.asset["myAssetList"],
-      myAssetGroupList: state => state.bookkeeping.assetGroup["myAssetGroupList"],
+      myAssetGroupList: state =>
+        state.bookkeeping.assetGroup["myAssetGroupList"],
       isMyAssetListLoading: state =>
         state.bookkeeping.asset["myAssetList"] == null
     })
   },
   methods: {
-    toggleCreateForm: function() {
-      console.log("toggle");
+    toggleAddAssetForm: function(event) {
+      console.log("event  , ", event);
+      this.showAddAssetForm = !this.showAddAssetForm;
+    },
+    create : function() {
+      console.log("test : ", this.addAsset)
+      this.createMyAsset(this.addAsset);
     }
   },
   mounted: function() {
     this.getMyAssetList();
     this.getMyAssetGroupList();
+  },
+  directives: {
+    focus: {
+      // 디렉티브 정의
+      inserted: function(el) {
+        el.focus();
+      }
+    }
   }
 };
 </script>

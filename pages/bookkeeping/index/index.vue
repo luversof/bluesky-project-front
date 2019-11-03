@@ -4,17 +4,17 @@
     <b-button
       v-if="myBookkeeping == null"
       to="/bookkeeping/create"
-      variant="outline-primary"
+      variant="outline-secondary"
     >{{ $t("bookkeeping.link.create") }}</b-button>
     <b-button
       v-if="myBookkeeping != null"
       @click="deleteBookkeeping"
-      variant="outline-primary"
+      variant="outline-secondary"
     >{{ $t("bookkeeping.button.delete") }}</b-button>
     <b-button
       v-if="myBookkeeping != null"
       to="/bookkeeping/update"
-      variant="outline-primary"
+      variant="outline-secondary"
     >{{ $t("bookkeeping.link.update") }}</b-button>
   </div>
 </template>
