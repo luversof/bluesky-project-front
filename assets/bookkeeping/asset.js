@@ -39,11 +39,7 @@ export default {
           "Content-type": "application/json"
         },
         body: JSON.stringify(asset)
-      })
-        .then(this.commponResponseData)
-        .then(data => {
-          return data;
-        });
+      }).then(this.commponResponseData);
     },
     deleteMyAsset(asset) {
       return fetch("/api/bookkeeping/asset.json", {

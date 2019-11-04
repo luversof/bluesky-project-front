@@ -22,7 +22,7 @@ export default {
         });
       }
 
-      return fetch("/api/bookkeeping/assetGroup", {
+      return fetch("/api/bookkeeping/assetGroup.json", {
         headers: {
           "Content-type": "application/json"
         }

@@ -9,7 +9,6 @@
         <b-nav-item to="/blog">Blog</b-nav-item>
         <b-nav-item to="/bookkeeping/">Bookkeeping</b-nav-item>
       </b-navbar-nav>
-
       <b-navbar-nav class="ml-auto">
         <b-button variant="outline-secondary" v-if="!loginInfo" class="mr-1" disabled>
           <b-spinner small class="align-middle"></b-spinner>
@@ -44,7 +43,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import commonMixin from "~/assets/common.js";
+import loginInfoMixin from "~/assets/loginInfo.js";
 
 export default {
   name: "BlueskyNavBar",
@@ -53,19 +52,14 @@ export default {
       loginInfo: state => state.loginInfo.loginInfo
     })
   },
-  mixins: [commonMixin],
+  mixins: [loginInfoMixin],
   methods: {
     ...mapMutations({
       setLoginInfo: "loginInfo/setLoginInfo"
     })
   },
-  created: function() {
-    fetch("/api/user/loginInfo")
-      .then(this.commonResponseData)
-      .then(data => {
-        this.setLoginInfo(data);
-        return data;
-      });
+  mounted: function() {
+    this.getLoginInfo();
   }
 };
 </script>

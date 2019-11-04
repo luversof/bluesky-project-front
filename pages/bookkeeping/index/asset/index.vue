@@ -103,7 +103,9 @@ export default {
     create: function() {
       this.createMyAsset(this.addAsset)
         .then(data => {
+          console.log("DATA?", data);
           this.getMyAssetList(true);
+          return data;
         })
         .catch(this.commonErrorHandler);
     },

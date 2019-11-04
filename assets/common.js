@@ -7,17 +7,23 @@ export default {
     })
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      setLoginInfo: "loginInfo/setLoginInfo"
+    }),
     commonErrorHandler: function(response) {
-      if(response.status == 401) {
+      console.log("commonErrorHandler", response);
+      if (response.status == 401) {
         if (this.loginInfo != null) {
-          location.reload();
-        } 
+          this.setLoginInfo(null);
+        }
         return response.json().then(data => {
-          return this.$nuxt.error({ statusCode: 401, message: data.result.message })
+          return this.$nuxt.error({
+            statusCode: 401,
+            message: data.result.message
+          });
         });
       }
-      
+
       return response.json().then(data => {
         if (data.result === undefined) {
           alert("알수 없는 오류");
@@ -40,10 +46,16 @@ export default {
         }
       });
     },
+
+    /**
+     * 응답이 정상이면 json을 반환, 에러면 throw 처리
+     */
     commonResponseData: function(response) {
+      console.log("commonResponseData", response);
       if (response.ok) {
         return response.json();
       } else {
+        console.log("throw error", response);
         throw response;
       }
     }
