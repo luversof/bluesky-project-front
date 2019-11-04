@@ -27,7 +27,10 @@
             ></b-form-select>
           </b-th>
           <b-th>
-            <b-button variant="outline-secondary" @click="create">{{ $t("bookkeeping.asset.button.create")}}</b-button>
+            <b-button
+              variant="outline-secondary"
+              @click="create"
+            >{{ $t("bookkeeping.asset.button.create")}}</b-button>
           </b-th>
         </b-tr>
       </template>
@@ -39,9 +42,10 @@
         </div>
       </template>
 
-      <template v-slot:head(test)="row">
+      <template v-slot:head(menu)="row">
         <b-button variant="outline-secondary" @click="toggleAddAssetForm">
-          <font-awesome-icon :icon="['fas', 'plus']" />
+          <font-awesome-icon v-if="!showAddAssetForm" :icon="['fas', 'plus']" />
+          <font-awesome-icon v-if="showAddAssetForm" :icon="['fas', 'minus']" />
         </b-button>
       </template>
 
@@ -57,8 +61,13 @@
           value-field="id"
         ></b-form-select>
       </template>
-      <template v-slot:cell(test)="row">
+      <template v-slot:cell(menu)="row">
         <b-button variant="outline-secondary">{{ $t("bookkeeping.asset.button.update")}}</b-button>
+        <b-button
+          v-if="row.item.amount == 0"
+          variant="outline-secondary"
+          @click="deleteAsset(row.item)"
+        >{{ $t("bookkeeping.asset.button.delete")}}</b-button>
       </template>
     </b-table>
   </div>
@@ -73,8 +82,8 @@ export default {
   mixins: [assetMixin, assetGroupMixin],
   data() {
     return {
-      fields: ["id", "name", "amount", { key: "assetGroup" }, "test"],
-      addAsset: { name : null, assetGroup : {}},
+      fields: ["id", "name", "amount", { key: "assetGroup" }, "menu"],
+      addAsset: { name: null, assetGroup: {} },
       showAddAssetForm: false
     };
   },
@@ -89,17 +98,27 @@ export default {
   },
   methods: {
     toggleAddAssetForm: function(event) {
-      console.log("event  , ", event);
       this.showAddAssetForm = !this.showAddAssetForm;
     },
-    create : function() {
-      console.log("test : ", this.addAsset)
-      this.createMyAsset(this.addAsset);
+    create: function() {
+      this.createMyAsset(this.addAsset)
+        .then(data => {
+          this.getMyAssetList(true);
+        })
+        .catch(this.commonErrorHandler);
+    },
+    deleteAsset: function(asset) {
+      console.log("delete ", asset);
+      this.deleteMyAsset(asset)
+        .then(data => {
+          this.getMyAssetList(true);
+        })
+        .catch(this.commonErrorHandler);
     }
   },
   mounted: function() {
-    this.getMyAssetList();
-    this.getMyAssetGroupList();
+    this.getMyAssetList().catch(this.commonErrorHandler);
+    this.getMyAssetGroupList().catch(this.commonErrorHandler);
   },
   directives: {
     focus: {

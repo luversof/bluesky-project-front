@@ -5,7 +5,8 @@ export default {
   computed: {
     ...mapState({
       myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"],
-      myAssetGroupList: state => state.bookkeeping.assetGroup["myAssetGroupList"]
+      myAssetGroupList: state =>
+        state.bookkeeping.assetGroup["myAssetGroupList"]
     })
   },
   mixins: [commonMixin],
@@ -21,13 +22,16 @@ export default {
         });
       }
 
-      return fetch("/api/bookkeeping/assetGroup")
+      return fetch("/api/bookkeeping/assetGroup", {
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
         .then(this.commonResponseData)
         .then(data => {
           this.setMyAssetGroupList(data);
           return data;
         });
     }
-
   }
 };

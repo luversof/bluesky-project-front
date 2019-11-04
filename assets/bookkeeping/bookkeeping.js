@@ -18,7 +18,7 @@ export default {
           resolve(this.myBookkeeping);
         });
       }
-      return fetch("/api/bookkeeping")
+      return fetch("/api/bookkeeping.json")
         .then(this.commonResponseData)
         .then(data => {
           this.setMyBookkeeping(data);
@@ -29,31 +29,27 @@ export default {
       this.$router.push("/blog/" + this.myBlog.id + "/list");
     },
     createMyBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping", {
+      return fetch("/api/bookkeeping.json", {
         method: "POST",
         headers: {
-          "Content-type": "application/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(bookkeeping)
       }).then(this.commonResponseData);
     },
     updateMyBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping", {
+      return fetch("/api/bookkeeping.json", {
         method: "PUT",
         headers: {
-          "Content-type": "application/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(bookkeeping)
       }).then(this.commonResponseData);
     },
     deleteMyBookkeeping: function() {
-      return fetch("/api/bookkeeping", {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json"
-        }
+      return fetch("/api/bookkeeping.json", {
+        method: "DELETE"
       }).then(response => {
-        console.log("Delete data :", response);
         this.setMyBookkeeping(null);
         return response;
       });

@@ -42,12 +42,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      beforeChangeMyBookkeeping: "bookkeeping/bookkeeping/beforeChangeMyBookkeeping",
+      beforeChangeMyBookkeeping:
+        "bookkeeping/bookkeeping/beforeChangeMyBookkeeping",
       resetMyBookkeeping: "bookkeeping/bookkeeping/resetMyBookkeeping"
     }),
 
     update: function() {
-      console.log("test", this);
       this.updateMyBookkeeping(this.myBookkeeping);
     }
   }

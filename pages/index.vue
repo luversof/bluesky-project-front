@@ -1,5 +1,5 @@
 <template>
-  <div>테스트다df</div>
+  <div>index 페이지</div>
 </template>
 
 <script>

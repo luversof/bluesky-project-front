@@ -1,16 +1,5 @@
 <template>
-  <div>
-    <b-container fluid>
-      <b-row>
-        <b-col sm="2">
-          <BookkeepingNavBar />
-        </b-col>
-        <b-col sm="10">
-          <nuxt-child />
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+  <nuxt-child />
 </template>
 
 <script>
@@ -20,6 +9,7 @@ import BookkeepingNavBar from "@/components/bookkeeping/BookkeepingNavBar.vue";
 
 export default {
   name: "BookkeepingIndex",
+  layout: "bookkeeping",
   mixins: [bookkeepingMixin],
   components: { BookkeepingNavBar },
   computed: {
