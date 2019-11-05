@@ -14,7 +14,16 @@ export default {
       setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping",
       setMyAssetList: "bookkeeping/asset/setMyAssetList"
     }),
-    getMyAssetList(isReload) {
+    createMyAsset: function(asset) {
+      return fetch("/api/bookkeeping/asset.json", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(asset)
+      }).then(this.commonResponseData);
+    },
+    getMyAssetList: function(isReload) {
       if (!isReload && this.myAssetList != null) {
         return new Promise((resolve, reject) => {
           resolve(this.myAssetList);
@@ -32,16 +41,16 @@ export default {
           return data;
         });
     },
-    createMyAsset(asset) {
+    updateMyAsset: function(asset) {
       return fetch("/api/bookkeeping/asset.json", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-type": "application/json"
         },
         body: JSON.stringify(asset)
-      }).then(this.commponResponseData);
+      }).then(this.commonResponseData);
     },
-    deleteMyAsset(asset) {
+    deleteMyAsset: function(asset) {
       return fetch("/api/bookkeeping/asset.json", {
         method: "DELETE",
         headers: {

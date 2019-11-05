@@ -11,7 +11,6 @@ export default {
       setLoginInfo: "loginInfo/setLoginInfo"
     }),
     commonErrorHandler: function(response) {
-      console.log("commonErrorHandler", response);
       if (response.status == 401) {
         if (this.loginInfo != null) {
           this.setLoginInfo(null);
@@ -51,11 +50,9 @@ export default {
      * 응답이 정상이면 json을 반환, 에러면 throw 처리
      */
     commonResponseData: function(response) {
-      console.log("commonResponseData", response);
       if (response.ok) {
         return response.json();
       } else {
-        console.log("throw error", response);
         throw response;
       }
     }

@@ -1,6 +1,5 @@
 <template>
   <div>
-    ㅁㄴㅇㄹ
     <nuxt-child />
   </div>
 </template>

@@ -1,7 +1,5 @@
 <template>
   <div>
-    서브의 서브~~
-    목록 보여주고 추가/삭제/변경 구현하기
     <b-table
       striped
       hover
@@ -62,7 +60,10 @@
         ></b-form-select>
       </template>
       <template v-slot:cell(menu)="row">
-        <b-button variant="outline-secondary">{{ $t("bookkeeping.asset.button.update")}}</b-button>
+        <b-button
+          variant="outline-secondary"
+          @click="update(row.item)"
+        >{{ $t("bookkeeping.asset.button.update")}}</b-button>
         <b-button
           v-if="row.item.amount == 0"
           variant="outline-secondary"
@@ -97,20 +98,29 @@ export default {
     })
   },
   methods: {
+    initAddAsset: function() {
+      this.addAsset = { name: null, assetGroup: {} };
+    },
     toggleAddAssetForm: function(event) {
       this.showAddAssetForm = !this.showAddAssetForm;
     },
     create: function() {
       this.createMyAsset(this.addAsset)
         .then(data => {
-          console.log("DATA?", data);
+          this.initAddAsset();
+          this.showAddAssetForm = !this.showAddAssetForm;
           this.getMyAssetList(true);
-          return data;
+        })
+        .catch(this.commonErrorHandler);
+    },
+    update: function(asset) {
+      this.updateMyAsset(asset)
+        .then(data => {
+          this.getMyAssetList(true);
         })
         .catch(this.commonErrorHandler);
     },
     deleteAsset: function(asset) {
-      console.log("delete ", asset);
       this.deleteMyAsset(asset)
         .then(data => {
           this.getMyAssetList(true);

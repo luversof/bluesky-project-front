@@ -24,7 +24,6 @@
         variant="outline-secondary"
       >{{ $t("bookkeeping.button.reset") }}</b-button>
     </b-form>
-    <div>{{myBookkeeping}}</div>
   </div>
 </template>
 
