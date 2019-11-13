@@ -3,10 +3,10 @@
     <b-table
       striped
       hover
-      :items="myAssetList"
+      :items="userAssetList"
       :fields="fields"
-      :busy="isMyAssetListLoading"
-      empty-text="myAssetList is empty"
+      :busy="isUserAssetListLoading"
+      empty-text="userAssetList is empty"
       show-empty
     >
       <template v-if="showAddAssetForm" v-slot:thead-top="row">
@@ -19,7 +19,7 @@
           <b-th>
             <b-form-select
               v-model="addAsset.assetGroup.id"
-              :options="myAssetGroupList"
+              :options="userAssetGroupList"
               text-field="name"
               value-field="id"
             ></b-form-select>
@@ -52,12 +52,12 @@
       </template>
       <template v-slot:cell(assetGroup)="row">
         <b-form-select
-          v-if="myAssetGroupList"
+          v-if="userAssetGroupList"
           v-model="row.item.assetGroup.id"
-          :options="myAssetGroupList"
+          :options="userAssetGroupList"
           text-field="name"
           value-field="id"
-        ></b-form-select>
+        />
       </template>
       <template v-slot:cell(menu)="row">
         <b-button
@@ -90,11 +90,11 @@ export default {
   },
   computed: {
     ...mapState({
-      myAssetList: state => state.bookkeeping.asset["myAssetList"],
-      myAssetGroupList: state =>
-        state.bookkeeping.assetGroup["myAssetGroupList"],
-      isMyAssetListLoading: state =>
-        state.bookkeeping.asset["myAssetList"] == null
+      userAssetList: state => state.bookkeeping.asset["userAssetList"],
+      userAssetGroupList: state =>
+        state.bookkeeping.assetGroup["userAssetGroupList"],
+      isUserAssetListLoading: state =>
+        state.bookkeeping.asset["userAssetList"] == null
     })
   },
   methods: {
@@ -105,32 +105,32 @@ export default {
       this.showAddAssetForm = !this.showAddAssetForm;
     },
     create: function() {
-      this.createMyAsset(this.addAsset)
+      this.createUserAsset(this.addAsset)
         .then(data => {
           this.initAddAsset();
           this.showAddAssetForm = !this.showAddAssetForm;
-          this.getMyAssetList(true);
+          this.getUserAssetList(true);
         })
         .catch(this.commonErrorHandler);
     },
     update: function(asset) {
-      this.updateMyAsset(asset)
+      this.updateUserAsset(asset)
         .then(data => {
-          this.getMyAssetList(true);
+          this.getUserAssetList(true);
         })
         .catch(this.commonErrorHandler);
     },
     deleteAsset: function(asset) {
-      this.deleteMyAsset(asset)
+      this.deleteUserAsset(asset)
         .then(data => {
-          this.getMyAssetList(true);
+          this.getUserAssetList(true);
         })
         .catch(this.commonErrorHandler);
     }
   },
   mounted: function() {
-    this.getMyAssetList().catch(this.commonErrorHandler);
-    this.getMyAssetGroupList().catch(this.commonErrorHandler);
+    this.getUserAssetList().catch(this.commonErrorHandler);
+    this.getUserAssetGroupList().catch(this.commonErrorHandler);
   },
   directives: {
     focus: {

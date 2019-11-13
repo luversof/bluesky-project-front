@@ -37,7 +37,7 @@ export default {
   methods: {
     create: function() {
       console.log("bookkeeping create");
-      this.createMyBookkeeping(this.bookkeeping)
+      this.createUserBookkeeping(this.bookkeeping)
         .then(data => {
           this.$router.push("/bookkeeping").catch(err => {});
         })

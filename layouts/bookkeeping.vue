@@ -3,7 +3,7 @@
     <BlueskyNavBar />
     <b-container fluid>
       <b-row>
-        <b-col sm="2" v-if="myBookkeeping">
+        <b-col sm="2" v-if="userBookkeeping">
           <BookkeepingNavBar />
         </b-col>
         <b-col sm="10">
@@ -25,12 +25,12 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
+      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
     })
   },
   created() {
-    if (this.myBookkeeping === null) {
-      this.getMyBookkeeping()
+    if (this.userBookkeeping === null) {
+      this.getUserBookkeeping()
         .then(data => {
           if (data === null) {
             this.$router.push("/bookkeeping").catch(err => {});

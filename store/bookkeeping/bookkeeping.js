@@ -1,28 +1,24 @@
 import _ from "lodash";
 
 export const state = () => ({
-  myBookkeeping: null,
-  myAssetList: null,
-  oldMyBookkeeping: null // 수정 시 이전 data를 저장
+  userBookkeeping: null,
+  oldUserBookkeeping: null // 수정 시 이전 data를 저장
 });
 
 export const mutations = {
-  setMyBookkeeping(state, myBookkeeping) {
-    state.myBookkeeping = myBookkeeping;
+  setUserBookkeeping(state, userBookkeeping) {
+    state.userBookkeeping = userBookkeeping;
   },
-  beforeChangeMyBookkeeping(state) {
-    console.log("beforeChangeMyBookkeeping");
-    if (state.oldMyBookkeeping == null) {
-      state.oldMyBookkeeping = _.cloneDeep(state.myBookkeeping);
+  beforeChangeUserBookkeeping(state) {
+    console.log("beforeChangeUserBookkeeping");
+    if (state.oldUserBookkeeping == null) {
+      state.oldUserBookkeeping = _.cloneDeep(state.userBookkeeping);
     }
   },
-  resetMyBookkeeping(state) {
-    if (state.oldMyBookkeeping != null) {
-      state.myBookkeeping = _.cloneDeep(state.oldMyBookkeeping);
-      state.oldMyBookkeeping = null;
+  resetUserBookkeeping(state) {
+    if (state.oldUserBookkeeping != null) {
+      state.userBookkeeping = _.cloneDeep(state.oldUserBookkeeping);
+      state.oldUserBookkeeping = null;
     }
-  },
-  setMyAssetList(state, myAssetList) {
-    state.myAssetList = myAssetList;
   }
 };

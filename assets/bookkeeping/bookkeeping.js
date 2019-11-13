@@ -4,31 +4,28 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
+      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping"
+      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping"
     }),
-    getMyBookkeeping: function() {
-      if (this.myBookkeeping != null) {
+    getUserBookkeeping: function() {
+      if (this.userBookkeeping != null) {
         return new Promise((resolve, reject) => {
-          resolve(this.myBookkeeping);
+          resolve(this.userBookkeeping);
         });
       }
       return fetch("/api/bookkeeping.json")
         .then(this.commonResponseData)
         .then(data => {
-          this.setMyBookkeeping(data);
+          this.setUserBookkeeping(data);
           return data;
         });
     },
-    moveMyBlogList: function() {
-      this.$router.push("/blog/" + this.myBlog.id + "/list");
-    },
-    createMyBookkeeping: function(bookkeeping) {
+    createUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
         method: "POST",
         headers: {
@@ -37,7 +34,7 @@ export default {
         body: JSON.stringify(bookkeeping)
       }).then(this.commonResponseData);
     },
-    updateMyBookkeeping: function(bookkeeping) {
+    updateUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
         method: "PUT",
         headers: {
@@ -46,11 +43,11 @@ export default {
         body: JSON.stringify(bookkeeping)
       }).then(this.commonResponseData);
     },
-    deleteMyBookkeeping: function() {
+    deleteUserBookkeeping: function() {
       return fetch("/api/bookkeeping.json", {
         method: "DELETE"
       }).then(response => {
-        this.setMyBookkeeping(null);
+        this.setUserBookkeeping(null);
         return response;
       });
     }

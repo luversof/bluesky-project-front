@@ -4,21 +4,22 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"],
-      myAssetGroupList: state =>
-        state.bookkeeping.assetGroup["myAssetGroupList"]
+      userBookkeeping: state =>
+        state.bookkeeping.bookkeeping["userBookkeeping"],
+      userAssetGroupList: state =>
+        state.bookkeeping.assetGroup["userAssetGroupList"]
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping",
-      setMyAssetGroupList: "bookkeeping/assetGroup/setMyAssetGroupList"
+      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping",
+      setUserAssetGroupList: "bookkeeping/assetGroup/setUserAssetGroupList"
     }),
-    getMyAssetGroupList() {
-      if (this.myAssetGroupList != null) {
+    getUserAssetGroupList() {
+      if (this.userAssetGroupList != null) {
         return new Promise((resolve, reject) => {
-          resolve(this.myAssetGroupList);
+          resolve(this.userAssetGroupList);
         });
       }
 
@@ -29,7 +30,7 @@ export default {
       })
         .then(this.commonResponseData)
         .then(data => {
-          this.setMyAssetGroupList(data);
+          this.setUserAssetGroupList(data);
           return data;
         });
     }

@@ -4,17 +4,18 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"],
-      myAssetList: state => state.bookkeeping.asset["myAssetList"]
+      userBookkeeping: state =>
+        state.bookkeeping.bookkeeping["userBookkeeping"],
+      userAssetList: state => state.bookkeeping.asset["userAssetList"]
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping",
-      setMyAssetList: "bookkeeping/asset/setMyAssetList"
+      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping",
+      setUserAssetList: "bookkeeping/asset/setUserAssetList"
     }),
-    createMyAsset: function(asset) {
+    createUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset.json", {
         method: "POST",
         headers: {
@@ -23,10 +24,10 @@ export default {
         body: JSON.stringify(asset)
       }).then(this.commonResponseData);
     },
-    getMyAssetList: function(isReload) {
-      if (!isReload && this.myAssetList != null) {
+    getUserAssetList: function(isReload) {
+      if (!isReload && this.userAssetList != null) {
         return new Promise((resolve, reject) => {
-          resolve(this.myAssetList);
+          resolve(this.userAssetList);
         });
       }
 
@@ -37,11 +38,11 @@ export default {
       })
         .then(this.commonResponseData)
         .then(data => {
-          this.setMyAssetList(data);
+          this.setUserAssetList(data);
           return data;
         });
     },
-    updateMyAsset: function(asset) {
+    updateUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset.json", {
         method: "PUT",
         headers: {
@@ -50,7 +51,7 @@ export default {
         body: JSON.stringify(asset)
       }).then(this.commonResponseData);
     },
-    deleteMyAsset: function(asset) {
+    deleteUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset.json", {
         method: "DELETE",
         headers: {

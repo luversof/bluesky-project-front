@@ -1,18 +1,18 @@
 <template>
   <div>
-    <b-form inline v-if="myBookkeeping">
+    <b-form inline v-if="userBookkeeping">
       <b-form-input
         id="name"
-        v-model="myBookkeeping.name"
+        v-model="userBookkeeping.name"
         :placeholder="$t('bookkeeping.name')"
-        @focus="beforeChangeMyBookkeeping"
+        @focus="beforeChangeUserBookkeeping"
         class="mb-2 mr-sm-2 mb-sm-0"
       />
       <b-form-input
         id="baseDate"
-        v-model="myBookkeeping.baseDate"
+        v-model="userBookkeeping.baseDate"
         :placeholder="$t('bookkeeping.baseDate')"
-        @focus="beforeChangeMyBookkeeping"
+        @focus="beforeChangeUserBookkeeping"
         type="number"
         min="1"
         max="28"
@@ -20,7 +20,7 @@
       />
       <b-button @click="update" variant="outline-secondary">{{ $t("bookkeeping.button.update") }}</b-button>
       <b-button
-        @click="resetMyBookkeeping"
+        @click="resetUserBookkeeping"
         variant="outline-secondary"
       >{{ $t("bookkeeping.button.reset") }}</b-button>
     </b-form>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-// 페이지 나갈 때 oldMyBookkeeping를 리셋 처리 필요함
+// 페이지 나갈 때 oldUserBookkeeping를 리셋 처리 필요함
 import { mapState, mapMutations } from "vuex";
 import bookkeepingMixin from "~/assets/bookkeeping/bookkeeping.js";
 
@@ -36,18 +36,18 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      myBookkeeping: state => state.bookkeeping.bookkeeping["myBookkeeping"]
+      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
     })
   },
   methods: {
     ...mapMutations({
-      beforeChangeMyBookkeeping:
-        "bookkeeping/bookkeeping/beforeChangeMyBookkeeping",
-      resetMyBookkeeping: "bookkeeping/bookkeeping/resetMyBookkeeping"
+      beforeChangeUserBookkeeping:
+        "bookkeeping/bookkeeping/beforeChangeUserBookkeeping",
+      resetUserBookkeeping: "bookkeeping/bookkeeping/resetUserBookkeeping"
     }),
 
     update: function() {
-      this.updateMyBookkeeping(this.myBookkeeping);
+      this.updateUserBookkeeping(this.userBookkeeping);
     }
   }
 };

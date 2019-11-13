@@ -1,11 +1,11 @@
 import _ from "lodash";
 
 export const state = () => ({
-  myAssetList: null
+  userAssetList: null
 });
 
 export const mutations = {
-  setMyAssetList(state, myAssetList) {
-    state.myAssetList = myAssetList;
+  setUserAssetList(state, userAssetList) {
+    state.userAssetList = userAssetList;
   }
 };
