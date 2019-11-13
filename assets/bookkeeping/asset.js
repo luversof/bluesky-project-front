@@ -11,7 +11,6 @@ export default {
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setMyBookkeeping: "bookkeeping/bookkeeping/setMyBookkeeping",
       setMyAssetList: "bookkeeping/asset/setMyAssetList"
     }),
     createMyAsset: function(asset) {
