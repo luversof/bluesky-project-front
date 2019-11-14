@@ -13,7 +13,6 @@ export default {
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping",
       setUserAssetGroupList: "bookkeeping/assetGroup/setUserAssetGroupList"
     }),
     getUserAssetGroupList() {
