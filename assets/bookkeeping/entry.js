@@ -7,6 +7,15 @@ export default {
   },
   mixins: [commonMixin],
   methods: {
+    createUserEntry: function(entry) {
+      return fetch("/api/bookkeeping/entry.json", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(entry)
+      }).then(this.commonResponseData);
+    },
     searchUserEntry: function(entryRequestParam) {
       return fetch(
         "/api/bookkeeping/entry.json?startZonedDateTime=" +

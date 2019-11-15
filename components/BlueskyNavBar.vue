@@ -6,8 +6,8 @@
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item to="/blog">Blog</b-nav-item>
-        <b-nav-item to="/bookkeeping/">Bookkeeping</b-nav-item>
+        <b-nav-item active-class="active" to="/blog">Blog</b-nav-item>
+        <b-nav-item active-class="active" to="/bookkeeping/">Bookkeeping</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-button variant="outline-secondary" v-if="!loginInfo" class="mr-1" disabled>

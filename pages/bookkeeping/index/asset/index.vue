@@ -131,14 +131,6 @@ export default {
   mounted: function() {
     this.getUserAssetList().catch(this.commonErrorHandler);
     this.getUserAssetGroupList().catch(this.commonErrorHandler);
-  },
-  directives: {
-    focus: {
-      // 디렉티브 정의
-      inserted: function(el) {
-        el.focus();
-      }
-    }
   }
 };
 </script>

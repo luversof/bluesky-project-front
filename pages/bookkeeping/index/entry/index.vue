@@ -10,28 +10,71 @@
     >
       <template v-if="showAddEntryForm" v-slot:thead-top="row">
         <b-tr>
-          <b-th>-</b-th>
-          <b-th>
-            <b-form-input
-              v-model="addEntry.memo"
-              v-focus
-              class="mb-2 mr-sm-2 mb-sm-0"
-            />
+          <b-th colspan="3">
+            <b-button-group>
+              <b-button
+                variant="outline-secondary"
+                :pressed="addEntry.entryGroupType == 'INCOME'"
+                @click="setAddEntryGroupType('INCOME')"
+              >{{ $t("bookkeeping.entry.button.income")}}</b-button>
+              <b-button
+                variant="outline-secondary"
+                :pressed="addEntry.entryGroupType == 'EXPENSE'"
+                @click="setAddEntryGroupType('EXPENSE')"
+              >{{ $t("bookkeeping.entry.button.expense")}}</b-button>
+              <b-button
+                variant="outline-secondary"
+                :pressed="addEntry.entryGroupType == 'TRANSFER'"
+                @click="setAddEntryGroupType('TRANSFER')"
+              >{{ $t("bookkeeping.entry.button.transfer")}}</b-button>
+            </b-button-group>
           </b-th>
-          <b-th>0</b-th>
+        </b-tr>
+        <b-tr>
+          <b-th>
+            <b-form-input type="date" v-model="addEntry.entryDate" />
+          </b-th>
+          <b-th></b-th>
           <b-th>
             <b-form-select
-              v-model="addEntry.creditAsset.id"
-              :options="userAssetList"
+              v-if="addEntry.entryGroupType != 'TRANSFER'"
+              v-model="addEntry.entryGroup.id"
+              :options="getAddEntryGroupList()"
               text-field="name"
               value-field="id"
             ></b-form-select>
           </b-th>
 
           <b-th>
-            <b-button variant="outline-secondary" @click="create">{{
-              $t("bookkeeping.asset.button.create")
-            }}</b-button>
+            <b-form-select
+              v-if="addEntry.entryGroupType != 'EXPENSE'"
+              v-model="addEntry.incomeAsset.id"
+              :options="userAssetList"
+              text-field="name"
+              value-field="id"
+            />
+          </b-th>
+          <b-th>
+            <b-form-select
+              v-if="addEntry.entryGroupType != 'INCOME'"
+              v-model="addEntry.expenseAsset.id"
+              :options="userAssetList"
+              text-field="name"
+              value-field="id"
+            />
+          </b-th>
+          <b-th>
+            <b-form-input type="number" v-model="addEntry.amount" />
+          </b-th>
+          <b-th>
+            <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
+          </b-th>
+          <b-th>
+            <b-button variant="outline-secondary" @click="create">
+              {{
+              $t("bookkeeping.entry.button.create")
+              }}
+            </b-button>
           </b-th>
         </b-tr>
       </template>
@@ -64,14 +107,31 @@ export default {
   mixins: [assetMixin, entryMixin, entryGroupMixin],
   data() {
     return {
-      fields: ["id", "name", "amount", { key: "assetGroup" }, "menu"],
+      fields: [
+        "entryDate",
+        "entryGroupType",
+        { key: "entryGroup" },
+        "incomeAsset",
+        "expenseAsset",
+        "amount",
+        "memo",
+        "menu"
+      ],
       entryRequestParam: {
         startZonedDateTime: "2019-08-08T10:01:03.000Z",
         endZonedDateTime: "2020-08-08T10:01:03.000Z"
       },
       entryList: [],
       entryGroupList: [],
-      addEntry: { memo: null, creditAsset: {}, debitAsset: {} },
+      addEntry: {
+        entryDate: null,
+        entryGroupType: "INCOME",
+        memo: null,
+        amount: 0,
+        entryGroup: {},
+        incomeAsset: {},
+        expenseAsset: {}
+      },
       showAddEntryForm: false
     };
   },
@@ -89,12 +149,28 @@ export default {
       var a = await this.searchUserEntry(this.entryRequestParam).catch(
         this.commonErrorHandler
       );
-      console.log("TEST", a);
     },
     toggleAddEntryForm: function(event) {
       this.showAddEntryForm = !this.showAddEntryForm;
     },
-    create: function() {}
+    setAddEntryGroupType: function(entryGroupType) {
+      this.addEntry.entryGroupType = entryGroupType;
+    },
+    create: function() {
+      console.log("create ", this.addEntry);
+      this.createUserEntry(this.addEntry).catch(this.commonErrorHandler);
+    },
+    getAddEntryGroupList: function() {
+      var target = [];
+      for (var key in this.entryGroupList) {
+        if (
+          this.entryGroupList[key].entryType == this.addEntry.entryGroupType
+        ) {
+          target.push(this.entryGroupList[key]);
+        }
+      }
+      return target;
+    }
   },
   mounted: function() {
     this.getUserEntryGroupList()

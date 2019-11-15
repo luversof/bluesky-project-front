@@ -39,6 +39,14 @@
           "update": "수정",
           "delete": "삭제"
         }
+      },
+      "entry": {
+        "button": {
+          "income": "수입",
+          "expense": "지출",
+          "transfer": "이체",
+          "create": "생성하기"
+        }
       }
     }
   }
