@@ -18,10 +18,10 @@ export default {
     },
     searchUserEntry: function(entryRequestParam) {
       return fetch(
-        "/api/bookkeeping/entry.json?startZonedDateTime=" +
-          entryRequestParam.startZonedDateTime +
-          "&endZonedDateTime=" +
-          entryRequestParam.endZonedDateTime,
+        "/api/bookkeeping/entry.json?startLocalDate=" +
+          entryRequestParam.startLocalDate +
+          "&endLocalDate=" +
+          entryRequestParam.endLocalDate,
         {
           headers: {
             "Content-type": "application/json"

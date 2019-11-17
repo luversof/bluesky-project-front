@@ -118,8 +118,8 @@ export default {
         "menu"
       ],
       entryRequestParam: {
-        startZonedDateTime: "2019-08-08T10:01:03.000Z",
-        endZonedDateTime: "2020-08-08T10:01:03.000Z"
+        startLocalDate: "2019-08-08",
+        endLocalDate: "2020-08-08"
       },
       entryList: [],
       entryGroupList: [],
@@ -173,6 +173,9 @@ export default {
     }
   },
   mounted: function() {
+    this.searchUserEntry(this.entryRequestParam)
+      .then(data => (this.entryList = data))
+      .catch(this.commonErrorHandler);
     this.getUserEntryGroupList()
       .then(data => {
         this.entryGroupList = data;
