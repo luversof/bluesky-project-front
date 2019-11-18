@@ -50,6 +50,7 @@
       <template v-slot:cell(name)="row">
         <b-form-input v-model="row.item.name" class="mb-2 mr-sm-2 mb-sm-0" />
       </template>
+
       <template v-slot:cell(assetGroup)="row">
         <b-form-select
           v-if="userAssetGroupList"
@@ -59,6 +60,7 @@
           value-field="id"
         />
       </template>
+
       <template v-slot:cell(menu)="row">
         <b-button
           variant="outline-secondary"

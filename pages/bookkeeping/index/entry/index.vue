@@ -42,7 +42,7 @@
               :options="getAddEntryGroupList()"
               text-field="name"
               value-field="id"
-            ></b-form-select>
+            />
           </b-th>
 
           <b-th>
@@ -91,6 +91,35 @@
           <font-awesome-icon v-if="!showAddEntryForm" :icon="['fas', 'plus']" />
           <font-awesome-icon v-if="showAddEntryForm" :icon="['fas', 'minus']" />
         </b-button>
+      </template>
+
+      <template v-slot:cell(entryGroup)="row">
+        <b-form-select
+          v-if="userEntryGroupList"
+          v-model="row.item.entryGroup.id"
+          :options="getEntryGroupList(row.item.entryGroupType)"
+          text-field="name"
+          value-field="id"
+        />
+      </template>
+      <template v-slot:cell(incomeAsset)="row">
+        <b-form-select
+          v-if="userAssetList && row.item.incomeAsset != null"
+          v-model="row.item.incomeAsset.id"
+          :options="userAssetList"
+          text-field="name"
+          value-field="id"
+        />
+      </template>
+
+      <template v-slot:cell(expenseAsset)="row">
+        <b-form-select
+          v-if="userAssetList && row.item.expenseAsset != null"
+          v-model="row.item.expenseAsset.id"
+          :options="userAssetList"
+          text-field="name"
+          value-field="id"
+        />
       </template>
     </b-table>
     <p @click="search">테스트</p>
@@ -164,8 +193,18 @@ export default {
       var target = [];
       for (var key in this.entryGroupList) {
         if (
-          this.entryGroupList[key].entryType == this.addEntry.entryGroupType
+          this.entryGroupList[key].entryGroupType ==
+          this.addEntry.entryGroupType
         ) {
+          target.push(this.entryGroupList[key]);
+        }
+      }
+      return target;
+    },
+    getEntryGroupList: function(entryGroupType) {
+      var target = [];
+      for (var key in this.entryGroupList) {
+        if (this.entryGroupList[key].entryGroupType == entryGroupType) {
           target.push(this.entryGroupList[key]);
         }
       }
