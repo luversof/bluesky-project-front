@@ -28,7 +28,7 @@ export default {
       userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
     })
   },
-  created() {
+  mounted: function() {
     if (this.userBookkeeping === null) {
       this.getUserBookkeeping()
         .then(data => {
@@ -43,5 +43,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,13 +1,20 @@
 <template>
   <div>
     <b-table
-      striped
       hover
       :items="entryList"
       :fields="fields"
+      :busy="entryList == null"
       empty-text="userEntryList is empty"
       show-empty
     >
+      <template v-slot:table-busy>
+        <div class="text-center my-2">
+          <b-spinner class="align-middle"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
       <template v-if="showAddEntryForm" v-slot:thead-top="row">
         <b-tr>
           <b-th colspan="3">
@@ -16,17 +23,17 @@
                 variant="outline-secondary"
                 :pressed="addEntry.entryGroupType == 'INCOME'"
                 @click="setAddEntryGroupType('INCOME')"
-              >{{ $t("bookkeeping.entry.button.income")}}</b-button>
+              >{{ $t("bookkeeping.entry.button.income") }}</b-button>
               <b-button
                 variant="outline-secondary"
                 :pressed="addEntry.entryGroupType == 'EXPENSE'"
                 @click="setAddEntryGroupType('EXPENSE')"
-              >{{ $t("bookkeeping.entry.button.expense")}}</b-button>
+              >{{ $t("bookkeeping.entry.button.expense") }}</b-button>
               <b-button
                 variant="outline-secondary"
                 :pressed="addEntry.entryGroupType == 'TRANSFER'"
                 @click="setAddEntryGroupType('TRANSFER')"
-              >{{ $t("bookkeeping.entry.button.transfer")}}</b-button>
+              >{{ $t("bookkeeping.entry.button.transfer") }}</b-button>
             </b-button-group>
           </b-th>
         </b-tr>
@@ -70,20 +77,12 @@
             <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
           </b-th>
           <b-th>
-            <b-button variant="outline-secondary" @click="create">
-              {{
-              $t("bookkeeping.entry.button.create")
-              }}
-            </b-button>
+            <b-button
+              variant="outline-secondary"
+              @click="create"
+            >{{ $t("bookkeeping.entry.button.create") }}</b-button>
           </b-th>
         </b-tr>
-      </template>
-
-      <template v-slot:table-busy>
-        <div class="text-center my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
       </template>
 
       <template v-slot:head(menu)="row">
@@ -93,10 +92,14 @@
         </b-button>
       </template>
 
+      <template v-slot:cell(entryGroupType)="row">
+        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
+      </template>
+
       <template v-slot:cell(entryGroup)="row">
         <b-form-select
-          v-if="userEntryGroupList"
-          v-model="row.item.entryGroup.id"
+          v-if="userEntryGroupList && row.item.entryGroupType != 'TRANSFER'"
+          :value="row.item.entryGroup && row.item.entryGroup.id"
           :options="getEntryGroupList(row.item.entryGroupType)"
           text-field="name"
           value-field="id"
@@ -104,8 +107,8 @@
       </template>
       <template v-slot:cell(incomeAsset)="row">
         <b-form-select
-          v-if="userAssetList && row.item.incomeAsset != null"
-          v-model="row.item.incomeAsset.id"
+          v-if="userAssetList && row.item.entryGroupType != 'EXPENSE'"
+          :value="row.item.incomeAsset && row.item.incomeAsset.id"
           :options="userAssetList"
           text-field="name"
           value-field="id"
@@ -114,15 +117,38 @@
 
       <template v-slot:cell(expenseAsset)="row">
         <b-form-select
-          v-if="userAssetList && row.item.expenseAsset != null"
-          v-model="row.item.expenseAsset.id"
+          v-if="userAssetList && row.item.entryGroupType != 'INCOME'"
+          :value="row.item.expenseAsset && row.item.expenseAsset.id"
           :options="userAssetList"
           text-field="name"
           value-field="id"
         />
       </template>
+
+      <template v-slot:cell(amount)="row">
+        <b-form-input
+          type="number"
+          v-model="row.item.amount"
+          :class="row.item.entryGroupType == 'INCOME' ? 'text-primary' : row.item.entryGroupType == 'EXPENSE' ? 'text-danger' :''"
+        />
+      </template>
+
+      <template v-slot:cell(memo)="row">
+        <b-form-input v-model="row.item.memo" />
+      </template>
+
+      <template v-slot:cell(menu)="row">
+        <b-button variant="outline-secondary" @click="update(row.item)">
+          {{
+          $t("bookkeeping.entry.button.update")
+          }}
+        </b-button>
+        <b-button
+          variant="outline-secondary"
+          @click="deleteEntry(row.item)"
+        >{{ $t("bookkeeping.entry.button.delete") }}</b-button>
+      </template>
     </b-table>
-    <p @click="search">테스트</p>
   </div>
 </template>
 
@@ -150,7 +176,7 @@ export default {
         startLocalDate: "2019-08-08",
         endLocalDate: "2020-08-08"
       },
-      entryList: [],
+      entryList: null,
       entryGroupList: [],
       addEntry: {
         entryDate: null,
@@ -169,15 +195,17 @@ export default {
       userAssetList: state => state.bookkeeping.asset["userAssetList"],
       userEntryGroupList: state =>
         state.bookkeeping.entryGroup["userEntryGroupList"],
+      userEntryGroupTypeList: state =>
+        state.bookkeeping.entryGroupType["userEntryGroupTypeList"],
       isUserEntryGroupListLoading: state =>
         state.bookkeeping.asset["userAssetList"] == null
     })
   },
   methods: {
-    search: async function() {
-      var a = await this.searchUserEntry(this.entryRequestParam).catch(
-        this.commonErrorHandler
-      );
+    searchEntry: function() {
+      this.searchUserEntry(this.entryRequestParam)
+        .then(data => (this.entryList = data))
+        .catch(this.commonErrorHandler);
     },
     toggleAddEntryForm: function(event) {
       this.showAddEntryForm = !this.showAddEntryForm;
@@ -187,7 +215,11 @@ export default {
     },
     create: function() {
       console.log("create ", this.addEntry);
-      this.createUserEntry(this.addEntry).catch(this.commonErrorHandler);
+      this.createUserEntry(this.addEntry)
+        .then(data => {
+          this.searchEntry();
+        })
+        .catch(this.commonErrorHandler);
     },
     getAddEntryGroupList: function() {
       var target = [];
@@ -209,12 +241,12 @@ export default {
         }
       }
       return target;
-    }
+    },
+    update: function(entry) {},
+    deleteEntry: function(entry) {}
   },
   mounted: function() {
-    this.searchUserEntry(this.entryRequestParam)
-      .then(data => (this.entryList = data))
-      .catch(this.commonErrorHandler);
+    this.searchEntry();
     this.getUserEntryGroupList()
       .then(data => {
         this.entryGroupList = data;

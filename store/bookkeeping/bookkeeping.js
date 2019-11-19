@@ -10,7 +10,6 @@ export const mutations = {
     state.userBookkeeping = userBookkeeping;
   },
   beforeChangeUserBookkeeping(state) {
-    console.log("beforeChangeUserBookkeeping");
     if (state.oldUserBookkeeping == null) {
       state.oldUserBookkeeping = _.cloneDeep(state.userBookkeeping);
     }
