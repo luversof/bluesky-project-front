@@ -3,7 +3,7 @@
     <BlueskyNavBar />
     <b-container fluid>
       <b-row>
-        <b-col sm="2" v-if="userBookkeeping">
+        <b-col sm="2">
           <BookkeepingNavBar />
         </b-col>
         <b-col sm="10">
