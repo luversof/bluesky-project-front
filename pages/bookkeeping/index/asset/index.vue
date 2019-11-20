@@ -16,29 +16,35 @@
         </div>
       </template>
 
-      <template v-if="showAddAssetForm" v-slot:thead-top="row">
+      <template v-slot:thead-top="row">
         <b-tr>
-          <b-th>-</b-th>
-          <b-th>
-            <b-form-input v-model="addAsset.name" v-focus class="mb-2 mr-sm-2 mb-sm-0" />
-          </b-th>
-          <b-th>0</b-th>
-          <b-th>
-            <b-form-select
-              v-model="addAsset.assetGroup.id"
-              :options="userAssetGroupList"
-              text-field="name"
-              value-field="id"
-            ></b-form-select>
-          </b-th>
-          <b-th>
-            <b-button variant="outline-secondary" @click="create">
-              {{
-              $t("bookkeeping.asset.button.create")
-              }}
-            </b-button>
-          </b-th>
+          <b-th colspan="5">총 금액 요약 보여주는 곳</b-th>
         </b-tr>
+      </template>
+
+      <template v-if="showAddAssetForm" v-slot:top-row="row" variant="success">
+        <b-td>-</b-td>
+        <b-td>
+          <b-form-input
+            v-model="addAsset.name"
+            v-focus
+            class="mb-2 mr-sm-2 mb-sm-0"
+          />
+        </b-td>
+        <b-td>0</b-td>
+        <b-td>
+          <b-form-select
+            v-model="addAsset.assetGroup.id"
+            :options="userAssetGroupList"
+            text-field="name"
+            value-field="id"
+          ></b-form-select>
+        </b-td>
+        <b-td>
+          <b-button variant="outline-secondary" @click="create">
+            {{ $t("bookkeeping.asset.button.create") }}
+          </b-button>
+        </b-td>
       </template>
 
       <template v-slot:head(menu)="row">
@@ -64,15 +70,14 @@
 
       <template v-slot:cell(menu)="row">
         <b-button variant="outline-secondary" @click="update(row.item)">
-          {{
-          $t("bookkeeping.asset.button.update")
-          }}
+          {{ $t("bookkeeping.asset.button.update") }}
         </b-button>
         <b-button
           v-if="row.item.amount == 0"
           variant="outline-secondary"
           @click="deleteAsset(row.item)"
-        >{{ $t("bookkeeping.asset.button.delete") }}</b-button>
+          >{{ $t("bookkeeping.asset.button.delete") }}</b-button
+        >
       </template>
     </b-table>
   </div>
@@ -87,7 +92,13 @@ export default {
   mixins: [assetMixin, assetGroupMixin],
   data() {
     return {
-      fields: ["id", "name", "amount", { key: "assetGroup" }, "menu"],
+      fields: [
+        { key: "id", label: this.$t("bookkeeping.asset.id") },
+        { key: "name", label: this.$t("bookkeeping.asset.name") },
+        { key: "amount", label: this.$t("bookkeeping.asset.amount") },
+        { key: "assetGroup", label: this.$t("bookkeeping.asset.assetGroup") },
+        { key: "menu", label: this.$t("bookkeeping.entry.entryDate") }
+      ],
       addAsset: { name: null, assetGroup: {} },
       showAddAssetForm: false
     };

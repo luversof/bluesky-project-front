@@ -15,8 +15,14 @@
         </div>
       </template>
 
-      <template v-if="showAddEntryForm" v-slot:thead-top="row">
+      <template v-slot:thead-top="row">
         <b-tr>
+          <b-th colspan="8">총 금액 요약 보여주는 곳</b-th>
+        </b-tr>
+      </template>
+
+      <template v-if="showAddEntryForm" v-slot:top-row="row">
+        <!-- <b-tr>
           <b-th colspan="3">
             <b-button-group>
               <b-button
@@ -36,53 +42,55 @@
               >{{ $t("bookkeeping.entry.button.transfer") }}</b-button>
             </b-button-group>
           </b-th>
-        </b-tr>
-        <b-tr>
-          <b-th>
-            <b-form-input type="date" v-model="addEntry.entryDate" />
-          </b-th>
-          <b-th></b-th>
-          <b-th>
-            <b-form-select
-              v-if="addEntry.entryGroupType != 'TRANSFER'"
-              v-model="addEntry.entryGroup.id"
-              :options="getAddEntryGroupList()"
-              text-field="name"
-              value-field="id"
-            />
-          </b-th>
+        </b-tr>-->
+        <b-th>
+          <b-form-input type="date" v-model="addEntry.entryDate" />
+        </b-th>
+        <b-th>
+          <b-form-select
+            v-model="addEntry.entryGroupType"
+            :options="userEntryGroupTypeList"
+          />
+        </b-th>
+        <b-th>
+          <b-form-select
+            v-if="addEntry.entryGroupType != 'TRANSFER'"
+            v-model="addEntry.entryGroup.id"
+            :options="getAddEntryGroupList()"
+            text-field="name"
+            value-field="id"
+          />
+        </b-th>
 
-          <b-th>
-            <b-form-select
-              v-if="addEntry.entryGroupType != 'EXPENSE'"
-              v-model="addEntry.incomeAsset.id"
-              :options="userAssetList"
-              text-field="name"
-              value-field="id"
-            />
-          </b-th>
-          <b-th>
-            <b-form-select
-              v-if="addEntry.entryGroupType != 'INCOME'"
-              v-model="addEntry.expenseAsset.id"
-              :options="userAssetList"
-              text-field="name"
-              value-field="id"
-            />
-          </b-th>
-          <b-th>
-            <b-form-input type="number" v-model="addEntry.amount" />
-          </b-th>
-          <b-th>
-            <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
-          </b-th>
-          <b-th>
-            <b-button
-              variant="outline-secondary"
-              @click="create"
-            >{{ $t("bookkeeping.entry.button.create") }}</b-button>
-          </b-th>
-        </b-tr>
+        <b-th>
+          <b-form-select
+            v-if="addEntry.entryGroupType != 'EXPENSE'"
+            v-model="addEntry.incomeAsset.id"
+            :options="userAssetList"
+            text-field="name"
+            value-field="id"
+          />
+        </b-th>
+        <b-th>
+          <b-form-select
+            v-if="addEntry.entryGroupType != 'INCOME'"
+            v-model="addEntry.expenseAsset.id"
+            :options="userAssetList"
+            text-field="name"
+            value-field="id"
+          />
+        </b-th>
+        <b-th>
+          <b-form-input type="number" v-model="addEntry.amount" />
+        </b-th>
+        <b-th>
+          <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
+        </b-th>
+        <b-th>
+          <b-button variant="outline-secondary" @click="create">{{
+            $t("bookkeeping.entry.button.create")
+          }}</b-button>
+        </b-th>
       </template>
 
       <template v-slot:head(menu)="row">
@@ -92,8 +100,15 @@
         </b-button>
       </template>
 
+      <template v-slot:cell(entryDate)="row">
+        <b-form-input type="date" v-model="row.item.entryDate" />
+      </template>
+
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
+        <b-form-select
+          v-model="row.item.entryGroupType"
+          :options="userEntryGroupTypeList"
+        />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -129,7 +144,13 @@
         <b-form-input
           type="number"
           v-model="row.item.amount"
-          :class="row.item.entryGroupType == 'INCOME' ? 'text-primary' : row.item.entryGroupType == 'EXPENSE' ? 'text-danger' :''"
+          :class="
+            row.item.entryGroupType == 'INCOME'
+              ? 'text-primary'
+              : row.item.entryGroupType == 'EXPENSE'
+              ? 'text-danger'
+              : ''
+          "
         />
       </template>
 
@@ -139,14 +160,11 @@
 
       <template v-slot:cell(menu)="row">
         <b-button variant="outline-secondary" @click="update(row.item)">
-          {{
-          $t("bookkeeping.entry.button.update")
-          }}
+          {{ $t("bookkeeping.entry.button.update") }}
         </b-button>
-        <b-button
-          variant="outline-secondary"
-          @click="deleteEntry(row.item)"
-        >{{ $t("bookkeeping.entry.button.delete") }}</b-button>
+        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">{{
+          $t("bookkeeping.entry.button.delete")
+        }}</b-button>
       </template>
     </b-table>
   </div>
@@ -163,14 +181,20 @@ export default {
   data() {
     return {
       fields: [
-        "entryDate",
-        "entryGroupType",
-        { key: "entryGroup" },
-        "incomeAsset",
-        "expenseAsset",
-        "amount",
-        "memo",
-        "menu"
+        { key: "entryDate", label: this.$t("bookkeeping.entry.entryDate") },
+        {
+          key: "entryGroupType",
+          label: this.$t("bookkeeping.entry.entryGroupType")
+        },
+        { key: "entryGroup", label: this.$t("bookkeeping.entry.entryGroup") },
+        { key: "incomeAsset", label: this.$t("bookkeeping.entry.incomeAsset") },
+        {
+          key: "expenseAsset",
+          label: this.$t("bookkeeping.entry.expenseAsset")
+        },
+        { key: "amount", label: this.$t("bookkeeping.entry.amount") },
+        { key: "memo", label: this.$t("bookkeeping.entry.memo") },
+        { key: "menu", label: this.$t("bookkeeping.entry.menu") }
       ],
       entryRequestParam: {
         startLocalDate: "2019-08-08",
@@ -179,7 +203,7 @@ export default {
       entryList: null,
       entryGroupList: [],
       addEntry: {
-        entryDate: null,
+        entryDate: this.$moment().format("YYYY-MM-DD"),
         entryGroupType: "INCOME",
         memo: null,
         amount: 0,

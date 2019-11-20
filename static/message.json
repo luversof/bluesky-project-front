@@ -34,6 +34,11 @@
         "update": "수정하기"
       },
       "asset": {
+        "id": "번호",
+        "name": "이름",
+        "amount": "금액",
+        "assetGroup": "자산그룹",
+        "menu": "메뉴",
         "button": {
           "create": "생성",
           "update": "수정",
@@ -41,6 +46,14 @@
         }
       },
       "entry": {
+        "entryDate": "날짜",
+        "entryGroupType": "유형",
+        "entryGroup": "분류",
+        "incomeAsset": "수입자산",
+        "expenseAsset": "지출자산",
+        "amount": "금액",
+        "memo": "메모",
+        "menu": "메뉴",
         "button": {
           "income": "수입",
           "expense": "지출",
