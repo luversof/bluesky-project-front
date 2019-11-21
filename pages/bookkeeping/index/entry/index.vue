@@ -17,7 +17,16 @@
 
       <template v-slot:thead-top="row">
         <b-tr>
-          <b-th colspan="8">총 금액 요약 보여주는 곳</b-th>
+          <b-th colspan="8">
+            수입 :
+            <span class="text-primary">{{numberWithCommas(getTotalIncomeAmount())}}원</span>
+            , 지출 :
+            <span
+              class="text-danger"
+            >{{numberWithCommas(getTotalExpenseAmount())}}원</span>
+            , 합계 :
+            <span class="text-secondary">{{numberWithCommas(getTotalAmount())}}원</span>
+          </b-th>
         </b-tr>
       </template>
 
@@ -47,10 +56,7 @@
           <b-form-input type="date" v-model="addEntry.entryDate" />
         </b-th>
         <b-th>
-          <b-form-select
-            v-model="addEntry.entryGroupType"
-            :options="userEntryGroupTypeList"
-          />
+          <b-form-select v-model="addEntry.entryGroupType" :options="userEntryGroupTypeList" />
         </b-th>
         <b-th>
           <b-form-select
@@ -87,9 +93,11 @@
           <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
         </b-th>
         <b-th>
-          <b-button variant="outline-secondary" @click="create">{{
+          <b-button variant="outline-secondary" @click="create">
+            {{
             $t("bookkeeping.entry.button.create")
-          }}</b-button>
+            }}
+          </b-button>
         </b-th>
       </template>
 
@@ -105,10 +113,7 @@
       </template>
 
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select
-          v-model="row.item.entryGroupType"
-          :options="userEntryGroupTypeList"
-        />
+        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -122,7 +127,7 @@
       </template>
       <template v-slot:cell(incomeAsset)="row">
         <b-form-select
-          v-if="userAssetList && row.item.entryGroupType != 'EXPENSE'"
+          v-if="row.item.entryGroupType != 'EXPENSE'"
           :value="row.item.incomeAsset && row.item.incomeAsset.id"
           :options="userAssetList"
           text-field="name"
@@ -132,7 +137,7 @@
 
       <template v-slot:cell(expenseAsset)="row">
         <b-form-select
-          v-if="userAssetList && row.item.entryGroupType != 'INCOME'"
+          v-if="row.item.entryGroupType != 'INCOME'"
           :value="row.item.expenseAsset && row.item.expenseAsset.id"
           :options="userAssetList"
           text-field="name"
@@ -159,12 +164,15 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button variant="outline-secondary" @click="update(row.item)">
-          {{ $t("bookkeeping.entry.button.update") }}
-        </b-button>
-        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">{{
+        <b-button
+          variant="outline-secondary"
+          @click="update(row.item)"
+        >{{ $t("bookkeeping.entry.button.update") }}</b-button>
+        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">
+          {{
           $t("bookkeeping.entry.button.delete")
-        }}</b-button>
+          }}
+        </b-button>
       </template>
     </b-table>
   </div>
@@ -216,13 +224,11 @@ export default {
   },
   computed: {
     ...mapState({
-      userAssetList: state => state.bookkeeping.asset["userAssetList"],
+      userAssetList: state => state.bookkeeping.asset.userAssetList,
       userEntryGroupList: state =>
-        state.bookkeeping.entryGroup["userEntryGroupList"],
+        state.bookkeeping.entryGroup.userEntryGroupList,
       userEntryGroupTypeList: state =>
-        state.bookkeeping.entryGroupType["userEntryGroupTypeList"],
-      isUserEntryGroupListLoading: state =>
-        state.bookkeeping.asset["userAssetList"] == null
+        state.bookkeeping.entryGroupType.userEntryGroupTypeList
     })
   },
   methods: {
@@ -266,10 +272,57 @@ export default {
       }
       return target;
     },
+    getTotalIncomeAmount: function() {
+      var amount = 0;
+      if (this.entryList == null) {
+        return amount;
+      }
+      this.entryList.forEach(entry => {
+        if (entry.entryGroupType == "INCOME") {
+          amount += entry.amount;
+        }
+      });
+      return amount;
+    },
+    getTotalExpenseAmount: function() {
+      var amount = 0;
+      if (this.entryList == null) {
+        return amount;
+      }
+      this.entryList.forEach(entry => {
+        if (entry.entryGroupType == "EXPENSE") {
+          amount += entry.amount;
+        }
+      });
+      return amount;
+    },
+    getTotalAmount: function() {
+      var amount = 0;
+      if (this.entryList == null) {
+        return amount;
+      }
+      this.entryList.forEach(entry => {
+        if (entry.entryGroupType == "INCOME") {
+          amount += entry.amount;
+        }
+        if (entry.entryGroupType == "EXPENSE") {
+          amount -= entry.amount;
+        }
+      });
+      return amount;
+    },
     update: function(entry) {},
     deleteEntry: function(entry) {}
   },
   mounted: function() {
+    console.log("test ", this.$store);
+    this.$store.watch(state => state, function() {
+      console.log("ASDFASDFASDF");
+    });
+    // this.$store.watch(this.$store.getters, n => {
+    //   console.log("watched : ", n);
+    // });
+
     this.searchEntry();
     this.getUserEntryGroupList()
       .then(data => {

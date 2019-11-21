@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form inline v-if="userBookkeeping">
+    <b-form inline>
       <b-form-input
         id="name"
         v-model="userBookkeeping.name"
@@ -18,16 +18,13 @@
         max="28"
         class="mb-2 mr-sm-2 mb-sm-0"
       />
-      <b-button @click="update" variant="outline-secondary">{{
-        $t("bookkeeping.button.update")
-      }}</b-button>
-      <b-button @click="resetUserBookkeeping" variant="outline-secondary">{{
-        $t("bookkeeping.button.reset")
-      }}</b-button>
-    </b-form>
-
-    assetGroup 설정하기<br />
-    entryGroup 설정하기
+      <b-button @click="update" variant="outline-secondary">{{ $t("bookkeeping.button.update") }}</b-button>
+      <b-button
+        @click="resetUserBookkeeping"
+        variant="outline-secondary"
+      >{{ $t("bookkeeping.button.reset") }}</b-button>
+    </b-form>assetGroup 설정하기
+    <br />entryGroup 설정하기
   </div>
 </template>
 

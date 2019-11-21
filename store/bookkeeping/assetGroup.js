@@ -1,5 +1,5 @@
 export const state = () => ({
-  userAssetGroupList: null
+  userAssetGroupList: []
 });
 
 export const mutations = {

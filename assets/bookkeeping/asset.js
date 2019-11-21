@@ -4,15 +4,12 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userBookkeeping: state =>
-        state.bookkeeping.bookkeeping["userBookkeeping"],
-      userAssetList: state => state.bookkeeping.asset["userAssetList"]
+      userAssetList: state => state.bookkeeping.asset.userAssetList
     })
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping",
       setUserAssetList: "bookkeeping/asset/setUserAssetList"
     }),
     createUserAsset: function(asset) {
@@ -25,7 +22,7 @@ export default {
       }).then(this.commonResponseData);
     },
     getUserAssetList: function(isReload) {
-      if (!isReload && this.userAssetList != null) {
+      if (!isReload && this.userAssetList.length > 0) {
         return new Promise((resolve, reject) => {
           resolve(this.userAssetList);
         });

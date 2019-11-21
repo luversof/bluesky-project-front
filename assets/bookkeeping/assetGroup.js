@@ -4,10 +4,8 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userBookkeeping: state =>
-        state.bookkeeping.bookkeeping["userBookkeeping"],
       userAssetGroupList: state =>
-        state.bookkeeping.assetGroup["userAssetGroupList"]
+        state.bookkeeping.assetGroup.userAssetGroupList
     })
   },
   mixins: [commonMixin],
@@ -16,7 +14,7 @@ export default {
       setUserAssetGroupList: "bookkeeping/assetGroup/setUserAssetGroupList"
     }),
     getUserAssetGroupList() {
-      if (this.userAssetGroupList != null) {
+      if (this.userAssetGroupList.length > 0) {
         return new Promise((resolve, reject) => {
           resolve(this.userAssetGroupList);
         });

@@ -4,10 +4,8 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userBookkeeping: state =>
-        state.bookkeeping.bookkeeping["userBookkeeping"],
       userEntryGroupList: state =>
-        state.bookkeeping.entryGroup["userEntryGroupList"]
+        state.bookkeeping.entryGroup.userEntryGroupList
     })
   },
   mixins: [commonMixin],

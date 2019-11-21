@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLogin">
+  <div v-if="loginInfo.isLogin">
     <div v-text="userBookkeeping"></div>
     <b-button
       v-if="userBookkeeping == null"
@@ -27,8 +27,8 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      isLogin: state => state.loginInfo.isLogin,
-      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
+      loginInfo: state => state.loginInfo.loginInfo,
+      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping
     })
   },
   methods: {

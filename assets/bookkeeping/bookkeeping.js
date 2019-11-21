@@ -4,7 +4,9 @@ import commonMixin from "~/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
+      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping,
+      isUserBookkeepingLoaded: state =>
+        state.bookkeeping.bookkeeping.isUserBookkeepingLoaded
     })
   },
   mixins: [commonMixin],
@@ -13,7 +15,7 @@ export default {
       setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping"
     }),
     getUserBookkeeping: function() {
-      if (this.userBookkeeping != null) {
+      if (this.isUserBookkeepingLoaded) {
         return new Promise((resolve, reject) => {
           resolve(this.userBookkeeping);
         });
@@ -32,7 +34,12 @@ export default {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(bookkeeping)
-      }).then(this.commonResponseData);
+      })
+        .then(this.commonResponseData)
+        .then(data => {
+          this.setUserBookkeeping(data);
+          return data;
+        });
     },
     updateUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
@@ -41,7 +48,12 @@ export default {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(bookkeeping)
-      }).then(this.commonResponseData);
+      })
+        .then(this.commonResponseData)
+        .then(data => {
+          this.setUserBookkeeping(data);
+          return data;
+        });
     },
     deleteUserBookkeeping: function() {
       return fetch("/api/bookkeeping.json", {

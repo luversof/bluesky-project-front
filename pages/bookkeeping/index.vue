@@ -11,12 +11,7 @@ export default {
   name: "BookkeepingIndex",
   layout: "bookkeeping",
   mixins: [bookkeepingMixin],
-  components: { BookkeepingNavBar },
-  computed: {
-    ...mapState({
-      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
-    })
-  }
+  components: { BookkeepingNavBar }
 };
 </script>
 

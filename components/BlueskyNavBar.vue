@@ -10,11 +10,12 @@
         <b-nav-item active-class="active" to="/bookkeeping/">Bookkeeping</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
-        <b-button variant="outline-secondary" v-if="!loginInfo" class="mr-1" disabled>
+        <b-button variant="outline-secondary" v-if="!isLoginInfoLoaded" class="mr-1" disabled>
           <b-spinner small class="align-middle"></b-spinner>
           <strong>Loading...</strong>
         </b-button>
-        <b-nav-form v-if="loginInfo && !loginInfo.login">
+
+        <b-nav-form v-if="isLoginInfoLoaded && !loginInfo.login">
           <b-form-input class="mr-1" name="username" :placeholder="$t('username')" />
           <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')" />
           <b-button variant="outline-secondary" class="mr-2" type="submit">{{ $t("login") }}</b-button>
@@ -32,7 +33,7 @@
           </b-button>
         </b-nav-form>
 
-        <b-nav-form v-if="loginInfo && loginInfo.login" action="/logout" method="post">
+        <b-nav-form v-if="isLoginInfoLoaded && loginInfo.login" action="/logout" method="post">
           <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
           <b-button variant="outline-secondary" size="sm" type="submit">{{ $t('logout') }}</b-button>
         </b-nav-form>
@@ -49,7 +50,8 @@ export default {
   name: "BlueskyNavBar",
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo
+      loginInfo: state => state.loginInfo.loginInfo,
+      isLoginInfoLoaded: state => state.loginInfo.isLoginInfoLoaded
     })
   },
   mixins: [loginInfoMixin],

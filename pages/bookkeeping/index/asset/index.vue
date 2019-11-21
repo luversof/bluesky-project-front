@@ -5,7 +5,7 @@
       hover
       :items="userAssetList"
       :fields="fields"
-      :busy="userAssetList == null"
+      :busy="!isUserAssetListLoaded"
       empty-text="userAssetList is empty"
       show-empty
     >
@@ -25,11 +25,7 @@
       <template v-if="showAddAssetForm" v-slot:top-row="row" variant="success">
         <b-td>-</b-td>
         <b-td>
-          <b-form-input
-            v-model="addAsset.name"
-            v-focus
-            class="mb-2 mr-sm-2 mb-sm-0"
-          />
+          <b-form-input v-model="addAsset.name" v-focus class="mb-2 mr-sm-2 mb-sm-0" />
         </b-td>
         <b-td>0</b-td>
         <b-td>
@@ -41,9 +37,10 @@
           ></b-form-select>
         </b-td>
         <b-td>
-          <b-button variant="outline-secondary" @click="create">
-            {{ $t("bookkeeping.asset.button.create") }}
-          </b-button>
+          <b-button
+            variant="outline-secondary"
+            @click="create"
+          >{{ $t("bookkeeping.asset.button.create") }}</b-button>
         </b-td>
       </template>
 
@@ -60,7 +57,6 @@
 
       <template v-slot:cell(assetGroup)="row">
         <b-form-select
-          v-if="userAssetGroupList"
           v-model="row.item.assetGroup.id"
           :options="userAssetGroupList"
           text-field="name"
@@ -69,15 +65,15 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button variant="outline-secondary" @click="update(row.item)">
-          {{ $t("bookkeeping.asset.button.update") }}
-        </b-button>
+        <b-button
+          variant="outline-secondary"
+          @click="update(row.item)"
+        >{{ $t("bookkeeping.asset.button.update") }}</b-button>
         <b-button
           v-if="row.item.amount == 0"
           variant="outline-secondary"
           @click="deleteAsset(row.item)"
-          >{{ $t("bookkeeping.asset.button.delete") }}</b-button
-        >
+        >{{ $t("bookkeeping.asset.button.delete") }}</b-button>
       </template>
     </b-table>
   </div>
@@ -105,9 +101,11 @@ export default {
   },
   computed: {
     ...mapState({
-      userAssetList: state => state.bookkeeping.asset["userAssetList"],
+      userAssetList: state => state.bookkeeping.asset.userAssetList,
+      isUserAssetListLoaded: state =>
+        state.bookkeeping.asset.isUserAssetListLoaded,
       userAssetGroupList: state =>
-        state.bookkeeping.assetGroup["userAssetGroupList"]
+        state.bookkeeping.assetGroup.userAssetGroupList
     })
   },
   methods: {

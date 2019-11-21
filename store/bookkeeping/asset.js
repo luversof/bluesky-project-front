@@ -1,11 +1,13 @@
 import _ from "lodash";
 
 export const state = () => ({
-  userAssetList: null
+  userAssetList: [],
+  isUserAssetListLoaded: false
 });
 
 export const mutations = {
   setUserAssetList(state, userAssetList) {
     state.userAssetList = userAssetList;
+    state.isUserAssetListLoaded = true;
   }
 };

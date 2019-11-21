@@ -25,20 +25,18 @@ export default {
   mixins: [bookkeepingMixin],
   computed: {
     ...mapState({
-      userBookkeeping: state => state.bookkeeping.bookkeeping["userBookkeeping"]
+      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping
     })
   },
   mounted: function() {
-    if (this.userBookkeeping === null) {
-      this.getUserBookkeeping()
-        .then(data => {
-          if (data === null) {
-            this.$router.push("/bookkeeping").catch(err => {});
-          }
-          return data;
-        })
-        .catch(this.commonErrorHandler);
-    }
+    this.getUserBookkeeping()
+      .then(data => {
+        if (data === null) {
+          this.$router.push("/bookkeeping").catch(err => {});
+        }
+        return data;
+      })
+      .catch(this.commonErrorHandler);
   }
 };
 </script>
