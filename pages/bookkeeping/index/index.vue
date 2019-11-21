@@ -1,21 +1,24 @@
 <template>
-  <div v-if="loginInfo.isLogin">
+  <div v-if="loginInfo.login">
     <div v-text="userBookkeeping"></div>
     <b-button
-      v-if="userBookkeeping == null"
+      v-if="userBookkeeping.id == null"
       to="/bookkeeping/create"
       variant="outline-secondary"
-    >{{ $t("bookkeeping.link.create") }}</b-button>
+      >{{ $t("bookkeeping.link.create") }}</b-button
+    >
     <b-button
-      v-if="userBookkeeping != null"
+      v-if="userBookkeeping.id != null"
       @click="deleteBookkeeping"
       variant="outline-secondary"
-    >{{ $t("bookkeeping.button.delete") }}</b-button>
+      >{{ $t("bookkeeping.button.delete") }}</b-button
+    >
     <b-button
-      v-if="userBookkeeping != null"
+      v-if="userBookkeeping.id != null"
       to="/bookkeeping/update"
       variant="outline-secondary"
-    >{{ $t("bookkeeping.link.update") }}</b-button>
+      >{{ $t("bookkeeping.link.update") }}</b-button
+    >
   </div>
 </template>
 
@@ -39,5 +42,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

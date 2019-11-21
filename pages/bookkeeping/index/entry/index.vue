@@ -19,13 +19,17 @@
         <b-tr>
           <b-th colspan="8">
             수입 :
-            <span class="text-primary">{{numberWithCommas(getTotalIncomeAmount())}}원</span>
+            <span class="text-primary"
+              >{{ numberWithCommas(getTotalIncomeAmount()) }}원</span
+            >
             , 지출 :
-            <span
-              class="text-danger"
-            >{{numberWithCommas(getTotalExpenseAmount())}}원</span>
+            <span class="text-danger"
+              >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span
+            >
             , 합계 :
-            <span class="text-secondary">{{numberWithCommas(getTotalAmount())}}원</span>
+            <span class="text-secondary"
+              >{{ numberWithCommas(getTotalAmount()) }}원</span
+            >
           </b-th>
         </b-tr>
       </template>
@@ -56,7 +60,10 @@
           <b-form-input type="date" v-model="addEntry.entryDate" />
         </b-th>
         <b-th>
-          <b-form-select v-model="addEntry.entryGroupType" :options="userEntryGroupTypeList" />
+          <b-form-select
+            v-model="addEntry.entryGroupType"
+            :options="userEntryGroupTypeList"
+          />
         </b-th>
         <b-th>
           <b-form-select
@@ -94,9 +101,7 @@
         </b-th>
         <b-th>
           <b-button variant="outline-secondary" @click="create">
-            {{
-            $t("bookkeeping.entry.button.create")
-            }}
+            {{ $t("bookkeeping.entry.button.create") }}
           </b-button>
         </b-th>
       </template>
@@ -113,7 +118,10 @@
       </template>
 
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
+        <b-form-select
+          v-model="row.item.entryGroupType"
+          :options="userEntryGroupTypeList"
+        />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -164,14 +172,11 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button
-          variant="outline-secondary"
-          @click="update(row.item)"
-        >{{ $t("bookkeeping.entry.button.update") }}</b-button>
+        <b-button variant="outline-secondary" @click="update(row.item)">{{
+          $t("bookkeeping.entry.button.update")
+        }}</b-button>
         <b-button variant="outline-secondary" @click="deleteEntry(row.item)">
-          {{
-          $t("bookkeeping.entry.button.delete")
-          }}
+          {{ $t("bookkeeping.entry.button.delete") }}
         </b-button>
       </template>
     </b-table>
@@ -224,6 +229,7 @@ export default {
   },
   computed: {
     ...mapState({
+      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping,
       userAssetList: state => state.bookkeeping.asset.userAssetList,
       userEntryGroupList: state =>
         state.bookkeeping.entryGroup.userEntryGroupList,
@@ -312,17 +318,10 @@ export default {
       return amount;
     },
     update: function(entry) {},
-    deleteEntry: function(entry) {}
+    deleteEntry: function(entry) {},
+    initEntryRequestParam: function() {}
   },
   mounted: function() {
-    console.log("test ", this.$store);
-    this.$store.watch(state => state, function() {
-      console.log("ASDFASDFASDF");
-    });
-    // this.$store.watch(this.$store.getters, n => {
-    //   console.log("watched : ", n);
-    // });
-
     this.searchEntry();
     this.getUserEntryGroupList()
       .then(data => {
@@ -331,6 +330,13 @@ export default {
       .catch(this.commonErrorHandler);
 
     this.getUserAssetList().catch(this.commonErrorHandler);
+  },
+  watch: {
+    // 해당 페이지에서 refresh 로 접근한 경우 userBookkeeping이 처리 된 이후 searchEntry를 검색해야 함
+    userBookkeeping(val, oldVal) {
+      // userBookkeeping 기준으로 최초 검색 처리
+      console.log("WATCH", val, oldVal);
+    }
   }
 };
 </script>
