@@ -21,7 +21,8 @@
             <b-button variant="outline-secondary" @click="addMonth(-1)">
               <font-awesome-icon :icon="['fas', 'chevron-left']" />
             </b-button>
-            {{entryRequestParam.startLocalDate}} ~ {{entryRequestParam.endLocalDate}}
+            {{ entryRequestParam.startLocalDate }} ~
+            {{ entryRequestParam.endLocalDate }}
             <b-button variant="outline-secondary" @click="addMonth(1)">
               <font-awesome-icon :icon="['fas', 'chevron-right']" />
             </b-button>
@@ -30,13 +31,17 @@
         <b-tr>
           <b-th colspan="8">
             수입 :
-            <span class="text-primary">{{ numberWithCommas(getTotalIncomeAmount()) }}원</span>
+            <span class="text-primary"
+              >{{ numberWithCommas(getTotalIncomeAmount()) }}원</span
+            >
             , 지출 :
-            <span
-              class="text-danger"
-            >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span>
+            <span class="text-danger"
+              >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span
+            >
             , 합계 :
-            <span class="text-secondary">{{ numberWithCommas(getTotalAmount()) }}원</span>
+            <span class="text-secondary"
+              >{{ numberWithCommas(getTotalAmount()) }}원</span
+            >
           </b-th>
         </b-tr>
       </template>
@@ -67,7 +72,10 @@
           <b-form-input type="date" v-model="addEntry.entryDate" />
         </b-th>
         <b-th>
-          <b-form-select v-model="addEntry.entryGroupType" :options="userEntryGroupTypeList" />
+          <b-form-select
+            v-model="addEntry.entryGroupType"
+            :options="userEntryGroupTypeList"
+          />
         </b-th>
         <b-th>
           <b-form-select
@@ -104,10 +112,9 @@
           <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
         </b-th>
         <b-th>
-          <b-button
-            variant="outline-secondary"
-            @click="create"
-          >{{ $t("bookkeeping.entry.button.create") }}</b-button>
+          <b-button variant="outline-secondary" @click="create">{{
+            $t("bookkeeping.entry.button.create")
+          }}</b-button>
         </b-th>
       </template>
 
@@ -123,7 +130,10 @@
       </template>
 
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
+        <b-form-select
+          v-model="row.item.entryGroupType"
+          :options="userEntryGroupTypeList"
+        />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -175,14 +185,11 @@
 
       <template v-slot:cell(menu)="row">
         <b-button variant="outline-secondary" @click="update(row.item)">
-          {{
-          $t("bookkeeping.entry.button.update")
-          }}
+          {{ $t("bookkeeping.entry.button.update") }}
         </b-button>
-        <b-button
-          variant="outline-secondary"
-          @click="deleteEntry(row.item)"
-        >{{ $t("bookkeeping.entry.button.delete") }}</b-button>
+        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">{{
+          $t("bookkeeping.entry.button.delete")
+        }}</b-button>
       </template>
     </b-table>
   </div>

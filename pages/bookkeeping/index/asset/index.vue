@@ -8,6 +8,7 @@
       :busy="!isUserAssetListLoaded"
       empty-text="userAssetList is empty"
       show-empty
+      responsive
     >
       <template v-slot:table-busy>
         <div class="text-center my-2">
@@ -25,7 +26,7 @@
       <template v-if="showAddAssetForm" v-slot:top-row="row" variant="success">
         <b-td>-</b-td>
         <b-td>
-          <b-form-input v-model="addAsset.name" v-focus class="mb-2 mr-sm-2 mb-sm-0" />
+          <b-form-input v-model="addAsset.name" v-focus />
         </b-td>
         <b-td>0</b-td>
         <b-td>
@@ -37,10 +38,9 @@
           ></b-form-select>
         </b-td>
         <b-td>
-          <b-button
-            variant="outline-secondary"
-            @click="create"
-          >{{ $t("bookkeeping.asset.button.create") }}</b-button>
+          <b-button variant="outline-secondary" @click="create">{{
+            $t("bookkeeping.asset.button.create")
+          }}</b-button>
         </b-td>
       </template>
 
@@ -52,7 +52,7 @@
       </template>
 
       <template v-slot:cell(name)="row">
-        <b-form-input v-model="row.item.name" class="mb-2 mr-sm-2 mb-sm-0" />
+        <b-form-input v-model="row.item.name" />
       </template>
 
       <template v-slot:cell(assetGroup)="row">
@@ -65,15 +65,15 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button
-          variant="outline-secondary"
-          @click="update(row.item)"
-        >{{ $t("bookkeeping.asset.button.update") }}</b-button>
+        <b-button variant="outline-secondary" @click="update(row.item)">{{
+          $t("bookkeeping.asset.button.update")
+        }}</b-button>
         <b-button
           v-if="row.item.amount == 0"
           variant="outline-secondary"
           @click="deleteAsset(row.item)"
-        >{{ $t("bookkeeping.asset.button.delete") }}</b-button>
+          >{{ $t("bookkeeping.asset.button.delete") }}</b-button
+        >
       </template>
     </b-table>
   </div>
