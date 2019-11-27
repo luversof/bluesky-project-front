@@ -1,5 +1,5 @@
 export default {
-  mode: "universal",
+  mode: "spa", // universal / spa
   /*
    ** Headers of the page
    */
@@ -14,8 +14,10 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    script: [{ src: "cordova.js" }]
   },
+  router: { mode: "hash" },
   /*
    ** Customize the progress-bar color
    */
@@ -56,6 +58,7 @@ export default {
    ** Build configuration
    */
   build: {
+    publicPath: "/nuxtfiles/",
     /*
      ** You can extend webpack config here
      */

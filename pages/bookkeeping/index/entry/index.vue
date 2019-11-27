@@ -7,6 +7,7 @@
       :busy="entryList == null"
       empty-text="userEntryList is empty"
       show-empty
+      responsive
     >
       <template v-slot:table-busy>
         <div class="text-center my-2">
@@ -31,51 +32,23 @@
         <b-tr>
           <b-th colspan="8">
             수입 :
-            <span class="text-primary"
-              >{{ numberWithCommas(getTotalIncomeAmount()) }}원</span
-            >
+            <span class="text-primary">{{ numberWithCommas(getTotalIncomeAmount()) }}원</span>
             , 지출 :
-            <span class="text-danger"
-              >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span
-            >
+            <span
+              class="text-danger"
+            >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span>
             , 합계 :
-            <span class="text-secondary"
-              >{{ numberWithCommas(getTotalAmount()) }}원</span
-            >
+            <span class="text-secondary">{{ numberWithCommas(getTotalAmount()) }}원</span>
           </b-th>
         </b-tr>
       </template>
 
       <template v-if="showAddEntryForm" v-slot:top-row="row">
-        <!-- <b-tr>
-          <b-th colspan="3">
-            <b-button-group>
-              <b-button
-                variant="outline-secondary"
-                :pressed="addEntry.entryGroupType == 'INCOME'"
-                @click="setAddEntryGroupType('INCOME')"
-              >{{ $t("bookkeeping.entry.button.income") }}</b-button>
-              <b-button
-                variant="outline-secondary"
-                :pressed="addEntry.entryGroupType == 'EXPENSE'"
-                @click="setAddEntryGroupType('EXPENSE')"
-              >{{ $t("bookkeeping.entry.button.expense") }}</b-button>
-              <b-button
-                variant="outline-secondary"
-                :pressed="addEntry.entryGroupType == 'TRANSFER'"
-                @click="setAddEntryGroupType('TRANSFER')"
-              >{{ $t("bookkeeping.entry.button.transfer") }}</b-button>
-            </b-button-group>
-          </b-th>
-        </b-tr>-->
         <b-th>
           <b-form-input type="date" v-model="addEntry.entryDate" />
         </b-th>
         <b-th>
-          <b-form-select
-            v-model="addEntry.entryGroupType"
-            :options="userEntryGroupTypeList"
-          />
+          <b-form-select v-model="addEntry.entryGroupType" :options="userEntryGroupTypeList" />
         </b-th>
         <b-th>
           <b-form-select
@@ -109,12 +82,14 @@
           <b-form-input type="number" v-model="addEntry.amount" />
         </b-th>
         <b-th>
-          <b-form-input v-model="addEntry.memo" class="mb-2 mr-sm-2 mb-sm-0" />
+          <b-form-input v-model="addEntry.memo" />
         </b-th>
         <b-th>
-          <b-button variant="outline-secondary" @click="create">{{
+          <b-button variant="outline-secondary" @click="create">
+            {{
             $t("bookkeeping.entry.button.create")
-          }}</b-button>
+            }}
+          </b-button>
         </b-th>
       </template>
 
@@ -130,10 +105,7 @@
       </template>
 
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select
-          v-model="row.item.entryGroupType"
-          :options="userEntryGroupTypeList"
-        />
+        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -184,12 +156,64 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button variant="outline-secondary" @click="update(row.item)">
-          {{ $t("bookkeeping.entry.button.update") }}
-        </b-button>
-        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">{{
+        <b-button
+          variant="outline-secondary"
+          @click="update(row.item)"
+        >{{ $t("bookkeeping.entry.button.update") }}</b-button>
+        <b-button variant="outline-secondary" @click="deleteEntry(row.item)">
+          {{
           $t("bookkeeping.entry.button.delete")
-        }}</b-button>
+          }}
+        </b-button>
+      </template>
+    </b-table>테스트~
+    <br />
+    <b-table :items="entryListForTable" :fields="entryListForTableFields">
+      <template v-slot:cell(menu)="row"></template>
+
+      <template v-slot:row-details="row">
+        <b-form inline v-for="entry in row.item.entryList" v-bind:key="entry.id">
+          <!-- <b-form-input type="date" v-model="entry.entryDate" class="mb-2 mr-sm-2 mb-sm-0" /> -->
+          <b-form-select v-model="entry.entryGroupType" :options="userEntryGroupTypeList" />
+
+          <b-form-select
+            v-if="userEntryGroupList && entry.entryGroupType != 'TRANSFER'"
+            :value="entry.entryGroup && entry.entryGroup.id"
+            :options="getEntryGroupList(entry.entryGroupType)"
+            text-field="name"
+            value-field="id"
+          />
+          <b-form-select
+            v-if="entry.entryGroupType != 'EXPENSE'"
+            :value="entry.incomeAsset && entry.incomeAsset.id"
+            :options="userAssetList"
+            text-field="name"
+            value-field="id"
+          />
+          <b-form-select
+            v-if="entry.entryGroupType != 'INCOME'"
+            :value="entry.expenseAsset && entry.expenseAsset.id"
+            :options="userAssetList"
+            text-field="name"
+            value-field="id"
+          />
+          <b-form-input
+            type="number"
+            v-model="entry.amount"
+            :class="entry.entryGroupType == 'INCOME' ? 'text-primary'
+              : entry.entryGroupType == 'EXPENSE' ? 'text-danger' : ''"
+          />
+          <b-form-input v-model="entry.memo" />
+          <b-button
+            variant="outline-secondary"
+            @click="update(entry)"
+          >{{ $t("bookkeeping.entry.button.update") }}</b-button>
+          <b-button variant="outline-secondary" @click="deleteEntry(entry)">
+            {{
+            $t("bookkeeping.entry.button.delete")
+            }}
+          </b-button>
+        </b-form>
       </template>
     </b-table>
   </div>
@@ -226,6 +250,11 @@ export default {
         endLocalDate: null
       },
       entryList: null,
+      entryListForTable: null,
+      entryListForTableFields: [
+        { key: "entryDate", label: this.$t("bookkeeping.entry.entryDate") },
+        { key: "menu", label: this.$t("bookkeeping.entry.menu") }
+      ],
       entryGroupList: [],
       addEntry: {
         entryDate: this.$moment().format("YYYY-MM-DD"),
@@ -252,7 +281,32 @@ export default {
   methods: {
     searchEntry: function() {
       this.searchUserEntry(this.entryRequestParam)
-        .then(data => (this.entryList = data))
+        .then(data => {
+          this.entryList = data;
+          this.entryListForTable = [];
+          // 테이블에서 사용할 데이터 세팅 작업..
+          // 날짜별로 묶어서 다시 처리해야하는데
+          for (var i = 0; i < this.entryList.length; i++) {
+            var targetEntry = this.entryList[i];
+            var hasTargetEntryForTable = false;
+            for (var j = 0; j < this.entryListForTable.length; j++) {
+              var targetEntryForTable = this.entryListForTable[j];
+              if (targetEntry.entryDate == targetEntryForTable.entryDate) {
+                hasTargetEntryForTable = true;
+                targetEntryForTable.entryList.push(targetEntry);
+              }
+            }
+            if (hasTargetEntryForTable == false) {
+              this.entryListForTable.push({
+                entryDate: targetEntry.entryDate,
+                _showDetails: true,
+                entryList: [targetEntry]
+              });
+            }
+          }
+
+          console.log("this.entryListForTable : ", this.entryListForTable);
+        })
         .catch(this.commonErrorHandler);
     },
     toggleAddEntryForm: function(event) {
@@ -403,6 +457,7 @@ export default {
     },
     entryRequestParam() {
       this.entryList = null;
+      this.entryListForTable = null;
       this.searchEntry();
     }
   }
