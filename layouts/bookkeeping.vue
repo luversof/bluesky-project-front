@@ -1,16 +1,10 @@
 <template>
   <div>
     <BlueskyNavBar />
-    <b-container fluid>
-      <b-row>
-        <b-col sm="2">
-          <BookkeepingNavBar />
-        </b-col>
-        <b-col sm="10">
-          <nuxt />
-        </b-col>
-      </b-row>
-    </b-container>
+
+    <nuxt />
+
+    <BookkeepingNavBar />
   </div>
 </template>
 

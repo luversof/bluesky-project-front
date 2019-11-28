@@ -1,5 +1,114 @@
 <template>
   <div>
+    <b-table :items="entryListForTable" :fields="entryListForTableFields">
+      <template v-slot:table-busy>
+        <div class="text-center my-2">
+          <b-spinner class="align-middle"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
+      <template v-slot:thead-top="row">
+        <b-tr>
+          <b-th colspan="2" class="text-center" sticky-column>
+            <div class="row">
+              <div class="col" @click="addMonth(-1)">
+                <font-awesome-icon :icon="['fas', 'chevron-left']" />
+              </div>
+              <div>
+                {{ entryRequestParam.startLocalDate }} ~
+                {{ entryRequestParam.endLocalDate }}
+              </div>
+              <div class="col" @click="addMonth(1)">
+                <font-awesome-icon :icon="['fas', 'chevron-right']" />
+              </div>
+            </div>
+          </b-th>
+        </b-tr>
+        <b-tr>
+          <b-th colspan="2" sticky-column>
+            <div class="row text-center">
+              <div class="col px-0">
+                <div>수입</div>
+                <div class="text-primary">
+                  {{ numberWithCommas(getTotalIncomeAmount()) }}원
+                </div>
+              </div>
+              <div class="col px-0">
+                <div>지출</div>
+                <div class="text-danger">
+                  {{ numberWithCommas(getTotalExpenseAmount()) }}원
+                </div>
+              </div>
+              <div class="col px-0">
+                <div>합계</div>
+                <div class="text-secondary">
+                  {{ numberWithCommas(getTotalAmount()) }}원
+                </div>
+              </div>
+            </div>
+          </b-th>
+        </b-tr>
+      </template>
+
+      <template v-slot:cell(entryDate)="row">
+        <h2>{{ getDay(row.item.entryDate) }}</h2>
+      </template>
+
+      <template v-slot:cell(menu)="row"></template>
+
+      <template v-slot:row-details="row">
+        <div
+          class="row no-gutters"
+          v-for="entry in row.item.entryList"
+          v-bind:key="entry.id"
+        >
+          <div class="w-100 border-top"></div>
+          <!-- <div class="col-2 px-0">
+              {{ $t("bookkeeping.entryGroupType." + entry.entryGroupType) }}
+            </div> -->
+          <div
+            class="col-3"
+            v-if="userEntryGroupList && entry.entryGroupType != 'TRANSFER'"
+          >
+            {{ entry.entryGroup.name }}
+          </div>
+          <div
+            class="col-3"
+            v-if="userEntryGroupList && entry.entryGroupType == 'TRANSFER'"
+          >
+            이체
+          </div>
+          <div class="col-5 px-0" v-if="entry.entryGroupType == 'INCOME'">
+            <div>{{ entry.memo }}</div>
+            <div>{{ entry.incomeAsset.name }}</div>
+          </div>
+          <div class="col-5 px-0" v-if="entry.entryGroupType == 'EXPENSE'">
+            <div>{{ entry.memo }}</div>
+            <div>{{ entry.expenseAsset.name }}</div>
+          </div>
+          <div
+            class="col-5 px-0 text-break"
+            v-if="entry.entryGroupType == 'TRANSFER'"
+          >
+            {{ entry.expenseAsset.name }} -> {{ entry.incomeAsset.name }}
+          </div>
+          <div
+            class="col-4 px-0 text-right"
+            :class="
+              entry.entryGroupType == 'INCOME'
+                ? 'text-primary'
+                : entry.entryGroupType == 'EXPENSE'
+                ? 'text-danger'
+                : ''
+            "
+          >
+            {{ numberWithCommas(entry.amount) }}원
+          </div>
+        </div>
+      </template>
+    </b-table>
+    <br />
     <b-table
       hover
       :items="entryList"
@@ -32,13 +141,17 @@
         <b-tr>
           <b-th colspan="8">
             수입 :
-            <span class="text-primary">{{ numberWithCommas(getTotalIncomeAmount()) }}원</span>
+            <span class="text-primary"
+              >{{ numberWithCommas(getTotalIncomeAmount()) }}원</span
+            >
             , 지출 :
-            <span
-              class="text-danger"
-            >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span>
+            <span class="text-danger"
+              >{{ numberWithCommas(getTotalExpenseAmount()) }}원</span
+            >
             , 합계 :
-            <span class="text-secondary">{{ numberWithCommas(getTotalAmount()) }}원</span>
+            <span class="text-secondary"
+              >{{ numberWithCommas(getTotalAmount()) }}원</span
+            >
           </b-th>
         </b-tr>
       </template>
@@ -48,7 +161,10 @@
           <b-form-input type="date" v-model="addEntry.entryDate" />
         </b-th>
         <b-th>
-          <b-form-select v-model="addEntry.entryGroupType" :options="userEntryGroupTypeList" />
+          <b-form-select
+            v-model="addEntry.entryGroupType"
+            :options="userEntryGroupTypeList"
+          />
         </b-th>
         <b-th>
           <b-form-select
@@ -86,9 +202,7 @@
         </b-th>
         <b-th>
           <b-button variant="outline-secondary" @click="create">
-            {{
-            $t("bookkeeping.entry.button.create")
-            }}
+            {{ $t("bookkeeping.entry.button.create") }}
           </b-button>
         </b-th>
       </template>
@@ -105,7 +219,10 @@
       </template>
 
       <template v-slot:cell(entryGroupType)="row">
-        <b-form-select v-model="row.item.entryGroupType" :options="userEntryGroupTypeList" />
+        <b-form-select
+          v-model="row.item.entryGroupType"
+          :options="userEntryGroupTypeList"
+        />
       </template>
 
       <template v-slot:cell(entryGroup)="row">
@@ -156,64 +273,12 @@
       </template>
 
       <template v-slot:cell(menu)="row">
-        <b-button
-          variant="outline-secondary"
-          @click="update(row.item)"
-        >{{ $t("bookkeeping.entry.button.update") }}</b-button>
+        <b-button variant="outline-secondary" @click="update(row.item)">{{
+          $t("bookkeeping.entry.button.update")
+        }}</b-button>
         <b-button variant="outline-secondary" @click="deleteEntry(row.item)">
-          {{
-          $t("bookkeeping.entry.button.delete")
-          }}
+          {{ $t("bookkeeping.entry.button.delete") }}
         </b-button>
-      </template>
-    </b-table>테스트~
-    <br />
-    <b-table :items="entryListForTable" :fields="entryListForTableFields">
-      <template v-slot:cell(menu)="row"></template>
-
-      <template v-slot:row-details="row">
-        <b-form inline v-for="entry in row.item.entryList" v-bind:key="entry.id">
-          <!-- <b-form-input type="date" v-model="entry.entryDate" class="mb-2 mr-sm-2 mb-sm-0" /> -->
-          <b-form-select v-model="entry.entryGroupType" :options="userEntryGroupTypeList" />
-
-          <b-form-select
-            v-if="userEntryGroupList && entry.entryGroupType != 'TRANSFER'"
-            :value="entry.entryGroup && entry.entryGroup.id"
-            :options="getEntryGroupList(entry.entryGroupType)"
-            text-field="name"
-            value-field="id"
-          />
-          <b-form-select
-            v-if="entry.entryGroupType != 'EXPENSE'"
-            :value="entry.incomeAsset && entry.incomeAsset.id"
-            :options="userAssetList"
-            text-field="name"
-            value-field="id"
-          />
-          <b-form-select
-            v-if="entry.entryGroupType != 'INCOME'"
-            :value="entry.expenseAsset && entry.expenseAsset.id"
-            :options="userAssetList"
-            text-field="name"
-            value-field="id"
-          />
-          <b-form-input
-            type="number"
-            v-model="entry.amount"
-            :class="entry.entryGroupType == 'INCOME' ? 'text-primary'
-              : entry.entryGroupType == 'EXPENSE' ? 'text-danger' : ''"
-          />
-          <b-form-input v-model="entry.memo" />
-          <b-button
-            variant="outline-secondary"
-            @click="update(entry)"
-          >{{ $t("bookkeeping.entry.button.update") }}</b-button>
-          <b-button variant="outline-secondary" @click="deleteEntry(entry)">
-            {{
-            $t("bookkeeping.entry.button.delete")
-            }}
-          </b-button>
-        </b-form>
       </template>
     </b-table>
   </div>
@@ -435,6 +500,9 @@ export default {
           .add(addNum, "month")
           .format("YYYY-MM-DD")
       };
+    },
+    getDay: function(date) {
+      return this.$moment(date).format("DD");
     }
   },
   mounted: function() {
