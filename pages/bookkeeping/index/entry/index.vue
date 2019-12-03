@@ -1,6 +1,12 @@
 <template>
   <div>
-    <b-table :items="entryListForTable" :fields="entryListForTableFields">
+    <b-table
+      :items="entryListForTable"
+      :fields="entryListForTableFields"
+      :busy="entryList == null"
+      empty-text="userEntryList is empty"
+      show-empty
+    >
       <template v-slot:table-busy>
         <div class="text-center my-2">
           <b-spinner class="align-middle"></b-spinner>
@@ -49,6 +55,14 @@
             </div>
           </b-th>
         </b-tr>
+      </template>
+
+      <template v-slot:head(menu)="row">
+        <div class="text-right">
+          <b-button variant="outline-secondary" v-b-modal.addEntryForm>
+            <font-awesome-icon :icon="['fas', 'plus']" />
+          </b-button>
+        </div>
       </template>
 
       <template v-slot:cell(entryDate)="row">
@@ -108,6 +122,86 @@
         </div>
       </template>
     </b-table>
+
+    <b-modal
+      id="addEntryForm"
+      :cancel-title="$t('bookkeeping.entry.button.cancel')"
+      :ok-title="$t('bookkeeping.entry.button.create')"
+      @ok="create"
+    >
+      <b-form-group>
+        <b-button-group class="col-12">
+          <b-button
+            variant="outline-secondary"
+            :pressed="addEntry.entryGroupType == 'INCOME'"
+            @click="addEntry.entryGroupType = 'INCOME'"
+            >{{ $t("bookkeeping.entryGroupType.INCOME") }}</b-button
+          >
+          <b-button
+            variant="outline-secondary"
+            :pressed="addEntry.entryGroupType == 'EXPENSE'"
+            @click="addEntry.entryGroupType = 'EXPENSE'"
+            >{{ $t("bookkeeping.entryGroupType.EXPENSE") }}</b-button
+          >
+          <b-button
+            variant="outline-secondary"
+            :pressed="addEntry.entryGroupType == 'TRANSFER'"
+            @click="addEntry.entryGroupType = 'TRANSFER'"
+            >{{ $t("bookkeeping.entryGroupType.TRANSFER") }}</b-button
+          >
+        </b-button-group>
+      </b-form-group>
+      <b-form-group :label="$t('bookkeeping.entry.entryDate')">
+        <b-form-input type="date" v-model="addEntry.entryDate" />
+      </b-form-group>
+
+      <b-form-group :label="$t('bookkeeping.entry.entryGroupType')">
+        <b-form-select
+          v-model="addEntry.entryGroupType"
+          :options="userEntryGroupTypeList"
+        />
+      </b-form-group>
+      <b-form-group
+        v-if="addEntry.entryGroupType != 'TRANSFER'"
+        :label="$t('bookkeeping.entry.entryGroup')"
+      >
+        <b-form-select
+          v-model="addEntry.entryGroup.id"
+          :options="getAddEntryGroupList()"
+          text-field="name"
+          value-field="id"
+        />
+      </b-form-group>
+      <b-form-group
+        v-if="addEntry.entryGroupType != 'EXPENSE'"
+        :label="$t('bookkeeping.entry.incomeAsset')"
+      >
+        <b-form-select
+          v-model="addEntry.incomeAsset.id"
+          :options="userAssetList"
+          text-field="name"
+          value-field="id"
+        />
+      </b-form-group>
+      <b-form-group
+        v-if="addEntry.entryGroupType != 'INCOME'"
+        :label="$t('bookkeeping.entry.expenseAsset')"
+      >
+        <b-form-select
+          v-model="addEntry.expenseAsset.id"
+          :options="userAssetList"
+          text-field="name"
+          value-field="id"
+        />
+      </b-form-group>
+      <b-form-group :label="$t('bookkeeping.entry.amount')">
+        <b-form-input type="number" v-model="addEntry.amount" />
+      </b-form-group>
+      <b-form-group :label="$t('bookkeeping.entry.memo')">
+        <b-form-input v-model="addEntry.memo" />
+      </b-form-group>
+    </b-modal>
+
     <br />
     <b-table
       hover
@@ -321,15 +415,7 @@ export default {
         { key: "menu", label: this.$t("bookkeeping.entry.menu") }
       ],
       entryGroupList: [],
-      addEntry: {
-        entryDate: this.$moment().format("YYYY-MM-DD"),
-        entryGroupType: "INCOME",
-        memo: null,
-        amount: 0,
-        entryGroup: {},
-        incomeAsset: {},
-        expenseAsset: {}
-      },
+      addEntry: null,
       showAddEntryForm: false
     };
   },
@@ -369,10 +455,19 @@ export default {
               });
             }
           }
-
-          console.log("this.entryListForTable : ", this.entryListForTable);
         })
         .catch(this.commonErrorHandler);
+    },
+    resetAddEntry: function() {
+      this.addEntry = {
+        entryDate: this.$moment().format("YYYY-MM-DD"),
+        entryGroupType: "INCOME",
+        memo: null,
+        amount: 0,
+        entryGroup: {},
+        incomeAsset: {},
+        expenseAsset: {}
+      };
     },
     toggleAddEntryForm: function(event) {
       this.showAddEntryForm = !this.showAddEntryForm;
@@ -380,13 +475,20 @@ export default {
     setAddEntryGroupType: function(entryGroupType) {
       this.addEntry.entryGroupType = entryGroupType;
     },
-    create: function() {
-      console.log("create ", this.addEntry);
-      this.createUserEntry(this.addEntry)
+    create: async function(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      var entry = await this.createUserEntry(this.addEntry)
         .then(data => {
           this.searchEntry();
+          return data;
         })
         .catch(this.commonErrorHandler);
+
+      if (entry == undefined) {
+        bvModalEvt.preventDefault();
+      } else {
+        this.$root.$emit("bv::hide::modal", "addEntryForm");
+      }
     },
     getAddEntryGroupList: function() {
       var target = [];
@@ -504,6 +606,9 @@ export default {
     getDay: function(date) {
       return this.$moment(date).format("DD");
     }
+  },
+  created: function() {
+    this.resetAddEntry();
   },
   mounted: function() {
     this.getUserEntryGroupList()
