@@ -14,19 +14,6 @@ export default {
     ...mapMutations({
       setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping"
     }),
-    getUserBookkeeping: function() {
-      if (this.isUserBookkeepingLoaded) {
-        return new Promise((resolve, reject) => {
-          resolve(this.userBookkeeping);
-        });
-      }
-      return fetch("/api/bookkeeping.json")
-        .then(this.commonResponseData)
-        .then(data => {
-          this.setUserBookkeeping(data);
-          return data;
-        });
-    },
     createUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
         method: "POST",
@@ -41,6 +28,22 @@ export default {
           return data;
         });
     },
+    getUserBookkeeping: function() {
+      if (this.isUserBookkeepingLoaded) {
+        return new Promise((resolve, reject) => {
+          resolve(this.userBookkeeping);
+        });
+      }
+      return fetch("/api/bookkeeping.json")
+        .then(this.commonResponseData)
+        .then(data => {
+          if (data != null) {
+            this.setUserBookkeeping(data);
+          }
+          return data;
+        });
+    },
+
     updateUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping.json", {
         method: "PUT",
