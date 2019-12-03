@@ -80,6 +80,10 @@ export default {
       {
         set: "@fortawesome/free-brands-svg-icons", // Brand icons
         icons: ["fab"]
+      },
+      {
+        set: "@fortawesome/free-regular-svg-icons", // Regular icons
+        icons: ["far"]
       }
     ]
   },
