@@ -81,8 +81,8 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import assetMixin from "~/assets/bookkeeping/asset.js";
-import assetGroupMixin from "~/assets/bookkeeping/assetGroup.js";
+import assetMixin from "@/assets/bookkeeping/asset.js";
+import assetGroupMixin from "@/assets/bookkeeping/assetGroup.js";
 
 export default {
   mixins: [assetMixin, assetGroupMixin],

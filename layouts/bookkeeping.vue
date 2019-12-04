@@ -10,7 +10,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import bookkeepingMixin from "~/assets/bookkeeping/bookkeeping.js";
+import bookkeepingMixin from "@/assets/bookkeeping/bookkeeping.js";
 import BlueskyNavBar from "@/components/BlueskyNavBar.vue";
 import BookkeepingNavBar from "@/components/Bookkeeping/BookkeepingNavBar.vue";
 export default {

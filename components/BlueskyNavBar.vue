@@ -84,7 +84,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import loginInfoMixin from "~/assets/loginInfo.js";
+import loginInfoMixin from "@/assets/loginInfo.js";
 
 export default {
   name: "BlueskyNavBar",

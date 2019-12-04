@@ -17,14 +17,16 @@
         max="28"
         class="mb-2 mr-sm-2 mb-sm-0"
       />
-      <b-button @click="create" variant="outline-primary">{{ $t("bookkeeping.button.create") }}</b-button>
+      <b-button @click="create" variant="outline-primary">{{
+        $t("bookkeeping.button.create")
+      }}</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import bookkeepingMixin from "~/assets/bookkeeping/bookkeeping.js";
+import bookkeepingMixin from "@/assets/bookkeeping/bookkeeping.js";
 
 export default {
   computed: {},
@@ -51,5 +53,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

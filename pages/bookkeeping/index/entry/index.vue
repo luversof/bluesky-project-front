@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <fragment>
     <b-table
       :items="entryListForTable"
       :fields="entryListForTableFields"
@@ -8,7 +8,7 @@
       show-empty
     >
       <template v-slot:table-busy>
-        <div class="text-center my-2">
+        <div class="text-center">
           <b-spinner class="align-middle"></b-spinner>
           <strong>Loading...</strong>
         </div>
@@ -16,37 +16,37 @@
 
       <template v-slot:thead-top="row">
         <b-tr>
-          <b-th colspan="2" class="text-center" sticky-column>
-            <div class="row">
-              <div class="col" @click="addMonth(-1)">
+          <b-th colspan="2" class="text-center">
+            <div class="row m-0">
+              <b-link class="col" @click="addMonth(-1)">
                 <font-awesome-icon :icon="['fas', 'chevron-left']" />
-              </div>
+              </b-link>
               <div>
                 {{ entryRequestParam.startLocalDate }} ~
                 {{ entryRequestParam.endLocalDate }}
               </div>
-              <div class="col" @click="addMonth(1)">
+              <b-link class="col" @click="addMonth(1)">
                 <font-awesome-icon :icon="['fas', 'chevron-right']" />
-              </div>
+              </b-link>
             </div>
           </b-th>
         </b-tr>
         <b-tr>
-          <b-th colspan="2" sticky-column>
-            <div class="row text-center">
-              <div class="col px-0">
+          <b-th colspan="2">
+            <div class="row text-center m-0">
+              <div class="col">
                 <div>수입</div>
                 <div class="text-primary">
                   {{ numberWithCommas(getTotalIncomeAmount()) }}원
                 </div>
               </div>
-              <div class="col px-0">
+              <div class="col">
                 <div>지출</div>
                 <div class="text-danger">
                   {{ numberWithCommas(getTotalExpenseAmount()) }}원
                 </div>
               </div>
-              <div class="col px-0">
+              <div class="col">
                 <div>합계</div>
                 <div class="text-secondary">
                   {{ numberWithCommas(getTotalAmount()) }}원
@@ -135,15 +135,15 @@
       :targetEntry="updateEntry"
       @handleOk="update"
     />
-  </div>
+  </fragment>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import EntryModal from "~/components/Bookkeeping/EntryModal";
-import assetMixin from "~/assets/bookkeeping/asset.js";
-import entryMixin from "~/assets/bookkeeping/entry.js";
-import entryGroupMixin from "~/assets/bookkeeping/entryGroup.js";
+import EntryModal from "@/components/Bookkeeping/EntryModal";
+import assetMixin from "@/assets/bookkeeping/asset.js";
+import entryMixin from "@/assets/bookkeeping/entry.js";
+import entryGroupMixin from "@/assets/bookkeeping/entryGroup.js";
 import _ from "lodash";
 
 export default {

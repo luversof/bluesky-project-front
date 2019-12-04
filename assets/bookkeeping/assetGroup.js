@@ -1,5 +1,5 @@
 import { mapState, mapMutations } from "vuex";
-import commonMixin from "~/assets/common.js";
+import commonMixin from "@/assets/common.js";
 
 export default {
   computed: {
