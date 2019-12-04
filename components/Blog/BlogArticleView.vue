@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import BlogButtonArticleListView from "@/components/blog/button/BlogButtonArticleListView";
-import BlogButtonArticleModifyView from "@/components/blog/button/BlogButtonArticleModifyView";
-import BlogButtonArticleDelete from "@/components/blog/button/BlogButtonArticleDelete";
-import blogMixin from "@/components/blog/blog.js";
+import BlogButtonArticleListView from "@/components/Blog/Button/BlogButtonArticleListView";
+import BlogButtonArticleModifyView from "@/components/Blog/Button/BlogButtonArticleModifyView";
+import BlogButtonArticleDelete from "@/components/Blog/Button/BlogButtonArticleDelete";
+import blogMixin from "@/components/Blog/blog.js";
 
 export default {
   name: "BlogArticleView",

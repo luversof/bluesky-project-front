@@ -32,8 +32,8 @@
 // TODO invalid 처리는 어떻게 해야하는지 확인 필요
 // TODO NUXT 공부하자
 <script>
-import BlogButtonArticleListView from "@/components/blog/button/BlogButtonArticleListView";
-import blogMixin from "@/components/blog/blog.js";
+import BlogButtonArticleListView from "@/components/Blog/Button/BlogButtonArticleListView";
+import blogMixin from "@/components/Blog/blog.js";
 import { mapState } from "vuex";
 
 export default {

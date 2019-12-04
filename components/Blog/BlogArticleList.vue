@@ -13,14 +13,14 @@
       :per-page="perPage"
     />
     <div class="text-center">
-      <blog-button-article-write-view :blog-id="blogId"/>
+      <blog-button-article-write-view :blog-id="blogId" />
     </div>
   </div>
 </template>
 
 <script>
-import BlogButtonArticleWriteView from "@/components/blog/button/BlogButtonArticleWriteView";
-import blogMixin from "@/components/blog/blog.js";
+import BlogButtonArticleWriteView from "@/components/Blog/Button/BlogButtonArticleWriteView";
+import blogMixin from "@/components/Blog/blog.js";
 
 export default {
   name: "BlogArticleList",

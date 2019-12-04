@@ -28,6 +28,15 @@ export default {
           }
         }
       ).then(this.commonResponseData);
+    },
+    updateUserEntry: function(entry) {
+      return fetch("/api/bookkeeping/entry.json", {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(entry)
+      }).then(this.commonResponseData);
     }
   }
 };
