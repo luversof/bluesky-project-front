@@ -1,5 +1,5 @@
 export const state = () => ({
-  userEntryGroupList: null
+  userEntryGroupList: []
 });
 
 export const mutations = {

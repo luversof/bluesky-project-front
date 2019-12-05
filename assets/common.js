@@ -30,9 +30,10 @@ export default {
 
         if (Array.isArray(data.result)) {
           var message = "";
-          for (var i = 0; i < data.result.length; i++) {
-            message += data.result[i].message + "\n";
-          }
+          data.result.forEach(function(result) {
+            message += result.message + "\n";
+          });
+
           alert(message);
           return;
         }

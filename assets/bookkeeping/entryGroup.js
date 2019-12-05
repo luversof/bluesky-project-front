@@ -14,7 +14,7 @@ export default {
       setUserEntryGroupList: "bookkeeping/entryGroup/setUserEntryGroupList"
     }),
     getUserEntryGroupList() {
-      if (this.userEntryGroupList != null) {
+      if (this.userEntryGroupList.length > 0) {
         return new Promise((resolve, reject) => {
           resolve(this.userEntryGroupList);
         });

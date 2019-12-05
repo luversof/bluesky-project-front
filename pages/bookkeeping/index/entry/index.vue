@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <b-table
       :items="entryListForTable"
       :fields="entryListForTableFields"
@@ -36,21 +36,15 @@
             <div class="row text-center m-0">
               <div class="col">
                 <div>수입</div>
-                <div class="text-primary">
-                  {{ numberWithCommas(getTotalIncomeAmount()) }}원
-                </div>
+                <div class="text-primary">{{ numberWithCommas(getTotalIncomeAmount()) }}원</div>
               </div>
               <div class="col">
                 <div>지출</div>
-                <div class="text-danger">
-                  {{ numberWithCommas(getTotalExpenseAmount()) }}원
-                </div>
+                <div class="text-danger">{{ numberWithCommas(getTotalExpenseAmount()) }}원</div>
               </div>
               <div class="col">
                 <div>합계</div>
-                <div class="text-secondary">
-                  {{ numberWithCommas(getTotalAmount()) }}원
-                </div>
+                <div class="text-secondary">{{ numberWithCommas(getTotalAmount()) }}원</div>
               </div>
             </div>
           </b-th>
@@ -66,50 +60,40 @@
       </template>
 
       <template v-slot:cell(entryDate)="row">
-        <h2>{{ getDay(row.item.entryDate) }}</h2>
+        <div class="row">
+          <div class="col-1">
+            <h2>{{$moment(row.item.entryDate).format("DD")}}</h2>
+          </div>
+          <div class="text-left">{{$moment(row.item.entryDate).format("MM-DD")}}</div>
+        </div>
       </template>
-
-      <template v-slot:cell(menu)="row"></template>
 
       <template v-slot:row-details="row">
         <div
-          class="row no-gutters"
+          class="row border-top p-2 m-2"
           v-for="entry in row.item.entryList"
           v-bind:key="entry.id"
           @click="onRowClicked(entry)"
         >
-          <div class="w-100 border-top"></div>
-          <!-- <div class="col-2 px-0">
-              {{ $t("bookkeeping.entryGroupType." + entry.entryGroupType) }}
-          </div>-->
           <div
             class="col-3"
             v-if="userEntryGroupList && entry.entryGroupType != 'TRANSFER'"
-          >
-            {{ entry.entryGroup.name }}
-          </div>
-          <div
-            class="col-3"
-            v-if="userEntryGroupList && entry.entryGroupType == 'TRANSFER'"
-          >
-            이체
-          </div>
-          <div class="col-5 px-0" v-if="entry.entryGroupType == 'INCOME'">
+          >{{ entry.entryGroup.name }}</div>
+          <div class="col-3" v-if="userEntryGroupList && entry.entryGroupType == 'TRANSFER'">이체</div>
+          <div class="col-5" v-if="entry.entryGroupType == 'INCOME'">
             <div>{{ entry.memo }}</div>
             <div>{{ entry.incomeAsset.name }}</div>
           </div>
-          <div class="col-5 px-0" v-if="entry.entryGroupType == 'EXPENSE'">
+          <div class="col-5" v-if="entry.entryGroupType == 'EXPENSE'">
             <div>{{ entry.memo }}</div>
             <div>{{ entry.expenseAsset.name }}</div>
           </div>
           <div
-            class="col-5 px-0 text-break"
+            class="col-5 text-break"
             v-if="entry.entryGroupType == 'TRANSFER'"
-          >
-            {{ entry.expenseAsset.name }} -> {{ entry.incomeAsset.name }}
-          </div>
+          >{{ entry.expenseAsset.name }} -> {{ entry.incomeAsset.name }}</div>
           <div
-            class="col-4 px-0 text-right"
+            class="col-4 text-right"
             :class="
               entry.entryGroupType == 'INCOME'
                 ? 'text-primary'
@@ -117,9 +101,7 @@
                 ? 'text-danger'
                 : ''
             "
-          >
-            {{ numberWithCommas(entry.amount) }}원
-          </div>
+          >{{ numberWithCommas(entry.amount) }}원</div>
         </div>
       </template>
     </b-table>
@@ -135,7 +117,7 @@
       :targetEntry="updateEntry"
       @handleOk="update"
     />
-  </fragment>
+  </div>
 </template>
 
 <script>
@@ -218,33 +200,35 @@ export default {
         this.$root.$emit("bv::hide::modal", "addEntryForm");
       }
     },
-    searchEntry() {
-      this.searchUserEntry(this.entryRequestParam)
-        .then(data => {
-          this.entryList = data;
-          this.entryListForTable = [];
-          // 테이블에서 사용할 데이터 세팅 작업..
-          // 날짜별로 묶어서 다시 처리해야하는데
-          for (var i = 0; i < this.entryList.length; i++) {
-            var targetEntry = this.entryList[i];
-            var hasTargetEntryForTable = false;
-            for (var j = 0; j < this.entryListForTable.length; j++) {
-              var targetEntryForTable = this.entryListForTable[j];
-              if (targetEntry.entryDate == targetEntryForTable.entryDate) {
-                hasTargetEntryForTable = true;
-                targetEntryForTable.entryList.push(targetEntry);
-              }
-            }
-            if (hasTargetEntryForTable == false) {
-              this.entryListForTable.push({
-                entryDate: targetEntry.entryDate,
-                _showDetails: true,
-                entryList: [targetEntry]
-              });
-            }
+    async searchEntry() {
+      this.entryList = await this.searchUserEntry(this.entryRequestParam).catch(
+        this.commonErrorHandler
+      );
+      this.entryListForTable = [];
+      // 테이블에서 사용할 데이터 세팅 작업..
+      // 날짜별로 groupping
+
+      this.entryList.forEach(function(entry) {
+        var hasEntryForTable = false;
+        this.entryListForTable.forEach(function(entryForTable) {
+          if (entry.entryDate == entryForTable.entryDate) {
+            hasEntryForTable = true;
+            entryForTable.entryList.push(entry);
           }
-        })
-        .catch(this.commonErrorHandler);
+        });
+
+        if (hasEntryForTable == false) {
+          this.entryListForTable.push({
+            entryDate: entry.entryDate,
+            entryList: [entry],
+            _showDetails: true
+          });
+        }
+      }, this);
+
+      this.entryListForTable.sort(function(a, b) {
+        return new Date(b.entryDate) - new Date(a.entryDate);
+      });
     },
 
     getEntryGroupList(entryGroupType) {
@@ -366,9 +350,6 @@ export default {
           .add(addNum, "month")
           .format("YYYY-MM-DD")
       };
-    },
-    getDay(date) {
-      return this.$moment(date).format("DD");
     }
   },
   created() {},

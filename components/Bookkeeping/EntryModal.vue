@@ -11,32 +11,23 @@
           variant="outline-secondary"
           :pressed="entry.entryGroupType == 'INCOME'"
           @click="entry.entryGroupType = 'INCOME'"
-          >{{ $t("bookkeeping.entryGroupType.INCOME") }}</b-button
-        >
+        >{{ $t("bookkeeping.entryGroupType.INCOME") }}</b-button>
         <b-button
           variant="outline-secondary"
           :pressed="entry.entryGroupType == 'EXPENSE'"
           @click="entry.entryGroupType = 'EXPENSE'"
-          >{{ $t("bookkeeping.entryGroupType.EXPENSE") }}</b-button
-        >
+        >{{ $t("bookkeeping.entryGroupType.EXPENSE") }}</b-button>
         <b-button
           variant="outline-secondary"
           :pressed="entry.entryGroupType == 'TRANSFER'"
           @click="entry.entryGroupType = 'TRANSFER'"
-          >{{ $t("bookkeeping.entryGroupType.TRANSFER") }}</b-button
-        >
+        >{{ $t("bookkeeping.entryGroupType.TRANSFER") }}</b-button>
       </b-button-group>
     </b-form-group>
     <b-form-group :label="$t('bookkeeping.entry.entryDate')">
       <b-form-input type="date" v-model="entry.entryDate" />
     </b-form-group>
 
-    <b-form-group :label="$t('bookkeeping.entry.entryGroupType')">
-      <b-form-select
-        v-model="entry.entryGroupType"
-        :options="userEntryGroupTypeList"
-      />
-    </b-form-group>
     <b-form-group
       v-if="entry.entryGroupType != 'TRANSFER'"
       :label="$t('bookkeeping.entry.entryGroup')"
@@ -88,7 +79,12 @@ export default {
   mixins: [assetMixin, entryGroupMixin],
   props: {
     modalId: { type: String, required: true },
-    okTitle: { type: String, required: true },
+    okTitle: {
+      type: String,
+      default() {
+        return "확인";
+      }
+    },
     targetEntry: {
       type: Object
     }
@@ -96,29 +92,25 @@ export default {
   computed: {
     ...mapState({
       userAssetList: state => state.bookkeeping.asset.userAssetList,
+      userEntryGroupList: state =>
+        state.bookkeeping.entryGroup.userEntryGroupList,
       userEntryGroupTypeList: state =>
         state.bookkeeping.entryGroupType.userEntryGroupTypeList
     })
   },
   data() {
     return {
-      entry: this.targetEntry,
-      entryGroupList: []
+      entry: this.targetEntry
     };
   },
   methods: {
-    setEntry(entry) {
-      console.log("setEntry");
-      this.entry = entry;
-      this.$emit("setEntry");
-    },
     handleOk(bvModalEvt) {
       this.$emit("handleOk", {
         bvModalEvt: bvModalEvt,
         targetEntry: this.entry
       });
     },
-    initEntry: function() {
+    initEntry() {
       this.entry = {
         entryDate: this.$moment().format("YYYY-MM-DD"),
         entryGroupType: "INCOME",
@@ -131,14 +123,12 @@ export default {
     },
     getAddEntryGroupList() {
       var target = [];
-
-      for (var key in this.entryGroupList) {
-        if (
-          this.entryGroupList[key].entryGroupType == this.entry.entryGroupType
-        ) {
-          target.push(this.entryGroupList[key]);
+      this.userEntryGroupList.forEach(function(userEntryGroup) {
+        if (userEntryGroup.entryGroupType == this.entry.entryGroupType) {
+          target.push(userEntryGroup);
         }
-      }
+      }, this);
+
       return target;
     }
   },
@@ -147,17 +137,9 @@ export default {
       this.initEntry();
     }
   },
-  mounted() {
-    this.getUserEntryGroupList()
-      .then(data => {
-        this.entryGroupList = data;
-      })
-      .catch(this.commonErrorHandler);
-
-    this.getUserAssetList().catch(this.commonErrorHandler);
-  },
+  mounted() {},
   watch: {
-    targetEntry: function(entry) {
+    targetEntry(entry) {
       this.entry = entry;
       if (this.entry.expenseAsset == null) {
         this.entry.expenseAsset = {};
