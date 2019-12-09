@@ -36,15 +36,21 @@
             <div class="row text-center m-0">
               <div class="col">
                 <div>수입</div>
-                <div class="text-primary">{{ numberWithCommas(getTotalIncomeAmount()) }}원</div>
+                <div class="text-primary">
+                  {{ numberWithCommas(getTotalIncomeAmount()) }}원
+                </div>
               </div>
               <div class="col">
                 <div>지출</div>
-                <div class="text-danger">{{ numberWithCommas(getTotalExpenseAmount()) }}원</div>
+                <div class="text-danger">
+                  {{ numberWithCommas(getTotalExpenseAmount()) }}원
+                </div>
               </div>
               <div class="col">
                 <div>합계</div>
-                <div class="text-secondary">{{ numberWithCommas(getTotalAmount()) }}원</div>
+                <div class="text-secondary">
+                  {{ numberWithCommas(getTotalAmount()) }}원
+                </div>
               </div>
             </div>
           </b-th>
@@ -62,9 +68,11 @@
       <template v-slot:cell(entryDate)="row">
         <div class="row">
           <div class="col-1">
-            <h2>{{$moment(row.item.entryDate).format("DD")}}</h2>
+            <h2>{{ $moment(row.item.entryDate).format("DD") }}</h2>
           </div>
-          <div class="text-left">{{$moment(row.item.entryDate).format("MM-DD")}}</div>
+          <div class="text-left">
+            {{ $moment(row.item.entryDate).format("MM-DD") }}
+          </div>
         </div>
       </template>
 
@@ -78,8 +86,15 @@
           <div
             class="col-3"
             v-if="userEntryGroupList && entry.entryGroupType != 'TRANSFER'"
-          >{{ entry.entryGroup.name }}</div>
-          <div class="col-3" v-if="userEntryGroupList && entry.entryGroupType == 'TRANSFER'">이체</div>
+          >
+            {{ entry.entryGroup.name }}
+          </div>
+          <div
+            class="col-3"
+            v-if="userEntryGroupList && entry.entryGroupType == 'TRANSFER'"
+          >
+            이체
+          </div>
           <div class="col-5" v-if="entry.entryGroupType == 'INCOME'">
             <div>{{ entry.memo }}</div>
             <div>{{ entry.incomeAsset.name }}</div>
@@ -91,7 +106,9 @@
           <div
             class="col-5 text-break"
             v-if="entry.entryGroupType == 'TRANSFER'"
-          >{{ entry.expenseAsset.name }} -> {{ entry.incomeAsset.name }}</div>
+          >
+            {{ entry.expenseAsset.name }} -> {{ entry.incomeAsset.name }}
+          </div>
           <div
             class="col-4 text-right"
             :class="
@@ -101,7 +118,9 @@
                 ? 'text-danger'
                 : ''
             "
-          >{{ numberWithCommas(entry.amount) }}원</div>
+          >
+            {{ numberWithCommas(entry.amount) }}원
+          </div>
         </div>
       </template>
     </b-table>
@@ -187,16 +206,12 @@ export default {
     async create(payload) {
       const { bvModalEvt, targetEntry } = payload;
       bvModalEvt.preventDefault();
-      var entry = await this.createUserEntry(targetEntry)
-        .then(data => {
-          this.searchEntry();
-          return data;
-        })
-        .catch(this.commonErrorHandler);
+      var entry = await this.createUserEntry(targetEntry).catch(
+        this.commonErrorHandler
+      );
 
-      if (entry == undefined) {
-        // bvModalEvt.preventDefault();
-      } else {
+      if (entry !== undefined) {
+        this.searchEntry();
         this.$root.$emit("bv::hide::modal", "addEntryForm");
       }
     },
@@ -229,6 +244,63 @@ export default {
       this.entryListForTable.sort(function(a, b) {
         return new Date(b.entryDate) - new Date(a.entryDate);
       });
+    },
+
+    async update(payload) {
+      const { bvModalEvt, targetEntry } = payload;
+      bvModalEvt.preventDefault();
+      var entry = await this.updateUserEntry(targetEntry)
+        .then(data => {
+          this.searchEntry();
+          return data;
+        })
+        .catch(this.commonErrorHandler);
+
+      if (entry !== undefined) {
+        this.$root.$emit("bv::hide::modal", "updateEntryForm");
+      }
+    },
+    deleteEntry(entry) {},
+    initEntryRequestParam() {
+      if (this.userBookkeeping.id == null) {
+        return;
+      }
+
+      // this.userBookkeeping.baseDate
+
+      // this.$moment().format("YYYY-MM-DD"),
+
+      // 기준일이 현재의 day보다 이전인 경우 -> 현재 날짜 기준으로 기준일 ~ 다음달 기준일 - 1
+      // 기준일이 3일인데 현재가 5일인 경우
+      // x월 3일 ~ x + 1 월 3일
+
+      // 기준일이 현재의 day보다 이후인 경우 -> 현재 날짜 기준으로 기준일 ~ 다음달 기준일 - 1
+      // x월 기준일이 5일인데 현재가 3일인 경우
+      // x-1 월 5일 ~ x월 5일
+
+      if (this.$moment().date() < this.userBookkeeping.baseDate) {
+        this.entryRequestParam = {
+          startLocalDate: this.$moment()
+            .add(-1, "month")
+            .date(this.userBookkeeping.baseDate)
+            .format("YYYY-MM-DD"),
+          endLocalDate: this.$moment()
+            .date(this.userBookkeeping.baseDate)
+            .add(-1, "day")
+            .format("YYYY-MM-DD")
+        };
+      } else {
+        this.entryRequestParam = {
+          startLocalDate: this.$moment()
+            .date(this.userBookkeeping.baseDate)
+            .format("YYYY-MM-DD"),
+          endLocalDate: this.$moment()
+            .add(1, "month")
+            .date(this.userBookkeeping.baseDate)
+            .add(-1, "day")
+            .format("YYYY-MM-DD")
+        };
+      }
     },
 
     getEntryGroupList(entryGroupType) {
@@ -279,68 +351,7 @@ export default {
       });
       return amount;
     },
-    onRowClicked(entry) {
-      this.updateEntry = _.cloneDeep(entry);
-      this.$root.$emit("bv::show::modal", "updateEntryForm");
-    },
-    async update(payload) {
-      const { bvModalEvt, targetEntry } = payload;
-      bvModalEvt.preventDefault();
-      var entry = await this.updateUserEntry(targetEntry)
-        .then(data => {
-          this.searchEntry();
-          return data;
-        })
-        .catch(this.commonErrorHandler);
 
-      if (entry == undefined) {
-        // bvModalEvt.preventDefault();
-      } else {
-        this.$root.$emit("bv::hide::modal", "updateEntryForm");
-      }
-    },
-    deleteEntry(entry) {},
-    initEntryRequestParam() {
-      if (this.userBookkeeping.id == null) {
-        return;
-      }
-
-      // this.userBookkeeping.baseDate
-
-      // this.$moment().format("YYYY-MM-DD"),
-
-      // 기준일이 현재의 day보다 이전인 경우 -> 현재 날짜 기준으로 기준일 ~ 다음달 기준일 - 1
-      // 기준일이 3일인데 현재가 5일인 경우
-      // x월 3일 ~ x + 1 월 3일
-
-      // 기준일이 현재의 day보다 이후인 경우 -> 현재 날짜 기준으로 기준일 ~ 다음달 기준일 - 1
-      // x월 기준일이 5일인데 현재가 3일인 경우
-      // x-1 월 5일 ~ x월 5일
-
-      if (this.$moment().date() < this.userBookkeeping.baseDate) {
-        this.entryRequestParam = {
-          startLocalDate: this.$moment()
-            .add(-1, "month")
-            .date(this.userBookkeeping.baseDate)
-            .format("YYYY-MM-DD"),
-          endLocalDate: this.$moment()
-            .date(this.userBookkeeping.baseDate)
-            .add(-1, "day")
-            .format("YYYY-MM-DD")
-        };
-      } else {
-        this.entryRequestParam = {
-          startLocalDate: this.$moment()
-            .date(this.userBookkeeping.baseDate)
-            .format("YYYY-MM-DD"),
-          endLocalDate: this.$moment()
-            .add(1, "month")
-            .date(this.userBookkeeping.baseDate)
-            .add(-1, "day")
-            .format("YYYY-MM-DD")
-        };
-      }
-    },
     addMonth(addNum) {
       this.entryRequestParam = {
         startLocalDate: this.$moment(this.entryRequestParam.startLocalDate)
@@ -350,6 +361,10 @@ export default {
           .add(addNum, "month")
           .format("YYYY-MM-DD")
       };
+    },
+    onRowClicked(entry) {
+      this.updateEntry = _.cloneDeep(entry);
+      this.$root.$emit("bv::show::modal", "updateEntryForm");
     }
   },
   created() {},

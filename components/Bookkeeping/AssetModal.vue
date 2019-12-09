@@ -62,15 +62,17 @@ export default {
     }
   },
   created() {
-    console.log("TASETASETASETSAET");
     if (this.asset == undefined) {
-      console.log("TEST");
       this.initAsset();
     }
   },
-  mounted() {}
+  mounted() {},
+  watch: {
+    targetAsset(asset) {
+      this.asset = asset;
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

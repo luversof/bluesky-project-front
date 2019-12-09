@@ -25,7 +25,7 @@
       <template v-slot:cell(assetGroupName)="row">
         <div class="row">
           <div class="col">
-            <h5>{{row.item.assetGroupName}}</h5>
+            <h5>{{ row.item.assetGroupName }}</h5>
           </div>
           <div class="text-left"></div>
         </div>
@@ -38,8 +38,8 @@
           v-bind:key="asset.id"
           @click="onRowClicked(asset)"
         >
-          <div class="col-3">{{asset.name}}</div>
-          <div class="col text-right">{{asset.amount}}</div>
+          <div class="col-3">{{ asset.name }}</div>
+          <div class="col text-right">{{ asset.amount }}</div>
         </div>
       </template>
     </b-table>
@@ -52,89 +52,10 @@
 
     <AssetModal
       modalId="updateAssetForm"
-      :okTitle="$t('bookkeeping.asset.button.create')"
+      :okTitle="$t('bookkeeping.asset.button.update')"
+      :targetAsset="updateAsset"
       @handleOk="update"
     />
-
-    <b-table
-      striped
-      hover
-      :items="userAssetList"
-      :fields="fields"
-      :busy="!isUserAssetListLoaded"
-      empty-text="userAssetList is empty"
-      show-empty
-      responsive
-    >
-      <template v-slot:table-busy>
-        <div class="text-center my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
-
-      <template v-slot:thead-top="row">
-        <b-tr>
-          <b-th colspan="5">총 금액 요약 보여주는 곳</b-th>
-        </b-tr>
-      </template>
-
-      <template v-if="showAddAssetForm" v-slot:top-row="row" variant="success">
-        <b-td>-</b-td>
-        <b-td>
-          <b-form-input v-model="addAsset.name" v-focus />
-        </b-td>
-        <b-td>0</b-td>
-        <b-td>
-          <b-form-select
-            v-model="addAsset.assetGroup.id"
-            :options="userAssetGroupList"
-            text-field="name"
-            value-field="id"
-          ></b-form-select>
-        </b-td>
-        <b-td>
-          <b-button variant="outline-secondary" @click="create">
-            {{
-            $t("bookkeeping.asset.button.create")
-            }}
-          </b-button>
-        </b-td>
-      </template>
-
-      <template v-slot:head(menu)="row">
-        <b-button variant="outline-secondary" @click="toggleAddAssetForm">
-          <font-awesome-icon v-if="!showAddAssetForm" :icon="['fas', 'plus']" />
-          <font-awesome-icon v-if="showAddAssetForm" :icon="['fas', 'minus']" />
-        </b-button>
-      </template>
-
-      <template v-slot:cell(name)="row">
-        <b-form-input v-model="row.item.name" />
-      </template>
-
-      <template v-slot:cell(assetGroup)="row">
-        <b-form-select
-          v-model="row.item.assetGroup.id"
-          :options="userAssetGroupList"
-          text-field="name"
-          value-field="id"
-        />
-      </template>
-
-      <template v-slot:cell(menu)="row">
-        <b-button variant="outline-secondary" @click="update(row.item)">
-          {{
-          $t("bookkeeping.asset.button.update")
-          }}
-        </b-button>
-        <b-button
-          v-if="row.item.amount == 0"
-          variant="outline-secondary"
-          @click="deleteAsset(row.item)"
-        >{{ $t("bookkeeping.asset.button.delete") }}</b-button>
-      </template>
-    </b-table>
   </div>
 </template>
 
@@ -159,8 +80,6 @@ export default {
         { key: "assetGroup", label: this.$t("bookkeeping.asset.assetGroup") },
         { key: "menu", label: this.$t("bookkeeping.entry.entryDate") }
       ],
-      addAsset: { name: null, assetGroup: {} },
-      showAddAssetForm: false,
       assetListForTable: null,
       assetListForTableFields: [
         {
@@ -176,7 +95,8 @@ export default {
           key: "menu",
           label: this.$t("bookkeeping.asset.menu")
         }
-      ]
+      ],
+      updateAsset: { name: null, amount: 0, bookkeeping: {}, assetGroup: {} }
     };
   },
   computed: {
@@ -189,21 +109,17 @@ export default {
     })
   },
   methods: {
-    initAddAsset() {
-      this.addAsset = { name: null, assetGroup: {} };
-    },
-    toggleAddAssetForm(event) {
-      this.showAddAssetForm = !this.showAddAssetForm;
-    },
-    create(payload) {
+    async create(payload) {
       const { bvModalEvt, targetAsset } = payload;
-      this.createUserAsset(this.addAsset)
-        .then(data => {
-          this.initAddAsset();
-          this.showAddAssetForm = !this.showAddAssetForm;
-          this.getUserAssetList(true);
-        })
-        .catch(this.commonErrorHandler);
+      bvModalEvt.preventDefault();
+      var asset = await this.createUserAsset(targetAsset).catch(
+        this.commonErrorHandler
+      );
+
+      if (asset !== undefined) {
+        this.getAssetList();
+        this.$root.$emit("bv::hide::modal", "addAssetForm");
+      }
     },
     async getAssetList() {
       var assetList = await this.getUserAssetList().catch(
@@ -235,12 +151,16 @@ export default {
         });
       }, this);
     },
-    update(asset) {
-      this.updateUserAsset(asset)
-        .then(data => {
-          this.getUserAssetList(true);
-        })
-        .catch(this.commonErrorHandler);
+    async update(payload) {
+      const { bvModalEvt, targetAsset } = payload;
+      bvModalEvt.preventDefault();
+      var asset = await this.updateUserAsset(targetAsset).catch(
+        this.commonErrorHandler
+      );
+      if (asset !== undefined) {
+        this.getUserAssetList(true);
+        this.$root.$emit("bv::hide::modal", "updateAssetForm");
+      }
     },
     deleteAsset(asset) {
       this.deleteUserAsset(asset)
