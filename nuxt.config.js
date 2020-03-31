@@ -67,7 +67,7 @@ export default {
   proxy: {
     // proxyTable 설정
     "/api": {
-      target: "http://localhost:8082/",
+      target: "http://localhost:8084/",
       changeOrigin: true
     }
   },
