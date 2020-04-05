@@ -5,28 +5,29 @@
     <nuxt />
 
     blog 테스트
+    <BlogNavBar />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import bookkeepingMixin from "@/assets/bookkeeping/bookkeeping.js";
+import blogMixin from "@/assets/blog/blog.js";
 import BlueskyNavBar from "@/components/BlueskyNavBar.vue";
-import BookkeepingNavBar from "@/components/Bookkeeping/BookkeepingNavBar.vue";
+import BlogNavBar from "@/components/Blog/BlogNavBar.vue";
 export default {
   name: "bookkeeping",
-  components: { BlueskyNavBar, BookkeepingNavBar },
-  mixins: [bookkeepingMixin],
+  components: { BlueskyNavBar, BlogNavBar },
+  mixins: [blogMixin],
   computed: {
     ...mapState({
-      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping
+      userBlog: state => state.blog.blog.userBlog
     })
   },
   mounted: function() {
-    this.getUserBookkeeping()
+    this.getUserBlog()
       .then(data => {
         if (data === null) {
-          this.$router.push("/bookkeeping").catch(err => {});
+          this.$router.push("/blog").catch(err => {});
         }
         return data;
       })

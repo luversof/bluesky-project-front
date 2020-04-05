@@ -57,6 +57,11 @@ export default {
         throw response;
       }
     },
+
+    commonHeaders: function() {
+      return { "Content-Type": "application/json", Accept: "application/json" };
+    },
+
     numberWithCommas: function(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
