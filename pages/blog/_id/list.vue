@@ -1,12 +1,12 @@
 <template>
-  <nuxt-child />
+  <div>blog list</div>
 </template>
 
 <script>
 import blogMixin from "@/assets/blog/blog.js";
 
 export default {
-  layout: "blog",
+  layout: "blogList",
   mixins: [blogMixin],
   watch: {
     userBlog: function() {

@@ -14,8 +14,8 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-    script: [{ src: "cordova.js" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    // script: [{ src: "cordova.js" }]
   },
   router: { mode: "hash" },
   /*
@@ -54,16 +54,16 @@ export default {
     ],
     "@nuxtjs/proxy"
   ],
-  /*
-   ** Build configuration
-   */
-  build: {
-    publicPath: "/nuxtfiles/",
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
-  },
+  // /*
+  //  ** Build configuration
+  //  */
+  // build: {
+  //   publicPath: "/nuxtfiles/",
+  //   /*
+  //    ** You can extend webpack config here
+  //    */
+  //   extend(config, ctx) {}
+  // },
   proxy: {
     // proxyTable 설정
     "/api": {
