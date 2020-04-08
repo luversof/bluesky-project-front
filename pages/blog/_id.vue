@@ -1,12 +1,12 @@
 <template>
-  <div>blog 인덱스</div>
+  <nuxt-child />
 </template>
 
 <script>
 export default {
   layout: "blog",
   mounted() {
-    console.log("인덱스 호출");
+    console.log("_id 인덱스 호출");
   }
 };
 </script>

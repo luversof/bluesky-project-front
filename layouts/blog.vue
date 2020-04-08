@@ -4,7 +4,6 @@
 
     <nuxt />
 
-    blog 테스트
     <BlogNavBar />
   </div>
 </template>

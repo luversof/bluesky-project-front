@@ -6,7 +6,7 @@
       <b-list-group-item active-class="active" to="/blog/asset/">자산</b-list-group-item>
       <b-list-group-item active-class="active" to="/blog/config/">설정</b-list-group-item>
     </b-list-group>
-  </div> -->
+  </div>-->
   <b-navbar fixed="bottom">
     <b-button-group class="col-12">
       <b-button
@@ -15,34 +15,28 @@
         active-class="active"
         :to="'/blog/' + userBlog.id + '/list'"
       >
-        <font-awesome-icon :icon="['far', 'calendar']" /><br />
-        <h6>보기</h6>
+        <font-awesome-icon :icon="['far', 'calendar']" />
+        <br />
+        <h6>목록 보기</h6>
       </b-button>
       <b-button
         size="lg"
         variant="light"
         active-class="active"
-        to="/blog/statistics/"
+        :to="'/blog/' + userBlog.id + '/write'"
       >
-        <font-awesome-icon :icon="['fas', 'chart-bar']" /> <br />
-        <h6>통계</h6>
+        <font-awesome-icon :icon="['fas', 'chart-bar']" />
+        <br />
+        <h6>쓰기</h6>
       </b-button>
-      <b-button
-        size="lg"
-        variant="light"
-        active-class="active"
-        to="/blog/asset/"
-      >
-        <font-awesome-icon :icon="['fas', 'columns']" /><br />
+      <b-button size="lg" variant="light" active-class="active" to="/blog/asset/">
+        <font-awesome-icon :icon="['fas', 'columns']" />
+        <br />
         <h6>자산</h6>
       </b-button>
-      <b-button
-        size="lg"
-        variant="light"
-        active-class="active"
-        to="/blog/config/"
-      >
-        <font-awesome-icon :icon="['fas', 'cog']" /><br />
+      <b-button size="lg" variant="light" active-class="active" to="/blog/config/">
+        <font-awesome-icon :icon="['fas', 'cog']" />
+        <br />
         <h6>설정</h6>
       </b-button>
     </b-button-group>
@@ -58,6 +52,8 @@ export default {
   computed: {},
   mounted: function() {
     console.log("ASDFSADF", this.userBlog);
+
+    // this.$route.params.id = this.userBlog.id;
   }
 };
 </script>

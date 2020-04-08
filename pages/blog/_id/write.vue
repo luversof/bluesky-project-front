@@ -1,5 +1,5 @@
 <template>
-  <div>blog list</div>
+  <div>글쓰기</div>
 </template>
 
 <script>
