@@ -1,8 +1,8 @@
 <template>
   <div>
     글쓰기
-    <editor />
-    <b-button>{{ $t("blog.article.write") }}</b-button>
+    <editor ref="toastuiEditor" />
+    <b-button @click="write">{{ $t("blog.article.write") }}</b-button>
   </div>
 </template>
 
@@ -24,6 +24,11 @@ export default {
   // asyncData({ params }) {
   //   console.log(params);
   // },
+  methods: {
+    write() {
+      console.log("TEST", this.$refs.toastuiEditor.invoke("getHtml"));
+    }
+  },
   mounted() {
     console.log("테스트", this.$route);
     this.getBlogArticleList(this.$route.params.id);
