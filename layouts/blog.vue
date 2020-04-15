@@ -23,14 +23,13 @@ export default {
     })
   },
   mounted: function() {
-    this.getUserBlog()
-      .then(data => {
-        if (data === null) {
-          this.$router.push("/blog").catch(err => {});
-        }
-        return data;
-      })
-      .catch(this.commonErrorHandler);
+    this.getUserBlog().then(data => {
+      if (data === null) {
+        this.$router.push("/blog").catch(err => {});
+      }
+      return data;
+    });
+    // .catch(this.commonErrorHandler);
   }
 };
 </script>

@@ -13,9 +13,9 @@
         size="lg"
         variant="light"
         active-class="active"
-        :to="'/blog/' + userBlog.id + '/list'"
+        @click="moveUserBlogArticleListView()"
       >
-        <font-awesome-icon :icon="['far', 'calendar']" />
+        <font-awesome-icon :icon="['fas', 'list']" />
         <br />
         <h6>목록 보기</h6>
       </b-button>
@@ -23,9 +23,9 @@
         size="lg"
         variant="light"
         active-class="active"
-        :to="'/blog/' + userBlog.id + '/write'"
+        @click="moveUserBlogArticleWriteView()"
       >
-        <font-awesome-icon :icon="['fas', 'chart-bar']" />
+        <font-awesome-icon :icon="['far', 'edit']" />
         <br />
         <h6>쓰기</h6>
       </b-button>
@@ -51,10 +51,9 @@ export default {
   mixins: [blogMixin],
   computed: {},
   mounted: function() {
-    console.log("ASDFSADF", this.userBlog);
-
     // this.$route.params.id = this.userBlog.id;
-  }
+  },
+  methods: {}
 };
 </script>
 

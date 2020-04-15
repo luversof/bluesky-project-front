@@ -27,6 +27,22 @@ export default {
           }
           return data;
         });
+    },
+    moveUserBlogArticleListView: function() {
+      if (this.userBlog.id == null) {
+        alert(this.$t("NEED_LOGIN"));
+        return;
+      }
+      this.$router.push("/blog/" + this.userBlog.id + "/list").catch(err => {});
+    },
+    moveUserBlogArticleWriteView: function() {
+      if (this.userBlog.id == null) {
+        alert(this.$t("NEED_LOGIN"));
+        return;
+      }
+      this.$router
+        .push("/blog/" + this.userBlog.id + "/write")
+        .catch(err => {});
     }
   }
 };
