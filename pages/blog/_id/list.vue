@@ -19,7 +19,8 @@ export default {
           label: this.$t("blogArticle.title"),
           class: "w-75"
         },
-        { key: "createdDate", label: this.$t("blogArticle.createdDate") },
+        { key: "createdDate", label: this.$t("blogArticle.createdDate"),
+        formatter: value => {return this.$moment(value).subtract(10, 'days').calendar()} },
         {
           key: "viewCount",
           label: this.$t("blogArticle.viewCount")
@@ -39,7 +40,6 @@ export default {
       .then(data => {
         if (data !== undefined) {
           this.blogArticleList = data;
-          console.log("Test12 : ", data);
         }
       })
       .catch(this.commonErrorHandler);

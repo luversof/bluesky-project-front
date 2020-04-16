@@ -33,7 +33,7 @@ export default {
         alert(this.$t("NEED_LOGIN"));
         return;
       }
-      this.$router.push("/blog/" + this.userBlog.id + "/list").catch(err => {});
+      this.$router.push("/blog/" + this.userBlog.id + "/list");
     },
     moveUserBlogArticleWriteView: function() {
       if (this.userBlog.id == null) {
@@ -42,7 +42,7 @@ export default {
       }
       this.$router
         .push("/blog/" + this.userBlog.id + "/write")
-        .catch(err => {});
+        
     }
   }
 };

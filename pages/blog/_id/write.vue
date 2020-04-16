@@ -45,8 +45,9 @@ export default {
       this.create(this.blogArticle)
         .then(data => {
           if (data !== undefined) {
-            this.moveUserBlogListView();
+            this.moveUserBlogArticleListView();
           }
+          return data;
         })
         .catch(this.commonErrorHandler);
     }
