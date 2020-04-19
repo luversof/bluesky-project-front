@@ -17,7 +17,10 @@
       "write": "글쓰기",
       "modify": "수정",
       "delete": "삭제",
-      "cancel": "취소"
+      "cancel": "취소",
+      "msg": {
+        "deleteConfirm": "글을 삭제하시겠습니까?"
+      }
     },
     "bookkeeping": {
       "name": "가계부 이름",

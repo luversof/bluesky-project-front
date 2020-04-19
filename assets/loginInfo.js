@@ -5,12 +5,12 @@ export default {
   mixins: [commonMixin],
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo
-    })
+      loginInfo: (state) => state.loginInfo.loginInfo,
+    }),
   },
   methods: {
     ...mapMutations({
-      setLoginInfo: "loginInfo/setLoginInfo"
+      setLoginInfo: "loginInfo/setLoginInfo",
     }),
     getLoginInfo: function() {
       // if (this.loginInfo != null) {
@@ -19,12 +19,12 @@ export default {
       //   });
       // }
 
-      return fetch("/api/user/loginInfo.json")
+      return fetch("/api/user/loginInfo")
         .then(this.commonResponseData)
-        .then(data => {
+        .then((data) => {
           this.setLoginInfo(data);
           return data;
         });
-    }
-  }
+    },
+  },
 };

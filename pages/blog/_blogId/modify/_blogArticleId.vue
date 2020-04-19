@@ -1,0 +1,65 @@
+<template>
+  <div class="m-3">
+    <b-form-group>
+      <b-form-input v-model="blogArticle.title" :placeholder="$t('blogArticle.title')"></b-form-input>
+    </b-form-group>
+    <b-form-group>
+      <editor
+        v-if="blogArticle.content != null"
+        :initialValue="blogArticle.content"
+        ref="toastuiEditor"
+      />
+    </b-form-group>
+    <div class="text-right">
+      <b-button @click="modifyAction">{{ $t("blogArticle.modify") }}</b-button>
+      <b-button @click="historyBack">{{ $t("blogArticle.cancel") }}</b-button>
+    </div>
+  </div>
+</template>
+
+<script>
+import blogMixin from "@/assets/blog/blog.js";
+import blogArticleMixin from "@/assets/blog/blogArticle.js";
+
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+
+import { Editor } from "@toast-ui/vue-editor";
+
+export default {
+  mixins: [blogMixin, blogArticleMixin],
+  components: {
+    editor: Editor
+  },
+  data() {
+    return {
+      blogArticle: {}
+    };
+  },
+  watch: {},
+  // asyncData({ params }) {
+  //   console.log(params);
+  // },
+  methods: {
+    modifyAction() {
+      this.blogArticle.content = this.$refs.toastuiEditor.invoke("getMarkdown");
+      this.modifyBlogArticle(this.blogArticle)
+        .then(data => {
+          if (data !== undefined) {
+            this.moveUserBlogArticleListPage();
+          }
+          return data;
+        })
+        .catch(this.commonErrorHandler);
+    }
+  },
+  mounted() {
+    // 수정할 글 정보를 호출한다.
+    this.getBlogArticle(this.$route.params.blogArticleId).then(data => {
+      this.blogArticle = data;
+    });
+  }
+};
+</script>
+
+<style></style>

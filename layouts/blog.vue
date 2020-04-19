@@ -14,7 +14,6 @@ import blogMixin from "@/assets/blog/blog.js";
 import BlueskyNavBar from "@/components/BlueskyNavBar.vue";
 import BlogNavBar from "@/components/Blog/BlogNavBar.vue";
 export default {
-  name: "bookkeeping",
   components: { BlueskyNavBar, BlogNavBar },
   mixins: [blogMixin],
   computed: {

@@ -19,7 +19,6 @@ import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-
 import { Editor } from "@toast-ui/vue-editor";
 
 export default {
@@ -41,11 +40,12 @@ export default {
   // },
   methods: {
     createAction() {
-      this.blogArticle.content = this.$refs.toastuiEditor.invoke("getHtml");
-      this.create(this.blogArticle)
+      // TODO 어떤 에디터 모드를 선택했는지도 저장이 필요할 듯함 - markdown, wysiwyg
+      this.blogArticle.content = this.$refs.toastuiEditor.invoke("getMarkdown");
+      this.createBlogArticle(this.blogArticle)
         .then(data => {
           if (data !== undefined) {
-            this.moveUserBlogArticleListView();
+            this.moveUserBlogArticleListPage();
           }
           return data;
         })
