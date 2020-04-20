@@ -10,11 +10,26 @@ export default {
   mixins: [commonMixin],
 
   methods: {
-    // 글 목록 호출
-    getBlogArticleList: function(blogId) {
-      return fetch("/api/blogArticle/search/findByBlogId/{0}".format(blogId), {
-        headers: this.commonHeaders(),
-      }).then(this.commonResponseData);
+    /**
+     * 글 목록 호출
+     * backend의 page는 0부터 시작하므로 보이는 page 정보에서 -1 처리를 해야함
+     * @param {*} blogId
+     * @param {*} page
+     */
+    getBlogArticleList: function(blogId, page = 0) {
+      if (this.$route.query.page != null) {
+        page = this.$route.query.page - 1;
+      }
+
+      return fetch(
+        "/api/blogArticle/search/findByBlogId/{0}?page={1}".format(
+          blogId,
+          page
+        ),
+        {
+          headers: this.commonHeaders(),
+        }
+      ).then(this.commonResponseData);
     },
     // 글 보기 호출
     // TODO blogId 체크가 없이 호출하고 있음

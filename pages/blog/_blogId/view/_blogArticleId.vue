@@ -1,22 +1,31 @@
 <template>
   <div class="m-3">
-    <article>
+    <Loading v-if="blogArticle.id == null" />
+
+    <article v-if="blogArticle.id != null">
       <h1>{{blogArticle.title}}</h1>
-      <viewer
+      <time v-text="$moment(blogArticle.createdDate).format('LLL')"></time>
+      <Viewer
         v-if="blogArticle.content != null"
         ref="toastuiEditor"
         :initialValue="blogArticle.content"
       />
-      <footer>
-        <p>
-          Posted on
-          <time v-text="$moment(blogArticle.createdDate).format('LLL')"></time>
-        </p>
-      </footer>
     </article>
     <!-- 수정 버튼은 해당 글의 글쓴이만 가능 -->
-    <b-button v-if="isOwner()" @click="moveModifyView" v-text="$t('blogArticle.modify')"></b-button>
-    <b-button v-if="isOwner()" @click="deleteBlogArticleConfirm" v-text="$t('blogArticle.delete')"></b-button>
+    <div class="text-right">
+      <b-button
+        variant="outline-primary"
+        v-if="isOwner()"
+        @click="moveModifyView"
+        v-text="$t('blogArticle.modify')"
+      ></b-button>
+      <b-button
+        variant="outline-danger"
+        v-if="isOwner()"
+        @click="deleteBlogArticleConfirm"
+        v-text="$t('blogArticle.delete')"
+      ></b-button>
+    </div>
   </div>
 </template>
 
@@ -26,6 +35,8 @@ import { mapState, mapMutations } from "vuex";
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
+import Loading from "@/components/Blog/Loading.vue";
+
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/vue-editor";
 
@@ -33,7 +44,8 @@ export default {
   layout: "blog",
   mixins: [blogMixin, blogArticleMixin],
   components: {
-    viewer: Viewer
+    Viewer,
+    Loading
   },
   computed: {
     ...mapState({

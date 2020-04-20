@@ -13,8 +13,9 @@ import { mapState, mapMutations } from "vuex";
 import blogMixin from "@/assets/blog/blog.js";
 import BlueskyNavBar from "@/components/BlueskyNavBar.vue";
 import BlogNavBar from "@/components/Blog/BlogNavBar.vue";
+import Loading from "@/components/Blog/Loading.vue";
 export default {
-  components: { BlueskyNavBar, BlogNavBar },
+  components: { BlueskyNavBar, BlogNavBar, Loading },
   mixins: [blogMixin],
   computed: {
     ...mapState({

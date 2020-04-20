@@ -1,13 +1,25 @@
 <template>
   <div class="m-3">
-    <b-table :items="blogArticleList.content" hover :fields="tableFields" @row-clicked="getView"></b-table>
+    <Loading v-if="blogArticleList.content.length == 0" />
+
+    <b-table
+      v-if="blogArticleList.content.length > 0"
+      :items="blogArticleList.content"
+      hover
+      :fields="tableFields"
+      @row-clicked="getView"
+    ></b-table>
 
     <!-- 페이지 붙일 차례 -->
-    <b-pagination-nav
-      v-model="blogArticleList.number"
-      :number-of-pages="blogArticleList.totalPages"
-      :link-gen="movePage"
-    ></b-pagination-nav>
+    <div>
+      <b-pagination-nav
+        align="center"
+        v-if="blogArticleList.content.length > 0"
+        v-model="currentPage"
+        :number-of-pages="blogArticleList.totalPages"
+        :link-gen="movePage"
+      ></b-pagination-nav>
+    </div>
   </div>
 </template>
 
@@ -15,7 +27,10 @@
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
+import Loading from "@/components/Blog/Loading.vue";
+
 export default {
+  components: { Loading },
   mixins: [blogMixin, blogArticleMixin],
   data() {
     return {
@@ -42,7 +57,8 @@ export default {
       ],
       blogArticleList: {
         content: []
-      }
+      },
+      currentPage: 1
     };
   },
   methods: {
@@ -51,26 +67,33 @@ export default {
     },
     // movePage의 경우 href를 만들기 때문에 move함수의 $router를 사용하지 않음.
     movePage: function(pageNum) {
-      console.log("movePage: ", pageNum);
-
       return {
         path: "/blog/{0}/list".format(this.$route.params.blogId),
         query: { page: pageNum }
       };
+    },
+    getList: function(page = 0) {
+      this.getBlogArticleList(this.$route.params.blogId, page)
+        .then(data => {
+          if (data !== undefined) {
+            this.blogArticleList = data;
+            this.currentPage = this.blogArticleList.number + 1;
+          }
+        })
+        .catch(this.commonErrorHandler);
     }
   },
-  watch: {},
+  watch: {
+    $route(to, from) {
+      this.getList(to.query.page - 1);
+    }
+  },
   // asyncData({ params }) {
   //   console.log(params);
   // },
   mounted() {
-    this.getBlogArticleList(this.$route.params.blogId)
-      .then(data => {
-        if (data !== undefined) {
-          this.blogArticleList = data;
-        }
-      })
-      .catch(this.commonErrorHandler);
+    console.log("mounted check");
+    this.getList();
   }
 };
 </script>

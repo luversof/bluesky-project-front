@@ -7,8 +7,8 @@
       <editor ref="toastuiEditor" />
     </b-form-group>
     <div class="text-right">
-      <b-button @click="createAction">{{ $t("blogArticle.write") }}</b-button>
-      <b-button>{{ $t("blogArticle.cancel") }}</b-button>
+      <b-button variant="outline-primary" @click="createAction">{{ $t("blogArticle.write") }}</b-button>
+      <b-button variant="outline-secondary" @click="historyBack">{{ $t("blogArticle.cancel") }}</b-button>
     </div>
   </div>
 </template>
