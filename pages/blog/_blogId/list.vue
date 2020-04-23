@@ -39,26 +39,30 @@ export default {
         {
           key: "title",
           label: this.$t("blogArticle.title"),
-          class: "w-75"
+          class: "w-75",
         },
         {
           key: "createdDate",
           label: this.$t("blogArticle.createdDate"),
-          formatter: value => {
+          formatter: (value) => {
             return this.$moment(value)
               .subtract(10, "days")
               .calendar();
-          }
+          },
+        },
+        {
+          key: "blogArticleCategory.name",
+          label: this.$t("blogArticleCategory.name"),
         },
         {
           key: "viewCount",
-          label: this.$t("blogArticle.viewCount")
-        }
+          label: this.$t("blogArticle.viewCount"),
+        },
       ],
       blogArticleList: {
-        content: []
+        content: [],
       },
-      currentPage: 1
+      currentPage: 1,
     };
   },
   methods: {
@@ -69,24 +73,24 @@ export default {
     movePage: function(pageNum) {
       return {
         path: "/blog/{0}/list".format(this.$route.params.blogId),
-        query: { page: pageNum }
+        query: { page: pageNum },
       };
     },
     getList: function(page = 0) {
       this.getBlogArticleList(this.$route.params.blogId, page)
-        .then(data => {
+        .then((data) => {
           if (data !== undefined) {
             this.blogArticleList = data;
             this.currentPage = this.blogArticleList.number + 1;
           }
         })
         .catch(this.commonErrorHandler);
-    }
+    },
   },
   watch: {
     $route(to, from) {
       this.getList(to.query.page - 1);
-    }
+    },
   },
   // asyncData({ params }) {
   //   console.log(params);
@@ -94,7 +98,7 @@ export default {
   mounted() {
     console.log("mounted check");
     this.getList();
-  }
+  },
 };
 </script>
 

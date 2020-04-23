@@ -8,7 +8,6 @@
     "blog": {},
     "blogArticle": {
       "id": "번호",
-      "category": "분류",
       "title": "제목",
       "content": "내용",
       "createdDate": "생성일",
@@ -21,6 +20,9 @@
       "msg": {
         "deleteConfirm": "글을 삭제하시겠습니까?"
       }
+    },
+    "blogArticleCategory": {
+      "name": "분류"
     },
     "bookkeeping": {
       "name": "가계부 이름",
