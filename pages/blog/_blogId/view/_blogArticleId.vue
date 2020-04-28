@@ -3,7 +3,7 @@
     <Loading v-if="blogArticle.id == null" />
 
     <article v-if="blogArticle.id != null">
-      <h1>{{blogArticle.title}}</h1>
+      <h1>{{ blogArticle.title }}</h1>
       <time v-text="$moment(blogArticle.createdDate).format('LLL')"></time>
       <Viewer
         v-if="blogArticle.content != null"
@@ -26,6 +26,8 @@
         v-text="$t('blogArticle.delete')"
       ></b-button>
     </div>
+
+    <BlogArticleList />
   </div>
 </template>
 
@@ -35,6 +37,7 @@ import { mapState, mapMutations } from "vuex";
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
+import BlogArticleList from "@/components/Blog/BlogArticleList.vue";
 import Loading from "@/components/Blog/Loading.vue";
 
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
@@ -45,17 +48,18 @@ export default {
   mixins: [blogMixin, blogArticleMixin],
   components: {
     Viewer,
-    Loading
+    BlogArticleList,
+    Loading,
   },
   computed: {
     ...mapState({
-      loginInfo: state => state.loginInfo.loginInfo
-    })
+      loginInfo: (state) => state.loginInfo.loginInfo,
+    }),
   },
   data() {
     return {
       blogArticle: {},
-      viewerText: "# This is Viewer.\n Hello World."
+      viewerText: "# This is Viewer.\n Hello World.",
     };
   },
   methods: {
@@ -74,7 +78,7 @@ export default {
     deleteBlogArticleConfirm: function() {
       if (confirm(this.$t("blogArticle.msg.deleteConfirm"))) {
         this.deleteBlogArticle(this.$route.params.blogArticleId).then(
-          response => {
+          (response) => {
             if (response.ok) {
               this.moveUserBlogArticleListPage();
               console.log("삭제 성공. 실패시엔 어떻게?");
@@ -82,17 +86,24 @@ export default {
           }
         );
       }
-    }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.getBlogArticle(this.$route.params.blogArticleId).then((data) => {
+        this.blogArticle = data;
+        window.scrollTo(0, 0);
+      });
+    },
   },
   mounted() {
     // router의 변수 값은 어떻게 구하나?
     // path variable 이름은 동일한 이름을 사용하면 안됨.
-    this.getBlogArticle(this.$route.params.blogArticleId).then(data => {
+    this.getBlogArticle(this.$route.params.blogArticleId).then((data) => {
       this.blogArticle = data;
     });
-  }
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

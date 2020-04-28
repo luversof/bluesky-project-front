@@ -5,6 +5,8 @@ export default {
   computed: {
     ...mapState({
       userBlog: (state) => state.blog.blog.userBlog,
+      userBlogArticleList: (state) =>
+        state.blog.blogArticle.userBlogArticleList,
     }),
   },
   mixins: [commonMixin],
@@ -16,15 +18,20 @@ export default {
      * @param {*} blogId
      * @param {*} page
      */
-    getBlogArticleList: function(blogId, page = 0) {
+    getBlogArticleList: function(blogId, pageRequest) {
+      if (pageRequest === undefined) {
+        pageRequest = {
+          page: 0,
+        };
+      }
       if (this.$route.query.page != null) {
-        page = this.$route.query.page - 1;
+        pageRequest.page = this.$route.query.page - 1;
       }
 
       return fetch(
         "/api/blogArticle/search/findByBlogId/{0}?page={1}".format(
           blogId,
-          page
+          pageRequest.page
         ),
         {
           headers: this.commonHeaders(),

@@ -1,25 +1,6 @@
 <template>
   <div class="m-3">
-    <Loading v-if="blogArticleList.content.length == 0" />
-
-    <b-table
-      v-if="blogArticleList.content.length > 0"
-      :items="blogArticleList.content"
-      hover
-      :fields="tableFields"
-      @row-clicked="getView"
-    ></b-table>
-
-    <!-- 페이지 붙일 차례 -->
-    <div>
-      <b-pagination-nav
-        align="center"
-        v-if="blogArticleList.content.length > 0"
-        v-model="currentPage"
-        :number-of-pages="blogArticleList.totalPages"
-        :link-gen="movePage"
-      ></b-pagination-nav>
-    </div>
+    <BlogArticleList />
   </div>
 </template>
 
@@ -27,78 +8,20 @@
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
-import Loading from "@/components/Blog/Loading.vue";
+import BlogArticleList from "@/components/Blog/BlogArticleList.vue";
 
 export default {
-  components: { Loading },
-  mixins: [blogMixin, blogArticleMixin],
+  components: { BlogArticleList },
+  mixins: [],
   data() {
-    return {
-      tableFields: [
-        { key: "id", label: this.$t("blogArticle.id") },
-        {
-          key: "title",
-          label: this.$t("blogArticle.title"),
-          class: "w-75",
-        },
-        {
-          key: "createdDate",
-          label: this.$t("blogArticle.createdDate"),
-          formatter: (value) => {
-            return this.$moment(value)
-              .subtract(10, "days")
-              .calendar();
-          },
-        },
-        {
-          key: "blogArticleCategory.name",
-          label: this.$t("blogArticleCategory.name"),
-        },
-        {
-          key: "viewCount",
-          label: this.$t("blogArticle.viewCount"),
-        },
-      ],
-      blogArticleList: {
-        content: [],
-      },
-      currentPage: 1,
-    };
+    return {};
   },
-  methods: {
-    getView: function(item, index, event) {
-      this.moveBlogArticleViewPage(this.$route.params.blogId, item.id);
-    },
-    // movePage의 경우 href를 만들기 때문에 move함수의 $router를 사용하지 않음.
-    movePage: function(pageNum) {
-      return {
-        path: "/blog/{0}/list".format(this.$route.params.blogId),
-        query: { page: pageNum },
-      };
-    },
-    getList: function(page = 0) {
-      this.getBlogArticleList(this.$route.params.blogId, page)
-        .then((data) => {
-          if (data !== undefined) {
-            this.blogArticleList = data;
-            this.currentPage = this.blogArticleList.number + 1;
-          }
-        })
-        .catch(this.commonErrorHandler);
-    },
-  },
-  watch: {
-    $route(to, from) {
-      this.getList(to.query.page - 1);
-    },
-  },
+  methods: {},
+  watch: {},
   // asyncData({ params }) {
   //   console.log(params);
   // },
-  mounted() {
-    console.log("mounted check");
-    this.getList();
-  },
+  mounted() {},
 };
 </script>
 
