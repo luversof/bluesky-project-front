@@ -2,7 +2,6 @@ import commonMixin from "@/assets/common.js";
 
 export default {
   mixins: [commonMixin],
-
   methods: {
     /**
      * 글 목록 호출
@@ -10,19 +9,15 @@ export default {
      * @param {*} blogId
      * @param {*} page
      */
-    getBlogArticleList: function(blogId, pageRequest) {
+    getBlogCommentList: function(blogArticleId, pageRequest) {
       if (pageRequest === undefined) {
         pageRequest = {
           page: 0,
         };
       }
-      if (this.$route.query.page != null) {
-        pageRequest.page = this.$route.query.page - 1;
-      }
-
       return fetch(
-        "/api/blogArticle/search/findByBlogId/{0}?page={1}".format(
-          blogId,
+        "/api/blogComment/search/findByBlogArticleId/{0}?page={1}".format(
+          blogArticleId,
           pageRequest.page
         ),
         {
@@ -30,33 +25,26 @@ export default {
         }
       ).then(this.commonResponseData);
     },
-    // 글 보기 호출
-    // TODO blogId 체크가 없이 호출하고 있음
-    getBlogArticle: function(blogArticleId) {
-      return fetch("/api/blogArticle/{0}".format(blogArticleId), {
-        headers: this.commonHeaders(),
-      }).then(this.commonResponseData);
-    },
 
     // 글 생성
-    createBlogArticle: function(blogArticle) {
-      return fetch("/api/blogArticle", {
+    createBlogComment: function(blogComment) {
+      return fetch("/api/blogComment", {
         method: "POST",
         headers: this.commonHeaders(),
-        body: JSON.stringify(blogArticle),
+        body: JSON.stringify(blogComment),
       }).then(this.commonResponseData);
     },
     // 글 수정
-    updateBlogArticle: function(blogArticle) {
-      return fetch("/api/blogArticle/{0}".format(blogArticle.id), {
+    updateBlogComment: function(blogComment) {
+      return fetch("/api/blogComment/{0}".format(blogComment.id), {
         method: "PUT",
         headers: this.commonHeaders(),
-        body: JSON.stringify(blogArticle),
+        body: JSON.stringify(blogComment),
       }).then(this.commonResponseData);
     },
     // 글 삭제
-    deleteBlogArticle: function(blogArticleId) {
-      return fetch("/api/blogArticle/{0}".format(blogArticleId), {
+    deleteBlogComment: function(blogCommentId) {
+      return fetch("/api/blogComment/{0}".format(blogCommentId), {
         method: "DELETE",
         headers: this.commonHeaders(),
       });

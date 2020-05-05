@@ -1,10 +1,15 @@
 <template>
   <div class="m-3">
-    <Loading v-if="blogArticle.id == null" />
+    <BlogHeadTitle menu="blogArticle.menu.view" />
+
+    <BlogLoading v-if="blogArticle.id == null" />
 
     <article v-if="blogArticle.id != null">
-      <h1>{{ blogArticle.title }}</h1>
-      <time v-text="$moment(blogArticle.createdDate).format('LLL')"></time>
+      <div class="d-flex w-100 justify-content-between">
+        <h1>{{ blogArticle.title }}</h1>
+        <time v-text="$moment(blogArticle.createdDate).format('LLL')" />
+      </div>
+
       <Viewer
         v-if="blogArticle.content != null"
         ref="toastuiEditor"
@@ -17,15 +22,17 @@
         variant="outline-primary"
         v-if="isOwner()"
         @click="moveModifyView"
-        v-text="$t('blogArticle.modify')"
-      ></b-button>
+        v-text="$t('blogArticle.button.modify')"
+      />
       <b-button
         variant="outline-danger"
         v-if="isOwner()"
         @click="deleteBlogArticleConfirm"
-        v-text="$t('blogArticle.delete')"
-      ></b-button>
+        v-text="$t('blogArticle.button.delete')"
+      />
     </div>
+
+    <BlogCommentList />
 
     <BlogArticleList />
   </div>
@@ -37,8 +44,10 @@ import { mapState, mapMutations } from "vuex";
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
+import BlogHeadTitle from "@/components/Blog/BlogHeadTitle.vue";
+import BlogCommentList from "@/components/Blog/BlogCommentList.vue";
 import BlogArticleList from "@/components/Blog/BlogArticleList.vue";
-import Loading from "@/components/Blog/Loading.vue";
+import BlogLoading from "@/components/Blog/BlogLoading.vue";
 
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/vue-editor";
@@ -47,9 +56,11 @@ export default {
   layout: "blog",
   mixins: [blogMixin, blogArticleMixin],
   components: {
-    Viewer,
+    BlogHeadTitle,
+    BlogCommentList,
     BlogArticleList,
-    Loading,
+    BlogLoading,
+    Viewer,
   },
   computed: {
     ...mapState({

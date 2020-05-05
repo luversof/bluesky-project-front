@@ -4,14 +4,14 @@ import commonMixin from "@/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userAssetGroupList: state =>
-        state.bookkeeping.assetGroup.userAssetGroupList
-    })
+      userAssetGroupList: (state) =>
+        state.bookkeeping.assetGroup.userAssetGroupList,
+    }),
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setUserAssetGroupList: "bookkeeping/assetGroup/setUserAssetGroupList"
+      setUserAssetGroupList: "bookkeeping/assetGroup/setUserAssetGroupList",
     }),
     getUserAssetGroupList() {
       if (this.userAssetGroupList.length > 0) {
@@ -20,16 +20,16 @@ export default {
         });
       }
 
-      return fetch("/api/bookkeeping/assetGroup.json", {
+      return fetch("/api/bookkeeping/assetGroup", {
         headers: {
-          "Content-type": "application/json"
-        }
+          "Content-type": "application/json",
+        },
       })
         .then(this.commonResponseData)
-        .then(data => {
+        .then((data) => {
           this.setUserAssetGroupList(data);
           return data;
         });
-    }
-  }
+    },
+  },
 };

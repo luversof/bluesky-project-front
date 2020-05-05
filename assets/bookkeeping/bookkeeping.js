@@ -4,26 +4,26 @@ import commonMixin from "@/assets/common.js";
 export default {
   computed: {
     ...mapState({
-      userBookkeeping: state => state.bookkeeping.bookkeeping.userBookkeeping,
-      isUserBookkeepingLoaded: state =>
-        state.bookkeeping.bookkeeping.isUserBookkeepingLoaded
-    })
+      userBookkeeping: (state) => state.bookkeeping.bookkeeping.userBookkeeping,
+      isUserBookkeepingLoaded: (state) =>
+        state.bookkeeping.bookkeeping.isUserBookkeepingLoaded,
+    }),
   },
   mixins: [commonMixin],
   methods: {
     ...mapMutations({
-      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping"
+      setUserBookkeeping: "bookkeeping/bookkeeping/setUserBookkeeping",
     }),
     createUserBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping.json", {
+      return fetch("/api/bookkeeping", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookkeeping)
+        body: JSON.stringify(bookkeeping),
       })
         .then(this.commonResponseData)
-        .then(data => {
+        .then((data) => {
           this.setUserBookkeeping(data);
           return data;
         });
@@ -34,9 +34,9 @@ export default {
           resolve(this.userBookkeeping);
         });
       }
-      return fetch("/api/bookkeeping.json")
+      return fetch("/api/bookkeeping")
         .then(this.commonResponseData)
-        .then(data => {
+        .then((data) => {
           if (data != null) {
             this.setUserBookkeeping(data);
           }
@@ -45,26 +45,26 @@ export default {
     },
 
     updateUserBookkeeping: function(bookkeeping) {
-      return fetch("/api/bookkeeping.json", {
+      return fetch("/api/bookkeeping", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookkeeping)
+        body: JSON.stringify(bookkeeping),
       })
         .then(this.commonResponseData)
-        .then(data => {
+        .then((data) => {
           this.setUserBookkeeping(data);
           return data;
         });
     },
     deleteUserBookkeeping: function() {
-      return fetch("/api/bookkeeping.json", {
-        method: "DELETE"
-      }).then(response => {
+      return fetch("/api/bookkeeping", {
+        method: "DELETE",
+      }).then((response) => {
         this.setUserBookkeeping(null);
         return response;
       });
-    }
-  }
+    },
+  },
 };

@@ -1,14 +1,13 @@
 <template>
   <div class="text-center">
-    <b-spinner type="grow" label="Loading..."></b-spinner>
+    <b-spinner label="Loading..."></b-spinner>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Loading"
+  name: "BlogLoading",
 };
 </script>
 
-<style>
-</style>
+<style></style>

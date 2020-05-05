@@ -12,13 +12,31 @@
       "content": "내용",
       "createdDate": "생성일",
       "viewCount": "조회수",
-      "list": "목록",
-      "write": "글쓰기",
-      "modify": "수정",
-      "delete": "삭제",
-      "cancel": "취소",
+
       "msg": {
         "deleteConfirm": "글을 삭제하시겠습니까?"
+      },
+
+      "menu": {
+        "list": "글 목록",
+        "view": "글 보기",
+        "write": "글 쓰기",
+        "modify": "글 수정하기"
+      },
+      "button": {
+        "write": "쓰기",
+        "modify": "수정",
+        "delete": "삭제",
+        "cancel": "취소"
+      }
+    },
+    "blogComment": {
+      "comment": "댓글",
+      "menu": {
+        "list": "댓글 목록"
+      },
+      "button": {
+        "write": "쓰기"
       }
     },
     "blogArticleCategory": {

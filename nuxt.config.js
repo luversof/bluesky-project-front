@@ -11,13 +11,11 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
-      }
+        content: process.env.npm_package_description || "",
+      },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
-    // script: [{ src: "cordova.js" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-  router: { mode: "hash" },
   /*
    ** Customize the progress-bar color
    */
@@ -48,11 +46,11 @@ export default {
         defaultLocale: "ko",
         vueI18n: {
           fallbackLocale: "ko",
-          messages: require("./static/message.json")
-        }
-      }
+          messages: require("./static/message.json"),
+        },
+      },
     ],
-    "@nuxtjs/proxy"
+    "@nuxtjs/proxy",
   ],
   // /*
   //  ** Build configuration
@@ -68,26 +66,26 @@ export default {
     // proxyTable 설정
     "/api": {
       target: "http://localhost:8084/",
-      changeOrigin: true
-    }
+      changeOrigin: true,
+    },
   },
   fontawesome: {
     imports: [
       {
         set: "@fortawesome/free-solid-svg-icons", // Solid icons
-        icons: ["fas"]
+        icons: ["fas"],
       },
       {
         set: "@fortawesome/free-brands-svg-icons", // Brand icons
-        icons: ["fab"]
+        icons: ["fab"],
       },
       {
         set: "@fortawesome/free-regular-svg-icons", // Regular icons
-        icons: ["far"]
-      }
-    ]
+        icons: ["far"],
+      },
+    ],
   },
   moment: {
-    locales: ["ko"]
-  }
+    locales: ["ko"],
+  },
 };

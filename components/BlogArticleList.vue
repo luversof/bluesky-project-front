@@ -1,44 +1,39 @@
 <template>
   <section>
-    <BlogHeadTitle menu="blogArticle.menu.list" />
+    <BlogHeadTitle menu="blog.menu.list" />
 
     <BlogLoading v-if="blogArticleList.content === undefined" />
 
     <b-table
-      v-if="blogArticleList.content !== undefined"
+      v-if="blogArticleList.content"
       :items="blogArticleList.content"
-      hover
-      :fields="tableFields"
+      :fields="blogArticleListTableFields"
       @row-clicked="getView"
-    >
-    </b-table>
+      hover
+    />
 
-    <!-- 페이지 붙일 차례 -->
-    <div>
-      <b-pagination-nav
-        align="center"
-        v-if="blogArticleList.content !== undefined"
-        v-model="currentPage"
-        :number-of-pages="blogArticleList.totalPages"
-        :link-gen="movePage"
-      ></b-pagination-nav>
-    </div>
+    <b-pagination-nav
+      align="center"
+      v-if="blogArticleList.content"
+      v-model="currentPage"
+      number-of-pages="blogArticleList.totalPages"
+      link-gen="movePage"
+    />
   </section>
 </template>
 
 <script>
-import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 
-import BlogHeadTitle from "@/components/Blog/BlogHeadTitle.vue";
 import BlogLoading from "@/components/Blog/BlogLoading.vue";
+import BlogHeadTitle from "@/components/Blog/BlogHeadTitle.vue";
 
 export default {
-  components: { BlogHeadTitle, BlogLoading },
-  mixins: [blogMixin, blogArticleMixin],
+  mixins: [blogArticleMixin],
+  components: { BlogLoading, BlogHeadTitle },
   data() {
     return {
-      tableFields: [
+      blogArticleListTableFields: [
         { key: "id", label: this.$t("blogArticle.id") },
         {
           key: "title",
