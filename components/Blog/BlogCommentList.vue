@@ -12,12 +12,13 @@
       :items="blogCommentList.content"
       :fields="blogCommentListTableFields"
     />
-    <b-pagination-nav
+    <b-pagination
       align="center"
       v-if="blogCommentList.content && blogCommentList.totalPages > 1"
       v-model="currentPage"
-      number-of-pages="blogCommentList.totalPages"
-      link-gen="movePage"
+      :total-rows="blogCommentList.totalElements"
+      :per-page="blogCommentList.size"
+      @change="movePage"
     />
 
     <div>
