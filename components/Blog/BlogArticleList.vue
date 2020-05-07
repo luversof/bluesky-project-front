@@ -54,28 +54,28 @@ export default {
         {
           key: "title",
           label: this.$t("blogArticle.title"),
-          class: "w-75"
+          class: "w-75",
         },
         {
           key: "createdDate",
           label: this.$t("blogArticle.createdDate"),
-          formatter: value => {
+          formatter: (value) => {
             return this.$moment(value)
               .subtract(10, "days")
               .calendar();
-          }
+          },
         },
         {
           key: "blogArticleCategory.name",
-          label: this.$t("blogArticleCategory.name")
+          label: this.$t("blogArticleCategory.name"),
         },
         {
           key: "viewCount",
-          label: this.$t("blogArticle.viewCount")
-        }
+          label: this.$t("blogArticle.viewCount"),
+        },
       ],
       blogArticleList: {},
-      currentPage: 1
+      currentPage: 1,
     };
   },
   methods: {
@@ -86,34 +86,34 @@ export default {
     movePage: function(pageNum) {
       return {
         path: "/blog/{0}/list".format(this.$route.params.blogId),
-        query: { page: pageNum }
+        query: { page: pageNum },
       };
     },
     getList: function(pageRequest) {
       this.getBlogArticleList(this.$route.params.blogId, pageRequest)
-        .then(data => {
+        .then((data) => {
           if (data !== undefined) {
             this.blogArticleList = data;
             this.currentPage = this.blogArticleList.number + 1;
           }
         })
         .catch(this.commonErrorHandler);
-    }
+    },
   },
   watch: {
     $route(to, from) {
       var pageRequest = {
-        page: to.query.page === undefined ? 0 : to.query.page - 1
+        page: to.query.page === undefined ? 0 : to.query.page - 1,
       };
       this.getList(pageRequest);
-    }
+    },
   },
   // asyncData({ params }) {
   //   console.log(params);
   // },
   mounted() {
     this.getList();
-  }
+  },
 };
 </script>
 
