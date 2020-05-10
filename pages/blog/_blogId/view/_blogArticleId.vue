@@ -6,8 +6,13 @@
 
     <article v-if="blogArticle.id != null">
       <div class="d-flex w-100 justify-content-between">
-        <h1>{{ blogArticle.title }}</h1>
-        <time v-text="$moment(blogArticle.createdDate).format('LLL')" />
+        <span>
+          <h1>{{ blogArticle.title }}</h1>
+          <time v-text="$moment(blogArticle.createdDate).format('LLLL')" />
+        </span>
+        <!-- <span>
+          메뉴
+        </span> -->
       </div>
 
       <Viewer

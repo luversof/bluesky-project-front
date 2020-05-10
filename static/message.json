@@ -6,6 +6,9 @@
     "username": "계정",
     "password": "비밀번호",
     "blog": {},
+    "user": {
+      "username": "유저이름"
+    },
     "blogArticle": {
       "id": "번호",
       "title": "제목",
