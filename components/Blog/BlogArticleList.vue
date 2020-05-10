@@ -2,18 +2,15 @@
   <section>
     <BlogHeadTitle menu="blogArticle.menu.list" />
 
+    <BlogLoading v-if="blogArticleList.content === undefined" />
+
     <b-table
       v-if="blogArticleList.content !== undefined"
       :items="blogArticleList.content"
       hover
       :fields="tableFields"
       @row-clicked="getView"
-      :busy="blogArticleList.content === undefined"
     >
-      <template v-slot:table-busy>
-        <BlogLoading />
-      </template>
-
       <template v-slot:cell(title)="data">
         {{ data.value }}
         <small

@@ -16,8 +16,12 @@
       />
     </b-form-group>
     <div class="text-right">
-      <b-button @click="modifyAction">{{ $t("blogArticle.modify") }}</b-button>
-      <b-button @click="historyBack">{{ $t("blogArticle.cancel") }}</b-button>
+      <b-button @click="modifyAction">{{
+        $t("blogArticle.button.modify")
+      }}</b-button>
+      <b-button @click="historyBack">{{
+        $t("blogArticle.button.cancel")
+      }}</b-button>
     </div>
   </div>
 </template>

@@ -21,7 +21,22 @@
                 v-text="getCommentTimeDisplay(blogComment.createdDate)"
               />
             </span>
-            <!-- <span>메뉴</span> -->
+            <span
+              v-if="loginInfo.login & (loginInfo.id === blogComment.userId)"
+            >
+              <b-button
+                size="sm"
+                variant="outline-primary"
+                v-if="isOwner(blogComment)"
+                v-text="$t('blogArticle.button.modify')"
+              />
+              <b-button
+                size="sm"
+                variant="outline-danger"
+                v-if="isOwner(blogComment)"
+                v-text="$t('blogArticle.button.delete')"
+              />
+            </span>
           </div>
 
           <p class="mb-1" v-text="blogComment.comment" />
@@ -55,12 +70,19 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 import blogCommentMixin from "@/assets/blog/blogComment.js";
 
 import BlogHeadTitle from "@/components/Blog/BlogHeadTitle.vue";
 import BlogLoading from "@/components/Blog/BlogLoading.vue";
 
 export default {
+  computed: {
+    ...mapState({
+      loginInfo: (state) => state.loginInfo.loginInfo,
+    }),
+  },
   mixins: [blogCommentMixin],
   components: { BlogHeadTitle, BlogLoading },
   data() {
@@ -85,6 +107,12 @@ export default {
     };
   },
   methods: {
+    isOwner: function(blogComment) {
+      if (blogComment.userId === this.loginInfo.id) {
+        return true;
+      }
+      return false;
+    },
     getList: function(pageRequest) {
       this.getBlogCommentList(this.$route.params.blogArticleId, pageRequest)
         .then((data) => {
