@@ -36,7 +36,10 @@
     "blogComment": {
       "comment": "댓글",
       "menu": {
-        "list": "댓글 목록"
+        "list": "댓글 목록",
+        "write": "댓글 쓰기",
+        "modify": "댓글 수정",
+        "delete": "댓글 삭제"
       },
       "button": {
         "write": "쓰기"

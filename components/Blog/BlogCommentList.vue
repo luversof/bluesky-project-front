@@ -53,8 +53,13 @@
       @change="movePage"
     />
 
+    <BlogHeadTitle menu="blogComment.menu.write" />
+    <BlogCommentWrite
+      v-model="blogComment"
+      text="blogComment.button.write"
+      :click="commentWriteAction"
+    />
     <div>
-      <b>댓글 쓰기</b>
       <b-input-group>
         <b-form-textarea v-model="blogComment.comment" />
         <b-input-group-append>
@@ -76,6 +81,7 @@ import blogCommentMixin from "@/assets/blog/blogComment.js";
 
 import BlogHeadTitle from "@/components/Blog/BlogHeadTitle.vue";
 import BlogLoading from "@/components/Blog/BlogLoading.vue";
+import BlogCommentWrite from "@/components/Blog/BlogCommentWrite.vue";
 
 export default {
   computed: {
@@ -84,7 +90,7 @@ export default {
     }),
   },
   mixins: [blogCommentMixin],
-  components: { BlogHeadTitle, BlogLoading },
+  components: { BlogHeadTitle, BlogLoading, BlogCommentWrite },
   data() {
     return {
       blogCommentListTableFields: [
