@@ -10,36 +10,47 @@
       <b-list-group flush>
         <b-list-group-item
           class="flex-column"
-          v-for="blogComment in sortedBlogCommentList"
-          :key="blogComment.id"
+          v-for="(targetBlogComment, index) in sortedBlogCommentList"
+          :key="targetBlogComment.id"
         >
           <div class="d-flex w-100 justify-content-between">
             <span>
-              <b class="mb-1" v-text="blogComment.user.username" />
+              <b class="mb-1" v-text="targetBlogComment.user.username" />
               <time
                 @click="toggleCommentTimeDisplay"
-                v-text="getCommentTimeDisplay(blogComment.createdDate)"
+                v-text="getCommentTimeDisplay(targetBlogComment.createdDate)"
               />
             </span>
             <span
-              v-if="loginInfo.login & (loginInfo.id === blogComment.userId)"
+              v-if="
+                loginInfo.login & (loginInfo.id === targetBlogComment.userId)
+              "
             >
               <b-button
                 size="sm"
                 variant="outline-primary"
-                v-if="isOwner(blogComment)"
-                v-text="$t('blogArticle.button.modify')"
+                v-if="isOwner(targetBlogComment)"
+                v-text="$t('blogComment.button.modify')"
               />
               <b-button
                 size="sm"
                 variant="outline-danger"
-                v-if="isOwner(blogComment)"
-                v-text="$t('blogArticle.button.delete')"
+                v-if="isOwner(targetBlogComment)"
+                v-text="$t('blogComment.button.delete')"
+                @click="deleteBlogArticleConfirm(targetBlogComment)"
               />
             </span>
           </div>
 
-          <p class="mb-1" v-text="blogComment.comment" />
+          <section :is="modifyFormShow(targetBlogComment.id)">test</section>
+          <BlogHeadTitle menu="blogComment.menu.write" />
+          <BlogCommentWrite
+            v-model="sortedBlogCommentList[index]"
+            text="blogComment.button.modify"
+            :click="commentWriteAction"
+          />
+
+          <section class="mb-1" v-text="targetBlogComment.comment" />
         </b-list-group-item>
       </b-list-group>
     </div>
@@ -59,18 +70,6 @@
       text="blogComment.button.write"
       :click="commentWriteAction"
     />
-    <div>
-      <b-input-group>
-        <b-form-textarea v-model="blogComment.comment" />
-        <b-input-group-append>
-          <b-button
-            variant="outline-primary"
-            @click="commentWriteAction"
-            v-text="$t('blogComment.button.write')"
-          />
-        </b-input-group-append>
-      </b-input-group>
-    </div>
   </section>
 </template>
 
@@ -110,6 +109,7 @@ export default {
       blogComment: {},
       currentPage: 1,
       commentTimeDisplay: 1,
+      blogCommentModifyFormList: {},
     };
   },
   methods: {
@@ -146,6 +146,19 @@ export default {
         })
         .catch(this.commonErrorHandler);
     },
+    deleteBlogArticleConfirm: function(blogComment) {
+      if (confirm(this.$t("blogComment.msg.deleteConfirm"))) {
+        this.deleteBlogComment(blogComment.id).then((response) => {
+          if (response.ok) {
+            var pageRequest = {
+              page: this.currentPage - 1,
+            };
+            this.getList(pageRequest);
+            console.log("삭제 성공. 실패시엔 어떻게?");
+          }
+        });
+      }
+    },
     toggleCommentTimeDisplay: function() {
       this.commentTimeDisplay = this.commentTimeDisplay ^ 1;
     },
@@ -155,6 +168,10 @@ export default {
       } else {
         return this.$moment(date).format("LLLL");
       }
+    },
+    modifyFormShow: function(blogCommentId) {
+      console.log("TEST : ", blogCommentId);
+      return true;
     },
   },
   watch: {
