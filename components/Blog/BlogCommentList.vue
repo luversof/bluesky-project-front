@@ -6,6 +6,7 @@
     />
 
     <BlogLoading v-if="blogCommentList.content === undefined" />
+
     <div v-if="blogCommentList.content && blogCommentList.content.length > 0">
       <b-list-group flush>
         <b-list-group-item
@@ -31,6 +32,7 @@
                 variant="outline-primary"
                 v-if="isOwner(targetBlogComment)"
                 v-text="$t('blogComment.button.modify')"
+                @click="toggleArticleCommentModifyForm(targetBlogComment)"
               />
               <b-button
                 size="sm"
@@ -42,15 +44,19 @@
             </span>
           </div>
 
-          <section :is="modifyFormShow(targetBlogComment.id)">test</section>
           <BlogHeadTitle menu="blogComment.menu.write" />
           <BlogCommentWrite
+            v-if="isActiveBlogCommentModifyForm(targetBlogComment)"
             v-model="sortedBlogCommentList[index]"
             text="blogComment.button.modify"
-            :click="commentWriteAction"
+            :click="commentModifyAction"
           />
 
-          <section class="mb-1" v-text="targetBlogComment.comment" />
+          <section
+            class="mb-1"
+            v-if="!isActiveBlogCommentModifyForm(targetBlogComment)"
+            v-text="targetBlogComment.comment"
+          />
         </b-list-group-item>
       </b-list-group>
     </div>
@@ -107,9 +113,9 @@ export default {
       ],
       blogCommentList: {},
       blogComment: {},
+      modifyBlogComment: {},
       currentPage: 1,
       commentTimeDisplay: 1,
-      blogCommentModifyFormList: {},
     };
   },
   methods: {
@@ -146,6 +152,9 @@ export default {
         })
         .catch(this.commonErrorHandler);
     },
+    commentModifyAction: function() {
+      console.log("modify : ", this.modifyBlogComment);
+    },
     deleteBlogArticleConfirm: function(blogComment) {
       if (confirm(this.$t("blogComment.msg.deleteConfirm"))) {
         this.deleteBlogComment(blogComment.id).then((response) => {
@@ -169,9 +178,16 @@ export default {
         return this.$moment(date).format("LLLL");
       }
     },
-    modifyFormShow: function(blogCommentId) {
-      console.log("TEST : ", blogCommentId);
-      return true;
+
+    toggleArticleCommentModifyForm: function(targetBlogComment) {
+      if (this.modifyBlogComment == targetBlogComment) {
+        this.modifyBlogComment = {};
+      } else {
+        this.modifyBlogComment = targetBlogComment;
+      }
+    },
+    isActiveBlogCommentModifyForm: function(targetBlogComment) {
+      return this.modifyBlogComment == targetBlogComment;
     },
   },
   watch: {
