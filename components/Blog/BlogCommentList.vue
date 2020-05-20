@@ -181,10 +181,13 @@ export default {
     },
 
     toggleArticleCommentModifyForm: function(targetBlogComment) {
+      console.log("접근");
       if (this.modifyBlogComment.id == targetBlogComment.id) {
         this.modifyBlogComment = {};
       } else {
+        console.log(1);
         this.modifyBlogComment = _.cloneDeep(targetBlogComment);
+        console.log(2, this.modifyBlogComment);
         this.originalBlogComment = targetBlogComment;
       }
     },
