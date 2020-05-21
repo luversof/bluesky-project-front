@@ -154,7 +154,12 @@ export default {
         .catch(this.commonErrorHandler);
     },
     commentModifyAction: function() {
-      console.log("modify : ", this.modifyBlogComment);
+      this.updateBlogComment(this.modifyBlogComment)
+        .then((data) => {
+          this.modifyBlogComment = {};
+          this.getList();
+        })
+        .catch(this.commonErrorHandler);
     },
     deleteBlogArticleConfirm: function(blogComment) {
       if (confirm(this.$t("blogComment.msg.deleteConfirm"))) {
@@ -164,7 +169,7 @@ export default {
               page: this.currentPage - 1,
             };
             this.getList(pageRequest);
-            console.log("삭제 성공. 실패시엔 어떻게?");
+            // console.log("삭제 성공. 실패시엔 어떻게?");
           }
         });
       }
@@ -181,13 +186,10 @@ export default {
     },
 
     toggleArticleCommentModifyForm: function(targetBlogComment) {
-      console.log("접근");
       if (this.modifyBlogComment.id == targetBlogComment.id) {
         this.modifyBlogComment = {};
       } else {
-        console.log(1);
         this.modifyBlogComment = _.cloneDeep(targetBlogComment);
-        console.log(2, this.modifyBlogComment);
         this.originalBlogComment = targetBlogComment;
       }
     },
