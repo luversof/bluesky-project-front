@@ -21,9 +21,7 @@ export default {
       }
 
       return fetch("/api/bookkeeping/assetGroup", {
-        headers: {
-          "Content-type": "application/json",
-        },
+        headers: this.commonHeaders(),
       })
         .then(this.commonResponseData)
         .then((data) => {

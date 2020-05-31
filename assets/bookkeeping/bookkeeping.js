@@ -17,9 +17,7 @@ export default {
     createUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: this.commonHeaders(),
         body: JSON.stringify(bookkeeping),
       })
         .then(this.commonResponseData)
@@ -47,9 +45,7 @@ export default {
     updateUserBookkeeping: function(bookkeeping) {
       return fetch("/api/bookkeeping", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: this.commonHeaders(),
         body: JSON.stringify(bookkeeping),
       })
         .then(this.commonResponseData)

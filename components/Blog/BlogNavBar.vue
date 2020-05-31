@@ -29,12 +29,17 @@
         <br />
         <h6>쓰기</h6>
       </b-button>
-      <b-button size="lg" variant="light" active-class="active" to="/blog/asset/">
+      <!--  <b-button size="lg" variant="light" active-class="active" to="/blog/asset/">
         <font-awesome-icon :icon="['fas', 'columns']" />
         <br />
         <h6>자산</h6>
-      </b-button>
-      <b-button size="lg" variant="light" active-class="active" to="/blog/config/">
+      </b-button> -->
+      <b-button
+        size="lg"
+        variant="light"
+        active-class="active"
+        to="/blog/config/"
+      >
         <font-awesome-icon :icon="['fas', 'cog']" />
         <br />
         <h6>설정</h6>
@@ -53,7 +58,7 @@ export default {
   mounted: function() {
     // this.$route.params.id = this.userBlog.id;
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

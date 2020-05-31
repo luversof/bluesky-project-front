@@ -3,40 +3,34 @@ import commonMixin from "@/assets/common.js";
 
 export default {
   computed: {
-    ...mapState({})
+    ...mapState({}),
   },
   mixins: [commonMixin],
   methods: {
     createUserEntry: function(entry) {
-      return fetch("/api/bookkeeping/entry.json", {
+      return fetch("/api/bookkeeping/entry", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(entry)
+        headers: this.commonHeaders(),
+        body: JSON.stringify(entry),
       }).then(this.commonResponseData);
     },
     searchUserEntry: function(entryRequestParam) {
       return fetch(
-        "/api/bookkeeping/entry.json?startLocalDate=" +
+        "/api/bookkeeping/entry?startLocalDate=" +
           entryRequestParam.startLocalDate +
           "&endLocalDate=" +
           entryRequestParam.endLocalDate,
         {
-          headers: {
-            "Content-type": "application/json"
-          }
+          headers: this.commonHeaders(),
         }
       ).then(this.commonResponseData);
     },
     updateUserEntry: function(entry) {
-      return fetch("/api/bookkeeping/entry.json", {
+      return fetch("/api/bookkeeping/entry", {
         method: "PUT",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(entry)
+        headers: this.commonHeaders(),
+        body: JSON.stringify(entry),
       }).then(this.commonResponseData);
-    }
-  }
+    },
+  },
 };

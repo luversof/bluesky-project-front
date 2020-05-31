@@ -15,9 +15,7 @@ export default {
     createUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
+        headers: this.commonHeaders(),
         body: JSON.stringify(asset),
       }).then(this.commonResponseData);
     },
@@ -29,9 +27,7 @@ export default {
       }
 
       return fetch("/api/bookkeeping/asset", {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: this.commonHeaders(),
       })
         .then(this.commonResponseData)
         .then((data) => {
@@ -42,18 +38,14 @@ export default {
     updateUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset", {
         method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-        },
+        headers: this.commonHeaders(),
         body: JSON.stringify(asset),
       }).then(this.commonResponseData);
     },
     deleteUserAsset: function(asset) {
       return fetch("/api/bookkeeping/asset", {
         method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
+        headers: this.commonHeaders(),
         body: JSON.stringify(asset),
       });
     },
