@@ -24,7 +24,7 @@
     "nuxt": "^2.12.2",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^6.12.2",
-    "vue-router": "^3.3.2"
+    "vue-router": "^3.3.4"
   },
   "devDependencies": {}
 }
