@@ -13,7 +13,7 @@
         size="lg"
         variant="light"
         active-class="active"
-        @click="moveUserBlogArticleListPage()"
+        @click="moveUserBlogArticleListView()"
       >
         <font-awesome-icon :icon="['fas', 'list']" />
         <br />
@@ -23,7 +23,7 @@
         size="lg"
         variant="light"
         active-class="active"
-        @click="moveUserBlogArticleWritePage()"
+        @click="moveUserBlogArticleWriteView()"
       >
         <font-awesome-icon :icon="['far', 'edit']" />
         <br />

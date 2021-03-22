@@ -89,14 +89,14 @@ export default {
       return false;
     },
     moveModifyView: function() {
-      this.moveBlogArticleModifyPage(this.$route.params.blogArticleId);
+      this.moveBlogArticleModifyView(this.$route.params.blogArticleId);
     },
     deleteBlogArticleConfirm: function() {
       if (confirm(this.$t("blogArticle.msg.deleteConfirm"))) {
         this.deleteBlogArticle(this.$route.params.blogArticleId).then(
           (response) => {
             if (response.ok) {
-              this.moveUserBlogArticleListPage();
+              this.moveUserBlogArticleListView();
               console.log("삭제 성공. 실패시엔 어떻게?");
             }
           }

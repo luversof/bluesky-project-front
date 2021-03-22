@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     getView: function(item, index, event) {
-      this.moveBlogArticleViewPage(this.$route.params.blogId, item.id);
+      this.moveBlogArticleView(this.$route.params.blogId, item.id);
     },
     // movePage의 경우 href를 만들기 때문에 move함수의 $router를 사용하지 않음.
     movePage: function(pageNum) {

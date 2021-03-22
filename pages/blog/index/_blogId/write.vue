@@ -73,7 +73,7 @@ export default {
       this.createBlogArticle(this.blogArticle)
         .then((data) => {
           if (data !== undefined) {
-            this.moveUserBlogArticleListPage();
+            this.moveUserBlogArticleListView();
           }
           return data;
         })

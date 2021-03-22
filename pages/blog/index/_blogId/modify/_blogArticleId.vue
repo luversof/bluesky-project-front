@@ -58,7 +58,7 @@ export default {
       this.updateBlogArticle(this.blogArticle)
         .then((data) => {
           if (data !== undefined) {
-            this.moveUserBlogArticleListPage();
+            this.moveUserBlogArticleListView();
           }
           return data;
         })

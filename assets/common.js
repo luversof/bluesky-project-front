@@ -64,7 +64,7 @@ export default {
     },
 
     /**
-     * 응답이 정상이면 json을 반환, 에러면 throw 처리
+     * 응답이 정상이면 json을 반환, 에러면 throw 처리? <- 동작안하는 듯?
      */
     commonResponseData: function(response) {
       if (response.ok) {

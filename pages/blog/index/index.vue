@@ -15,13 +15,18 @@ export default {
   watch: {
     userBlog: function(val) {
       if (val.id != null) {
-        this.moveUserBlogArticleListPage();
+        this.moveUserBlogArticleListView();
       }
     },
   },
   mounted() {
-    if (this.userBlog.id != null) {
-      this.moveUserBlogArticleListPage();
+    if (this.userBlog.id == null) {
+      this.getUserBlog().then((data) => {
+        this.moveUserBlogArticleListView(); 
+      });
+      // this.$nuxt.error({ statusCode: 401, message: '로그인이 필요합니다.' })
+    } else {
+      this.moveUserBlogArticleListView(); 
     }
   },
 };

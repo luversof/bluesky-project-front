@@ -22,15 +22,31 @@
     </b-table>
 
     <!-- 페이지 붙일 차례 -->
-    <div>
-      <b-pagination-nav
+    <b-container fluid>
+      <b-row>
+        <b-col>
+          aaa
+        </b-col>
+        <b-col>
+          <b-pagination-nav
         align="center"
         v-if="blogArticleList.content !== undefined"
         v-model="currentPage"
         :number-of-pages="blogArticleList.totalPages"
         :link-gen="movePage"
       />
-    </div>
+        </b-col>
+        <b-col class="text-right">
+          <b-button v-if="userBlog.id == $route.params.blogId"
+            variant="outline-primary"
+            @click="moveUserBlogArticleWriteView()"
+            v-text="$t('blogArticle.button.write')"
+          />
+        </b-col>
+      
+
+      </b-row>
+    </b-container>
   </section>
 </template>
 
@@ -77,7 +93,7 @@ export default {
   },
   methods: {
     getView: function(item, index, event) {
-      this.moveBlogArticleViewPage(this.$route.params.blogId, item.id);
+      this.moveBlogArticleView(this.$route.params.blogId, item.id);
     },
     // movePage의 경우 href를 만들기 때문에 move함수의 $router를 사용하지 않음.
     movePage: function(pageNum) {
