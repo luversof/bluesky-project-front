@@ -31,12 +31,16 @@ export default {
         if (this.loginInfo != null) {
           this.setLoginInfo(null);
         }
-        return response.json().then((data) => {
-          return this.$nuxt.error({
-            statusCode: 401,
-            message: data.result.message,
-          });
+        return this.$nuxt.error({
+          statusCode: 401,
+          message: this.$t("NEED_LOGIN"),
         });
+        // return response.json().then((data) => {
+        //   return this.$nuxt.error({
+        //     statusCode: 401,
+        //     message: data.result.message,
+        //   });
+        // });
       }
 
       return response.json().then((data) => {

@@ -21,8 +21,6 @@ export default {
     ...mapState({
       userBlog: (state) => state.blog.blog.userBlog,
     }),
-  },
-  mounted: function() {
   }
 };
 </script>

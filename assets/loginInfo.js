@@ -24,6 +24,8 @@ export default {
         .then((data) => {
           this.setLoginInfo(data);
           return data;
+        }).catch(error => {
+          this.setLoginInfo(null)
         });
     },
   },

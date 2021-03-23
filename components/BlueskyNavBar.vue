@@ -15,7 +15,7 @@
           <strong>Loading...</strong>
         </b-button>
 
-        <b-nav-form v-if="isLoginInfoLoaded && !loginInfo.login">
+        <b-nav-form v-if="isLoginInfoLoaded && loginInfo.id == null">
           <b-form-input class="mr-1" name="username" :placeholder="$t('username')" />
           <b-form-input class="mr-1" type="password" name="password" :placeholder="$t('password')" />
           <b-button variant="outline-secondary" class="mr-2" type="submit">
@@ -37,7 +37,7 @@
           </b-button>
         </b-nav-form>
 
-        <b-nav-form v-if="isLoginInfoLoaded && loginInfo.login" action="/logout" method="post">
+        <b-nav-form v-if="isLoginInfoLoaded && loginInfo.id != null" action="/logout" method="post">
           <b-nav-text class="mr-sm-2">{{ loginInfo.name }}</b-nav-text>
           <b-button variant="outline-secondary" size="sm" type="submit">
             {{
@@ -69,7 +69,9 @@ export default {
     })
   },
   mounted: function() {
-    this.getLoginInfo();
+    if (this.$nuxt.nuxt.err == null) {  // error.vue 에선 불필요하게 loginInfo 정보 호출하지 않음
+      this.getLoginInfo();
+    }
   }
 };
 </script>

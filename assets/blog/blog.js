@@ -36,16 +36,17 @@ export default {
       this.$router.push("/blog/{0}/list".format(blogId));
     },
 
+    // 로그인한 유저의 블로그 글 목록 보기
     moveUserBlogArticleListView: function(pageRequest) {
       if (this.userBlog.id == null) {
-        alert(this.$t("NEED_LOGIN"));
         return;
       }
       this.moveBlogArticleListView(this.userBlog.id, pageRequest);
     },
+
+    // 로그인한 유저의 블로그 글 쓰기
     moveUserBlogArticleWriteView: function() {
       if (this.userBlog.id == null) {
-        alert(this.$t("NEED_LOGIN"));
         return;
       }
       this.$router.push("/blog/{0}/write".format(this.userBlog.id));

@@ -73,7 +73,7 @@ export default {
       this.createBlogArticle(this.blogArticle)
         .then((data) => {
           if (data !== undefined) {
-            this.moveUserBlogArticleListView();
+            this.moveBlogArticleView(this.$route.params.blogId, data.id);
           }
           return data;
         })

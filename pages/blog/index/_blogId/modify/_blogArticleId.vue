@@ -1,6 +1,6 @@
 <template>
   <div class="m-3">
-    <h1 class="text-primary" v-text="$t('blog.menu.modify')"></h1>
+    <h1 class="text-primary" v-text="$t('blogArticle.menu.modify')"></h1>
 
     <b-form-group>
       <b-form-input
@@ -58,7 +58,7 @@ export default {
       this.updateBlogArticle(this.blogArticle)
         .then((data) => {
           if (data !== undefined) {
-            this.moveUserBlogArticleListView();
+            this.moveBlogArticleView(this.$route.params.blogId, this.$route.params.blogArticleId);
           }
           return data;
         })
