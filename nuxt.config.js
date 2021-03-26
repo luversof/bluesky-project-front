@@ -31,7 +31,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ["@nuxtjs/moment"],
+  buildModules: [],
   /*
    ** Nuxt.js modules
    */
@@ -51,6 +51,7 @@ export default {
       },
     ],
     "@nuxtjs/proxy",
+    "@nuxtjs/dayjs"
   ],
   // /*
   //  ** Build configuration
@@ -85,7 +86,16 @@ export default {
       },
     ],
   },
-  moment: {
-    locales: ["ko"],
-  },
+  // Optional
+  dayjs: {
+    locales: ['ko', 'en'],
+    defaultLocale: 'ko',
+    defaultTimeZone: 'Asia/Seoul',
+    plugins: [
+      'utc', // import 'dayjs/plugin/utc'
+      'timezone', // import 'dayjs/plugin/timezone'
+      'relativeTime',
+      'localizedFormat'
+    ] // Your Day.js plugin
+  }
 };

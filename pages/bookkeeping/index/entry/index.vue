@@ -68,10 +68,10 @@
       <template v-slot:cell(entryDate)="row">
         <div class="row">
           <div class="col-1">
-            <h2>{{ $moment(row.item.entryDate).format("DD") }}</h2>
+            <h2>{{ $dayjs(row.item.entryDate).format("DD") }}</h2>
           </div>
           <div class="text-left">
-            {{ $moment(row.item.entryDate).format("MM-DD") }}
+            {{ $dayjs(row.item.entryDate).format("MM-DD") }}
           </div>
         </div>
       </template>
@@ -175,7 +175,7 @@ export default {
         endLocalDate: null
       },
       updateEntry: {
-        entryDate: this.$moment().format("YYYY-MM-DD"),
+        entryDate: this.$dayjs().format("YYYY-MM-DD"),
         entryGroupType: "INCOME",
         memo: null,
         amount: 0,
@@ -268,7 +268,7 @@ export default {
 
       // this.userBookkeeping.baseDate
 
-      // this.$moment().format("YYYY-MM-DD"),
+      // this.$dayjs().format("YYYY-MM-DD"),
 
       // 기준일이 현재의 day보다 이전인 경우 -> 현재 날짜 기준으로 기준일 ~ 다음달 기준일 - 1
       // 기준일이 3일인데 현재가 5일인 경우
@@ -278,23 +278,23 @@ export default {
       // x월 기준일이 5일인데 현재가 3일인 경우
       // x-1 월 5일 ~ x월 5일
 
-      if (this.$moment().date() < this.userBookkeeping.baseDate) {
+      if (this.$dayjs().date() < this.userBookkeeping.baseDate) {
         this.entryRequestParam = {
-          startLocalDate: this.$moment()
+          startLocalDate: this.$dayjs()
             .add(-1, "month")
             .date(this.userBookkeeping.baseDate)
             .format("YYYY-MM-DD"),
-          endLocalDate: this.$moment()
+          endLocalDate: this.$dayjs()
             .date(this.userBookkeeping.baseDate)
             .add(-1, "day")
             .format("YYYY-MM-DD")
         };
       } else {
         this.entryRequestParam = {
-          startLocalDate: this.$moment()
+          startLocalDate: this.$dayjs()
             .date(this.userBookkeeping.baseDate)
             .format("YYYY-MM-DD"),
-          endLocalDate: this.$moment()
+          endLocalDate: this.$dayjs()
             .add(1, "month")
             .date(this.userBookkeeping.baseDate)
             .add(-1, "day")
@@ -354,10 +354,10 @@ export default {
 
     addMonth(addNum) {
       this.entryRequestParam = {
-        startLocalDate: this.$moment(this.entryRequestParam.startLocalDate)
+        startLocalDate: this$dayjs(this.entryRequestParam.startLocalDate)
           .add(addNum, "month")
           .format("YYYY-MM-DD"),
-        endLocalDate: this.$moment(this.entryRequestParam.endLocalDate)
+        endLocalDate: this.$dayjs(this.entryRequestParam.endLocalDate)
           .add(addNum, "month")
           .format("YYYY-MM-DD")
       };

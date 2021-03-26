@@ -104,7 +104,7 @@ export default {
           key: "createdDate",
           label: this.$t("blogArticle.createdDate"),
           formatter: (value) => {
-            return this.$moment(value).subtract(10, "days").calendar();
+            return this.$dayjs.to(this.$dayjs(value));
           },
         },
       ],
@@ -176,9 +176,9 @@ export default {
     },
     getCommentTimeDisplay: function (date) {
       if (this.commentTimeDisplay == 1) {
-        return this.$moment(date).fromNow();
+        return this.$dayjs(date).fromNow();
       } else {
-        return this.$moment(date).format("LLLL");
+        return this.$dayjs(date).format("LLLL");
       }
     },
 

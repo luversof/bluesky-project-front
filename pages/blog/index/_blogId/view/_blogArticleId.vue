@@ -8,7 +8,7 @@
       <div class="d-flex w-100 justify-content-between">
         <span>
           <h1>{{ blogArticle.title }}</h1>
-          <time v-text="$moment(blogArticle.createdDate).format('LLLL')" />
+          <time v-text="$dayjs(blogArticle.createdDate).format('LLLL')" />
         </span>
         <!-- <span>
           메뉴

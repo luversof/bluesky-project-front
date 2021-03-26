@@ -115,7 +115,7 @@ export default {
     },
     initEntry() {
       this.entry = {
-        entryDate: this.$moment().format("YYYY-MM-DD"),
+        entryDate: this.$dayjs().format("YYYY-MM-DD"),
         entryGroupType: "INCOME",
         memo: null,
         amount: 0,

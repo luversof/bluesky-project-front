@@ -72,9 +72,7 @@ export default {
           key: "createdDate",
           label: this.$t("blogArticle.createdDate"),
           formatter: (value) => {
-            return this.$moment(value)
-              .subtract(10, "days")
-              .calendar();
+            return this.$dayjs(value).fromNow();
           },
         },
         {
