@@ -12,14 +12,14 @@ export default {
     ...mapMutations({
       setLoginInfo: "loginInfo/setLoginInfo",
     }),
-    getLoginInfo: function() {
+    getLoginInfo: function () {
       // if (this.loginInfo != null) {
       //   return new Promise((resolve, reject) => {
       //     resolve(this.loginInfo);
       //   });
       // }
 
-      return fetch("/api/user/loginInfo")
+      return fetch("/api/user/loginInfo", { headers: this.commonHeaders() })
         .then(this.commonResponseData)
         .then((data) => {
           this.setLoginInfo(data);

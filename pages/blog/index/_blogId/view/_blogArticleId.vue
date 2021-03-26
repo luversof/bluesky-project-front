@@ -21,6 +21,9 @@
         :initialValue="blogArticle.content"
       />
     </article>
+
+    <div class="mb-5"></div>
+
     <!-- 수정 버튼은 해당 글의 글쓴이만 가능 -->
     <div class="text-right">
       <b-button
@@ -38,6 +41,8 @@
     </div>
 
     <BlogCommentList />
+
+    <div class="mb-5"></div>
 
     <BlogArticleList />
   </div>
@@ -79,7 +84,7 @@ export default {
     };
   },
   methods: {
-    isOwner: function() {
+    isOwner: function () {
       if (this.blogArticle.blog === undefined) {
         return false;
       }
@@ -88,10 +93,10 @@ export default {
       }
       return false;
     },
-    moveModifyView: function() {
+    moveModifyView: function () {
       this.moveBlogArticleModifyView(this.$route.params.blogArticleId);
     },
-    deleteBlogArticleConfirm: function() {
+    deleteBlogArticleConfirm: function () {
       if (confirm(this.$t("blogArticle.msg.deleteConfirm"))) {
         this.deleteBlogArticle(this.$route.params.blogArticleId).then(
           (response) => {

@@ -25,7 +25,6 @@
     <b-container fluid>
       <b-row>
         <b-col>
-          aaa
         </b-col>
         <b-col>
           <b-pagination-nav

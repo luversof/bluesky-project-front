@@ -8,57 +8,56 @@
     <BlogLoading v-if="blogCommentList.content === undefined" />
 
     <div v-if="blogCommentList.content && blogCommentList.content.length > 0">
-      <b-list-group flush>
-        <b-list-group-item
-          class="flex-column"
-          v-for="(targetBlogComment, index) in sortedBlogCommentList"
-          :key="targetBlogComment.id"
-        >
-          <div class="d-flex w-100 justify-content-between">
-            <span>
-              <b class="mb-1" v-text="targetBlogComment.user.username" />
-              <time
-                @click="toggleCommentTimeDisplay"
-                v-text="getCommentTimeDisplay(targetBlogComment.createdDate)"
-              />
-            </span>
-            <span
-              v-if="
-                loginInfo.login & (loginInfo.id === targetBlogComment.userId)
-              "
-            >
-              <b-button
-                size="sm"
-                variant="outline-primary"
-                v-if="isOwner(targetBlogComment)"
-                v-text="$t('blogComment.button.modify')"
-                @click="toggleArticleCommentModifyForm(targetBlogComment)"
-              />
-              <b-button
-                size="sm"
-                variant="outline-danger"
-                v-if="isOwner(targetBlogComment)"
-                v-text="$t('blogComment.button.delete')"
-                @click="deleteBlogArticleConfirm(targetBlogComment)"
-              />
-            </span>
+      <div
+        v-for="(targetBlogComment, index) in sortedBlogCommentList"
+        :key="targetBlogComment.id"
+      >
+        <div class="border-bottom d-flex">
+          <div class="flex-grow-1">
+            <b
+              class="align-middle pl-1"
+              v-text="targetBlogComment.user.username"
+            />
           </div>
+          <div>
+            <time
+              class="align-middle pr-1"
+              @click="toggleCommentTimeDisplay"
+              v-text="getCommentTimeDisplay(targetBlogComment.createdDate)"
+            />
+          </div>
+          <div v-if="loginInfo.id === targetBlogComment.user.id">
+            <b-button
+              size="sm"
+              variant="outline-primary"
+              v-if="isOwner(targetBlogComment)"
+              v-text="$t('blogComment.button.modify')"
+              @click="toggleArticleCommentModifyForm(targetBlogComment)"
+            />
+            <b-button
+              size="sm"
+              variant="outline-danger"
+              v-if="isOwner(targetBlogComment)"
+              v-text="$t('blogComment.button.delete')"
+              @click="deleteBlogArticleConfirm(targetBlogComment)"
+            />
+          </div>
+        </div>
 
-          <BlogHeadTitle menu="blogComment.menu.write" />
-          <BlogCommentWrite
-            v-if="isActiveBlogCommentModifyForm(targetBlogComment)"
-            v-model="modifyBlogComment"
-            text="blogComment.button.modify"
-            :click="commentModifyAction"
-          />
+        <BlogCommentWrite
+          v-if="isActiveBlogCommentModifyForm(targetBlogComment)"
+          v-model="modifyBlogComment"
+          text="blogComment.button.modify"
+          :click="commentModifyAction"
+        />
 
-          <section
-            class="mb-1"
-            v-if="!isActiveBlogCommentModifyForm(targetBlogComment)"
-            v-text="targetBlogComment.comment"
-          />
-        </b-list-group-item>
-      </b-list-group>
+        <div
+          class="m-3"
+          style="white-space: pre"
+          v-if="!isActiveBlogCommentModifyForm(targetBlogComment)"
+          v-html="targetBlogComment.comment"
+        />
+      </div>
     </div>
 
     <b-pagination
@@ -105,9 +104,7 @@ export default {
           key: "createdDate",
           label: this.$t("blogArticle.createdDate"),
           formatter: (value) => {
-            return this.$moment(value)
-              .subtract(10, "days")
-              .calendar();
+            return this.$moment(value).subtract(10, "days").calendar();
           },
         },
       ],
@@ -120,13 +117,13 @@ export default {
     };
   },
   methods: {
-    isOwner: function(blogComment) {
+    isOwner: function (blogComment) {
       if (blogComment.userId === this.loginInfo.id) {
         return true;
       }
       return false;
     },
-    getList: function(pageRequest) {
+    getList: function (pageRequest) {
       this.getBlogCommentList(this.$route.params.blogArticleId, pageRequest)
         .then((data) => {
           if (data != undefined) {
@@ -136,13 +133,13 @@ export default {
         })
         .catch(this.commonErrorHandler);
     },
-    movePage: function(pageNum) {
+    movePage: function (pageNum) {
       var pageRequest = {
         page: pageNum - 1,
       };
       this.getList(pageRequest);
     },
-    commentWriteAction: function() {
+    commentWriteAction: function () {
       this.blogComment.blogArticle = {
         id: this.$route.params.blogArticleId,
       };
@@ -153,7 +150,7 @@ export default {
         })
         .catch(this.commonErrorHandler);
     },
-    commentModifyAction: function() {
+    commentModifyAction: function () {
       this.updateBlogComment(this.modifyBlogComment)
         .then((data) => {
           this.modifyBlogComment = {};
@@ -161,7 +158,7 @@ export default {
         })
         .catch(this.commonErrorHandler);
     },
-    deleteBlogArticleConfirm: function(blogComment) {
+    deleteBlogArticleConfirm: function (blogComment) {
       if (confirm(this.$t("blogComment.msg.deleteConfirm"))) {
         this.deleteBlogComment(blogComment.id).then((response) => {
           if (response.ok) {
@@ -174,10 +171,10 @@ export default {
         });
       }
     },
-    toggleCommentTimeDisplay: function() {
+    toggleCommentTimeDisplay: function () {
       this.commentTimeDisplay = this.commentTimeDisplay ^ 1;
     },
-    getCommentTimeDisplay: function(date) {
+    getCommentTimeDisplay: function (date) {
       if (this.commentTimeDisplay == 1) {
         return this.$moment(date).fromNow();
       } else {
@@ -185,7 +182,7 @@ export default {
       }
     },
 
-    toggleArticleCommentModifyForm: function(targetBlogComment) {
+    toggleArticleCommentModifyForm: function (targetBlogComment) {
       if (this.modifyBlogComment.id == targetBlogComment.id) {
         this.modifyBlogComment = {};
       } else {
@@ -193,7 +190,7 @@ export default {
         this.originalBlogComment = targetBlogComment;
       }
     },
-    isActiveBlogCommentModifyForm: function(targetBlogComment) {
+    isActiveBlogCommentModifyForm: function (targetBlogComment) {
       return this.modifyBlogComment.id == targetBlogComment.id;
     },
   },
@@ -206,7 +203,7 @@ export default {
     this.getList();
   },
   computed: {
-    sortedBlogCommentList: function() {
+    sortedBlogCommentList: function () {
       return _.orderBy(this.blogCommentList.content, ["id"], ["asc"]);
     },
   },

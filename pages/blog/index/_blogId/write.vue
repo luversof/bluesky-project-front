@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 import blogMixin from "@/assets/blog/blog.js";
 import blogArticleMixin from "@/assets/blog/blogArticle.js";
 import blogArticleCategoryMixin from "@/assets/blog/blogArticleCategory.js";
@@ -51,6 +53,11 @@ export default {
     BlogHeadTitle,
     Editor,
   },
+  computed: {
+    ...mapState({
+      userBlog: (state) => state.blog.blog.userBlog,
+    }),
+  },
   data() {
     return {
       blogArticle: {
@@ -61,10 +68,6 @@ export default {
       blogArticleCategoryList: [],
     };
   },
-  watch: {},
-  // asyncData({ params }) {
-  //   console.log(params);
-  // },
   methods: {
     writeAction() {
       // TODO 어떤 에디터 모드를 선택했는지도 저장이 필요할 듯함 - markdown, wysiwyg
@@ -81,11 +84,13 @@ export default {
     },
   },
   mounted() {
-    this.getUserBlogArticleCategoryList().then((data) => {
-      if (data !== undefined) {
-        this.blogArticleCategoryList = data;
-      }
-    });
+    this.getUserBlogArticleCategoryList()
+      .then((data) => {
+        if (data !== undefined) {
+          this.blogArticleCategoryList = data;
+        }
+      })
+      .catch(this.commonErrorHandler);
   },
 };
 </script>
