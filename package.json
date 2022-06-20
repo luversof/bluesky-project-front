@@ -20,7 +20,7 @@
     "@nuxtjs/proxy": "^2.1.0",
     "@toast-ui/vue-editor": "^2.5.4",
     "bootstrap": "^4.6.1",
-    "bootstrap-vue": "^2.21.2",
+    "bootstrap-vue": "^2.22.0",
     "lodash.merge": "^4.6.2",
     "nuxt": "^2.15.8",
     "nuxt-fontawesome": "^0.4.0",
