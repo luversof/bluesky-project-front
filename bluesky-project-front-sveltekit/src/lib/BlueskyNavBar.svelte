@@ -15,7 +15,7 @@
 
 	let isOpen = false;
 
-	function handleUpdate(event) {
+	function handleUpdate(event: any) {
 		isOpen = event.detail.isOpen;
 	}
 </script>
