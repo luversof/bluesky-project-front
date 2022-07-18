@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fortawesome/fontawesome-free": "^6.1.1",
 		"sveltestrap": "^5.9.0"
 	}
 }
