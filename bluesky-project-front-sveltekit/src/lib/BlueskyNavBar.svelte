@@ -1,3 +1,19 @@
+<script context="module">
+	/** @type {import('./__types/BlueskyNavBar').Load} */
+	export async function load({ params, fetch, session, stuff }) {
+		console.log('ASDFAAAAA');
+		const url = `/api/user/loginInfo`;
+		const response = await fetch(url);
+
+		return {
+			status: response.status,
+			props: {
+				article: response.ok && (await response.json())
+			}
+		};
+	}
+</script>
+
 <script lang="ts">
 	import {
 		Button,
