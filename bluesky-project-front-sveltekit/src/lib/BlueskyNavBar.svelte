@@ -1,5 +1,7 @@
 <script>
+	import { session } from '$app/stores';
 	//Javascript to toggle the menu
+
 	let isMenuShow = true;
 	function menuToggle() {
 		isMenuShow = !isMenuShow;
@@ -42,31 +44,40 @@
 				>
 			</li>
 		</ul>
-		<ul class="list-reset flex justify-end flex-1 items-center">
-			<li class="mr-3">
-				<a
-					class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-					href="/oauth2/authorization/google"><i class="fa-brands fa-google" /></a
-				>
-			</li>
-			<li class="mr-3">
-				<a
-					class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-					href="/oauth2/authorization/facebook"><i class="fa-brands fa-facebook" /></a
-				>
-			</li>
-			<li class="mr-3">
-				<a
-					class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-					href="/oauth2/authorization/github"><i class="fa-brands fa-github" /></a
-				>
-			</li>
-			<li class="mr-3">
-				<a
-					class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-					href="/oauth2/authorization/battlenet"><i class="fa-brands fa-battle-net" /></a
-				>
-			</li>
-		</ul>
+
+		{#if $session.loginInfo != null}
+			<ul class="list-reset flex justify-end flex-1 items-center">
+				<li class="mr-3 text-gray-200">
+					{$session.loginInfo.name}
+				</li>
+			</ul>
+		{:else}
+			<ul class="list-reset flex justify-end flex-1 items-center">
+				<li class="mr-3">
+					<a
+						class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
+						href="/oauth2/authorization/google"><i class="fa-brands fa-google" /></a
+					>
+				</li>
+				<li class="mr-3">
+					<a
+						class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
+						href="/oauth2/authorization/facebook"><i class="fa-brands fa-facebook" /></a
+					>
+				</li>
+				<li class="mr-3">
+					<a
+						class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
+						href="/oauth2/authorization/github"><i class="fa-brands fa-github" /></a
+					>
+				</li>
+				<li class="mr-3">
+					<a
+						class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
+						href="/oauth2/authorization/battlenet"><i class="fa-brands fa-battle-net" /></a
+					>
+				</li>
+			</ul>
+		{/if}
 	</div>
 </nav>

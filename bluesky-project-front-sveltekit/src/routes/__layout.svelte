@@ -42,13 +42,12 @@
 	import BlueskyNavBar from '$lib/BlueskyNavBar.svelte';
 	import '@fortawesome/fontawesome-free/js/all.min.js';
 	import { session } from '$app/stores';
-
-	console.log('index session : ', $session);
 </script>
 
 <BlueskyNavBar />
 
 <div class="mt-14">
-	test {JSON.stringify($session)}
+	test {JSON.stringify($session)}<br />
+	{$session.loginInfo}
 	<slot />
 </div>
