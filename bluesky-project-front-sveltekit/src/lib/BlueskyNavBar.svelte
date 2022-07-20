@@ -1,17 +1,4 @@
 <script>
-	// async function getUserInfo() {
-	// 	return fetch('/api/user/loginInfo', {
-	// 		method: 'GET',
-	// 		headers: {
-	// 			'Content-Type': 'application/json'
-	// 			// 'Content-Type': 'application/x-www-form-urlencoded',
-	// 		}
-	// 	}).then((response) => response.json());
-	// }
-
-	//const userInfo = getUserInfo();
-	//console.log(userInfo);
-
 	//Javascript to toggle the menu
 	let isMenuShow = true;
 	function menuToggle() {
