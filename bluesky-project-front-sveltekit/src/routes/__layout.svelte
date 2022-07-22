@@ -47,7 +47,5 @@
 <BlueskyNavBar />
 
 <div class="mt-14">
-	test {JSON.stringify($session)}<br />
-	{$session.loginInfo}
 	<slot />
 </div>
