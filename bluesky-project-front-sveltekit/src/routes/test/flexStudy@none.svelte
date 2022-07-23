@@ -1,0 +1,25 @@
+<div class="flex border container-test">
+	<div class="border basis-test">
+		AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+	</div>
+	<div class="border basis-test">
+		BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+	</div>
+	<div class="border basis-test">
+		CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+	</div>
+</div>
+
+<style>
+	.container-test {
+		flex-wrap: nowrap;
+	}
+	.basis-test {
+		flex-shrink: 1;
+	}
+	.basis-test2 {
+		flex-basis: 100px;
+		width: 100px;
+		word-wrap: break-word;
+	}
+</style>

@@ -1,0 +1,64 @@
+<script>
+	import Menu from '$lib/components/headers/Menu.svelte';
+	import { session } from '$app/stores';
+	//Javascript to toggle the menu
+
+	let isMenuShow = true;
+	function menuToggle() {
+		isMenuShow = !isMenuShow;
+	}
+</script>
+
+<header class="flex items-center justify-between flex-wrap bg-white/80 fixed w-full z-10 top-0">
+	<div class="mr-6 ">
+		<a href="/">
+			<span class="text-2xl pl-2">Bluesky</span>
+		</a>
+	</div>
+
+	<div class="lg:hidden p-2">
+		<button
+			on:click={menuToggle}
+			class="px-3 py-2 border rounded text-gray-400 border-gray-400 hover:text-black hover:border-black"
+		>
+			<svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+				><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
+			>
+		</button>
+	</div>
+
+	<nav
+		class:hidden={isMenuShow}
+		class="w-full flex-grow lg:flex lg:w-auto lg:block pt-2 lg:pt-0 bg-white"
+	>
+		<ul class="flex-1 lg:flex">
+			<li>
+				<Menu href="/blog">Blog</Menu>
+			</li>
+			<li>
+				<Menu href="/bookkeeping">Bookkeeping</Menu>
+			</li>
+		</ul>
+
+		<ul class="flex-1 flex justify-end">
+			{#if $session.loginInfo != null}
+				<li class="mr-3 text-gray-200">
+					{$session.loginInfo.name}
+				</li>
+			{:else}
+				<li>
+					<Menu href="/oauth2/authorization/google"><i class="fa-brands fa-google" /></Menu>
+				</li>
+				<li>
+					<Menu href="/oauth2/authorization/facebook"><i class="fa-brands fa-facebook" /></Menu>
+				</li>
+				<li>
+					<Menu href="/oauth2/authorization/github"><i class="fa-brands fa-github" /></Menu>
+				</li>
+				<li>
+					<Menu href="/oauth2/authorization/battlenet"><i class="fa-brands fa-battle-net" /></Menu>
+				</li>
+			{/if}
+		</ul>
+	</nav>
+</header>
