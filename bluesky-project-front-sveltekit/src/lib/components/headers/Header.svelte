@@ -12,7 +12,7 @@
 <header class="flex items-center justify-between flex-wrap bg-white/80 fixed w-full z-10 top-0">
 	<div class="mr-6 ">
 		<a href="/">
-			<span class="text-2xl pl-2">Bluesky</span>
+			<span class="text-2xl pl-2 font-black"><i class="fa-solid fa-cloud-moon" /> bluesky</span>
 		</a>
 	</div>
 
@@ -33,17 +33,17 @@
 	>
 		<ul class="flex-1 lg:flex">
 			<li>
-				<Menu href="/blog">Blog</Menu>
+				<Menu href="/blog"><i class="fa-solid fa-blog pr-2" /> Blog</Menu>
 			</li>
 			<li>
-				<Menu href="/bookkeeping">Bookkeeping</Menu>
+				<Menu href="/bookkeeping"><i class="fa-solid fa-coins pr-2" /> Bookkeeping</Menu>
 			</li>
 		</ul>
 
 		<ul class="flex-1 flex justify-end">
 			{#if $session.loginInfo != null}
-				<li class="mr-3 text-gray-200">
-					{$session.loginInfo.name}
+				<li class="mr-3">
+					<Menu>{$session.loginInfo.name}</Menu>
 				</li>
 			{:else}
 				<li>

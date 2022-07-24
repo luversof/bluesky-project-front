@@ -1,8 +1,13 @@
-<section class="px-4 py-32 mx-auto max-w-7xl">
-	<div class="w-full mx-auto lg:w-1/3">
-		<p class="mt-5 mb-3 text-xl font-bold text-black md:text-2xl">Page not found (404)</p>
-		<p class="mb-3 text-base font-medium text-gray-700">
-			The page you're looking for may have moved or no longer exists.
-		</p>
+<script>
+	import Button from '$lib/components/Button.svelte';
+</script>
+
+<div class="min-h-screen flex">
+	<div class="flex flex-col items-center justify-center w-full text-center">
+		<div class="text-8xl font-black text-gray-800 p-10">404</div>
+
+		<p class="text-3xl font-light leading-normal text-gray-600">Not Found</p>
+
+		<Button href="/">Go Home</Button>
 	</div>
-</section>
+</div>

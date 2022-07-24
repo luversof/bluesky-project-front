@@ -12,10 +12,9 @@
 
 		if (userBlogList.length > 0) {
 			// 첫번째 blog로 무조건 이동시킴
-			const blog = userBlogList[0];
 			return {
 				status: 303,
-				redirect: '/blog/' + blog.blogId + '/list'
+				redirect: '/blog/' + userBlogList[0].blogId + '/list'
 			};
 		}
 
@@ -26,9 +25,3 @@
 		};
 	}
 </script>
-
-<script>
-	import { session } from '$app/stores';
-</script>
-
-blog 테스트 {JSON.stringify($session)}
