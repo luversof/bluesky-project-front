@@ -1,7 +1,7 @@
-export declare interface LonginInfo {
+export type LoginInfo = {
 	id: string;
 	name: string;
-}
+};
 
 export interface Page<T> {
 	content: T[];

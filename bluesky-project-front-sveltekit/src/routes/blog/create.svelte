@@ -1,3 +1,20 @@
+<script type="ts" context="module">
+	import type { LoadEvent } from '@sveltejs/kit';
+	export const load = ({ session }: LoadEvent) => {
+		//export async function load({ params, fetch, session, stuff }) {
+		if (session.loginInfo == null) {
+			return {
+				status: 303,
+				redirect: '/login'
+			};
+		}
+
+		return {
+			status: 200
+		};
+	};
+</script>
+
 <script type="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/Button.svelte';

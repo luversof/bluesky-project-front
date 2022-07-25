@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import('./__types/index').Load} */
-	export async function load({ params, fetch, session, stuff }) {
+	export async function load({ fetch }) {
 		const response = await fetch('/api/blog/userBlogList', {
 			method: 'GET',
 			headers: {
@@ -11,14 +11,14 @@
 		const userBlogList = await response.json();
 
 		if (userBlogList.length > 0) {
-			// 첫번째 blog로 무조건 이동시킴
+			// 첫번째 blog로 무조건 이동
 			return {
 				status: 303,
 				redirect: '/blog/' + userBlogList[0].blogId + '/list'
 			};
 		}
 
-		// 블로그 생성 메뉴로 이동?
+		// 블로그 생성 메뉴로 이동
 		return {
 			status: 303,
 			redirect: `/blog/create`

@@ -1,4 +1,4 @@
-import type { Handle, GetSession } from "@sveltejs/kit"
+import type { Handle, GetSession } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// console.log(' userInfoResponse start ');
@@ -12,19 +12,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 
 	if (userInfoResponse.status == 200) {
-		event.locals.loginInfo = await userInfoResponse.json()
+		event.locals.loginInfo = await userInfoResponse.json();
 	} else {
-		event.locals.loginInfo = null
+		event.locals.loginInfo = null;
 	}
 
-	console.log('event.locals.loginInfo ts: ', event.locals.loginInfo);
+	// console.log('event.locals.loginInfo js : ', event.locals.loginInfo);
 
 	const response = await resolve(event);
-	return response
-}
+	return response;
+};
 
 export const getSession: GetSession = (event) => {
 	return {
 		loginInfo: event.locals.loginInfo
-	}	
-}
+	};
+};

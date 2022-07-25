@@ -1,4 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import { build } from 'vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
@@ -11,6 +12,9 @@ const config = {
 			}
 		}
 	}
+	// build: {
+	// 	chunkSizeWarningLimit: 2000
+	// }
 };
 
 export default config;
