@@ -1,7 +1,9 @@
-<script>
+<script type="ts">
 	import Menu from '$lib/components/headers/Menu.svelte';
-	import { session } from '$app/stores';
-	//Javascript to toggle the menu
+	import { session, page } from '$app/stores';
+	import { getCurrentRootMenu } from '$lib/navigation';
+
+	$: currentMenu = getCurrentRootMenu($page.url.pathname)?.name;
 
 	let isMenuShow = true;
 	function menuToggle() {
@@ -33,10 +35,14 @@
 	>
 		<ul class="flex-1 lg:flex">
 			<li>
-				<Menu href="/blog"><i class="fa-solid fa-blog pr-2" /> Blog</Menu>
+				<Menu href="/blog" class={currentMenu == 'blog' ? 'border-b-sky-600' : ''}
+					><i class="fa-solid fa-blog pr-2" /> Blog</Menu
+				>
 			</li>
 			<li>
-				<Menu href="/bookkeeping"><i class="fa-solid fa-coins pr-2" /> Bookkeeping</Menu>
+				<Menu href="/bookkeeping" class={currentMenu == 'bookkeeping' ? 'border-b-sky-600' : ''}
+					><i class="fa-solid fa-coins pr-2" /> Bookkeeping</Menu
+				>
 			</li>
 		</ul>
 

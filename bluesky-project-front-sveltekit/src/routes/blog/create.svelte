@@ -16,6 +16,7 @@
 </script>
 
 <script type="ts">
+	import type { Blog } from '$lib/types';
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/Button.svelte';
 
@@ -29,7 +30,7 @@
 		});
 
 		if (response.status == 200) {
-			const userBlog = await response.json();
+			const userBlog: Blog = await response.json();
 			goto('/blog/' + userBlog.blogId + '/list');
 			return;
 		} else {
