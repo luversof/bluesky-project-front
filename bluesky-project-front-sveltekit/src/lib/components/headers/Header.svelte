@@ -35,12 +35,12 @@
 	>
 		<ul class="flex-1 lg:flex">
 			<li>
-				<Menu href="/blog" class={currentMenu == 'blog' ? 'border-b-sky-600' : ''}
+				<Menu href="/blog" isActive={currentMenu == 'blog'}
 					><i class="fa-solid fa-blog pr-2" /> Blog</Menu
 				>
 			</li>
 			<li>
-				<Menu href="/bookkeeping" class={currentMenu == 'bookkeeping' ? 'border-b-sky-600' : ''}
+				<Menu href="/bookkeeping" isActive={currentMenu == 'bookkeeping'}
 					><i class="fa-solid fa-coins pr-2" /> Bookkeeping</Menu
 				>
 			</li>

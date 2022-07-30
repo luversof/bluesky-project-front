@@ -41,16 +41,16 @@ export interface Blog {
 }
 
 export interface BlogArticle {
-	idx: number;
-	blogArticleId: string;
-	blogId: string;
-	blogArticleCategory: BlogArticleCategory;
-	blogArticleCommentList: BlogArticleComment[];
+	idx?: number;
+	blogArticleId?: string;
+	blogId?: string;
+	blogArticleCategory?: BlogArticleCategory;
+	blogArticleCommentList?: BlogArticleComment[];
 	title: string;
 	content: string;
-	createdDate: string;
-	lastModifiedDate: string;
-	userId: string;
+	createdDate?: string;
+	lastModifiedDate?: string;
+	userId?: string;
 }
 
 export interface BlogArticleComment {

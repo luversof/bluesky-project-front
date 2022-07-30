@@ -3,10 +3,12 @@
 
 <script type="ts">
 	import type { BlogArticle } from '$lib/types';
+	import { blogViewUrl, writeBlogArticle } from '$lib/blog';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Input from '$lib/components/Input.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import Textarea from '$lib/components/Textarea.svelte';
 
 	let title = '';
 	let content = '';
@@ -14,22 +16,15 @@
 	async function test() {
 		console.log('title : ', title);
 
-		let response = await fetch('/api/blogArticle', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			},
-			body: JSON.stringify({
-				blogId: $page.params.blogId,
-				title: title,
-				content: content
-			})
+		let response = await writeBlogArticle({
+			blogId: $page.params.blogId,
+			title: title,
+			content: content
 		});
 
 		if (response.status == 200) {
 			const blogArticle: BlogArticle = await response.json();
-			goto('/blog/' + blogArticle.blogId + '/blogArticle/' + blogArticle.blogArticleId);
+			goto(blogViewUrl.view(blogArticle));
 			return;
 		} else {
 			//error 처리
@@ -42,12 +37,14 @@
 	}
 </script>
 
-<div class="text-center">
-	<div>
-		<Input type="text" class="border" placeholder="www.example.com" bind:value={title} />
-		{title}
-		<textarea bind:value={content} />
+<div class="min-h-screen flex">
+	<div class="flex flex-col items-center justify-center w-full">
+		<h1 class="text-4xl font-medium">글 쓰기</h1>
 
-		<Button on:click={test}>글쓰기</Button>
+		<Input type="text" bind:value={title} placeholder="제목" class="w-1/2 m-2" />
+
+		<Textarea bind:value={content} placeholder="내용" class="w-1/2 m-2" />
+
+		<Button on:click={test}>완료</Button>
 	</div>
 </div>

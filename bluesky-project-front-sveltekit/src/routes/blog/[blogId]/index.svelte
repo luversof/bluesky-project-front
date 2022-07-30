@@ -1,5 +1,5 @@
 <script type="ts" context="module">
-	import type { Load } from './__types/index';
+	import type { Load } from '@sveltejs/kit';
 	export const load: Load = ({}) => {
 		return {
 			status: 303,

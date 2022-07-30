@@ -3,9 +3,11 @@
 	import { blogStore } from '$lib/store';
 	const { userBlogList } = blogStore;
 
+	import { blogApiUrl } from '$lib/blog';
+
 	export async function load({ params, fetch, session }: LoadEvent) {
 		if (session.loginInfo != null) {
-			const userBlogListResponse = await fetch('/api/blog/userBlogList', {
+			const userBlogListResponse = await fetch(blogApiUrl.userBlogList(), {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -47,13 +49,13 @@
 	<nav class="basis-32">
 		<ul class="flex lg:flex-col">
 			<li>
-				<Menu href="list" class={currentMenu == 'list' ? 'border-b-sky-600' : ''}
+				<Menu href="list" isActive={currentMenu == 'list'}
 					><i class="fa-solid fa-list pr-2" /> 글 목록</Menu
 				>
 			</li>
 			{#if isUserBlog($userBlogList, blogId)}
 				<li>
-					<Menu href="write" class={currentMenu == 'write' ? 'border-b-sky-600' : ''}
+					<Menu href="write" isActive={currentMenu == 'write'}
 						><i class="fa-solid fa-pen-to-square pr-2" /> 글 쓰기</Menu
 					>
 				</li>
