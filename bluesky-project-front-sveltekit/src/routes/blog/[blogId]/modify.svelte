@@ -1,4 +1,33 @@
 <script type="ts" context="module">
+	import type { LoadEvent } from '@sveltejs/kit';
+	import { blogApi, blogViewUrl } from '$lib/blog';
+	export async function load({ params, fetch, session, url }: LoadEvent) {
+		const blogArticleId = url.searchParams.get('blogArticleId');
+
+		if (blogArticleId == null) {
+			// 에러 처리
+			return {
+				status: 303,
+				redirect: blogViewUrl.list(params.blogId)
+			};
+		}
+
+		const blogArticleResponse = await fetch(blogApi.getBlogArticleUrl(blogArticleId), {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+
+		return {
+			status: blogArticleResponse.status,
+			props: {
+				blogArticle: blogArticleResponse.ok && (await blogArticleResponse.json()),
+				blogId: params.blogId
+			}
+		};
+	}
 </script>
 
 <script type="ts">
@@ -8,14 +37,15 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { BlogArticle } from '$lib/types';
-	import { blogViewUrl, blogApi } from '$lib/blog';
 	import Input from '$lib/components/Input.svelte';
 	import Button from '$lib/components/Button.svelte';
+
+	export let blogArticle: BlogArticle;
 
 	let title = '';
 	let editor: Editor;
 
-	async function write() {
+	async function modify() {
 		let response = await blogApi.writeBlogArticle({
 			blogId: $page.params.blogId,
 			title: title,
@@ -42,7 +72,8 @@
 				el: targetEl,
 				height: '500px',
 				initialEditType: 'markdown',
-				previewStyle: 'vertical'
+				previewStyle: 'vertical',
+				initialValue: blogArticle.content
 			});
 		}
 	});
@@ -50,12 +81,12 @@
 
 <div class="min-h-screen flex">
 	<div class="flex flex-col items-center justify-center w-full">
-		<h1 class="text-4xl font-medium">글 쓰기</h1>
+		<h1 class="text-4xl font-medium">글 수정</h1>
 
-		<Input type="text" bind:value={title} placeholder="제목" class="w-1/2 m-2" />
+		<Input type="text" bind:value={blogArticle.title} placeholder="제목" class="w-1/2 m-2" />
 
 		<div id="editor" class="w-1/2 m-2" />
 
-		<Button on:click={write}>완료</Button>
+		<Button on:click={modify}>수정</Button>
 	</div>
 </div>

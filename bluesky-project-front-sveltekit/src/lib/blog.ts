@@ -30,7 +30,7 @@ class BlogViewUrl {
 		return '/blog/' + blogId + '/list';
 	}
 	view({ blogId, blogArticleId }: BlogArticle) {
-		return '/blog/' + blogId + '/view?articleId=' + blogArticleId;
+		return '/blog/' + blogId + '/view?blogArticleId=' + blogArticleId;
 	}
 }
 export const blogViewUrl: BlogViewUrl = new BlogViewUrl();
@@ -38,32 +38,52 @@ export const blogViewUrl: BlogViewUrl = new BlogViewUrl();
 /**
  * blog api url
  */
-class BlogApiUrl {
-	userBlogList(): string {
-		return '/api/blog/userBlogList';
+class BlogApi {
+	blogApiUrlPrefix: string = '/api/blog';
+	blogArticleApiUrlPrefix: string = '/api/blogArticle';
+
+	getUserBlogListUrl(): string {
+		return this.blogApiUrlPrefix + '/userBlogList';
 	}
 
-	blogArticleListPage(blogId: string): string {
-		return '/api/blogArticle/search/findByBlogId/' + blogId;
+	getBlogArticleListPageUrl(blogId: string): string {
+		return this.blogArticleApiUrlPrefix + '/search/findByBlogId/' + blogId;
 	}
 
-	postBlogArticle(): string {
-		return '/api/blogArticle';
+	postBlogArticleUrl(): string {
+		return this.blogArticleApiUrlPrefix;
+	}
+
+	getBlogArticleUrl(blogArticleId: string): string {
+		return this.blogArticleApiUrlPrefix + '/' + blogArticleId;
+	}
+
+	async writeBlogArticle({ blogId, title, content }: BlogArticle) {
+		return fetch(this.postBlogArticleUrl(), {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify({
+				blogId: blogId,
+				title: title,
+				content: content
+			})
+		});
+	}
+
+	async getBlogArticle({ blogArticleId }: BlogArticle) {
+		if (blogArticleId == null) {
+			return null;
+		}
+		return fetch(this.getBlogArticleUrl(blogArticleId), {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
 	}
 }
-export const blogApiUrl: BlogApiUrl = new BlogApiUrl();
-
-export async function writeBlogArticle({ blogId, title, content }: BlogArticle) {
-	return fetch('/api/blogArticle', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Accept: 'application/json'
-		},
-		body: JSON.stringify({
-			blogId: blogId,
-			title: title,
-			content: content
-		})
-	});
-}
+export const blogApi: BlogApi = new BlogApi();

@@ -1,9 +1,10 @@
 <script type="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	import { blogViewUrl } from '$lib/blog';
+	import { blogViewUrl, blogApi } from '$lib/blog';
+	import type { BlogArticle } from '$lib/types';
 
 	export const load: Load = async ({ fetch }) => {
-		const response = await fetch('/api/blog/userBlogList', {
+		const response = await fetch(blogApi.getUserBlogListUrl(), {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

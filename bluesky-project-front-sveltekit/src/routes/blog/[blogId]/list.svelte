@@ -1,8 +1,8 @@
 <script type="ts" context="module">
 	import type { LoadEvent } from '@sveltejs/kit';
-	import { blogApiUrl } from '$lib/blog';
+	import { blogApi } from '$lib/blog';
 	export async function load({ params, fetch, session }: LoadEvent) {
-		const blogArticlePageResponse = await fetch(blogApiUrl.blogArticleListPage(params.blogId), {
+		const blogArticlePageResponse = await fetch(blogApi.getBlogArticleListPageUrl(params.blogId), {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -23,6 +23,7 @@
 <script type="ts">
 	import { session } from '$app/stores';
 	import type { BlogArticlePage } from '$lib/types';
+	import { blogViewUrl } from '$lib/blog';
 	import { foramtDate } from '$lib/date';
 	export let blogArticlePage: BlogArticlePage;
 
@@ -43,7 +44,9 @@
 				{#each blogArticlePage.content as blogArticle}
 					<li class="border-b border-b-gray-500 p-2">
 						<article>
-							<h2 class="text-3xl">{blogArticle.title}</h2>
+							<h2 class="text-3xl">
+								<a href={blogViewUrl.view(blogArticle)}>{blogArticle.title}</a>
+							</h2>
 							<p class="py-2 h-16">{blogArticle.content}</p>
 							<div><time>{foramtDate(blogArticle.createdDate)}</time></div>
 						</article>

@@ -3,11 +3,11 @@
 	import { blogStore } from '$lib/store';
 	const { userBlogList } = blogStore;
 
-	import { blogApiUrl } from '$lib/blog';
+	import { blogApi } from '$lib/blog';
 
 	export async function load({ params, fetch, session }: LoadEvent) {
 		if (session.loginInfo != null) {
-			const userBlogListResponse = await fetch(blogApiUrl.userBlogList(), {
+			const userBlogListResponse = await fetch(blogApi.getUserBlogListUrl(), {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
