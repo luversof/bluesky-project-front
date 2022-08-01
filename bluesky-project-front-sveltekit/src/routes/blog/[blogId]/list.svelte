@@ -13,8 +13,7 @@
 		return {
 			status: blogArticlePageResponse.status,
 			props: {
-				blogArticlePage: blogArticlePageResponse.ok && (await blogArticlePageResponse.json()),
-				blogId: params.blogId
+				blogArticlePage: blogArticlePageResponse.ok && (await blogArticlePageResponse.json())
 			}
 		};
 	}

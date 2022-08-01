@@ -26,11 +26,19 @@ class BlogViewUrl {
 	create(): string {
 		return '/blog/create';
 	}
-	list(blogId: string): string {
+	list(blogId?: string): string {
+		if (blogId == null) {
+			return '/blog';
+		}
 		return '/blog/' + blogId + '/list';
 	}
+
 	view({ blogId, blogArticleId }: BlogArticle) {
 		return '/blog/' + blogId + '/view?blogArticleId=' + blogArticleId;
+	}
+
+	modify({ blogId, blogArticleId }: BlogArticle) {
+		return '/blog/' + blogId + '/modify?blogArticleId=' + blogArticleId;
 	}
 }
 export const blogViewUrl: BlogViewUrl = new BlogViewUrl();
@@ -39,23 +47,44 @@ export const blogViewUrl: BlogViewUrl = new BlogViewUrl();
  * blog api url
  */
 class BlogApi {
-	blogApiUrlPrefix: string = '/api/blog';
-	blogArticleApiUrlPrefix: string = '/api/blogArticle';
+	blogApiUrlPrefix = '/api/blog';
+	blogArticleApiUrlPrefix = '/api/blogArticle';
 
-	getUserBlogListUrl(): string {
+	getUserBlogListUrl() {
 		return this.blogApiUrlPrefix + '/userBlogList';
 	}
 
-	getBlogArticleListPageUrl(blogId: string): string {
+	getBlogArticleListPageUrl(blogId: string) {
 		return this.blogArticleApiUrlPrefix + '/search/findByBlogId/' + blogId;
 	}
 
-	postBlogArticleUrl(): string {
+	postBlogArticleUrl() {
 		return this.blogArticleApiUrlPrefix;
 	}
 
-	getBlogArticleUrl(blogArticleId: string): string {
+	getBlogArticleUrl(blogArticleId: string) {
 		return this.blogArticleApiUrlPrefix + '/' + blogArticleId;
+	}
+
+	putBlogArticleUrl(blogArticleId: string) {
+		return this.blogArticleApiUrlPrefix + '/' + blogArticleId + '?_method=PUT';
+	}
+
+	deleteBlogArticleUrl(blogArticleId: string) {
+		return this.blogArticleApiUrlPrefix + '/' + blogArticleId + '?_method=DELETE';
+	}
+
+	async getBlogArticle({ blogArticleId }: BlogArticle) {
+		if (blogArticleId == null) {
+			return null;
+		}
+		return fetch(this.getBlogArticleUrl(blogArticleId), {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
 	}
 
 	async writeBlogArticle({ blogId, title, content }: BlogArticle) {
@@ -73,12 +102,31 @@ class BlogApi {
 		});
 	}
 
-	async getBlogArticle({ blogArticleId }: BlogArticle) {
+	async modifyBlogArticle({ blogId, blogArticleId, title, content }: BlogArticle) {
 		if (blogArticleId == null) {
-			return null;
+			throw new Error('not exist blogArticleId');
 		}
-		return fetch(this.getBlogArticleUrl(blogArticleId), {
-			method: 'GET',
+		return fetch(this.putBlogArticleUrl(blogArticleId), {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify({
+				blogId: blogId,
+				blogArticleId: blogArticleId,
+				title: title,
+				content: content
+			})
+		});
+	}
+
+	async deleteBlogArticle({ blogArticleId }: BlogArticle) {
+		if (blogArticleId == null) {
+			throw new Error('not exist blogArticleId');
+		}
+		return fetch(this.deleteBlogArticleUrl(blogArticleId), {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json'

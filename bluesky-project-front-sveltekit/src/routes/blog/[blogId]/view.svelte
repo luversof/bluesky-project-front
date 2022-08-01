@@ -32,6 +32,7 @@
 
 <script type="ts">
 	import { onMount } from 'svelte';
+	import { session } from '$app/stores';
 	import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 	import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 	import { goto } from '$app/navigation';
@@ -42,9 +43,29 @@
 	import Textarea from '$lib/components/Textarea.svelte';
 
 	export let blogArticle: BlogArticle;
+	export let blogId: string;
 
 	let title = '';
 	let viewer: Viewer;
+
+	function isOwner(): boolean {
+		if ($session.loginInfo == null) {
+			return false;
+		}
+
+		if (blogArticle.userId == $session.loginInfo.id) {
+			return true;
+		}
+		return false;
+	}
+
+	function deleteBlogArticle() {
+		if (!confirm('삭제하시겠습니까?')) {
+			return;
+		}
+		blogApi.deleteBlogArticle(blogArticle);
+		goto(blogViewUrl.list(blogId));
+	}
 
 	onMount(async () => {
 		var targetEl = document.querySelector('#viewer');
@@ -67,6 +88,13 @@
 
 		<div id="viewer" class="w-1/2 m-2" />
 
-		<Button href={blogArticle.blogId ? blogViewUrl.list(blogArticle.blogId) : '/blog'}>목록</Button>
+		<div class="flex">
+			<Button class="m-2" href={blogViewUrl.list(blogArticle.blogId)}>목록</Button>
+
+			{#if isOwner}
+				<Button class="m-2" href={blogViewUrl.modify(blogArticle)}>수정</Button>
+				<Button class="m-2" on:click={deleteBlogArticle}>삭제</Button>
+			{/if}
+		</div>
 	</div>
 </div>

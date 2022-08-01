@@ -42,13 +42,13 @@
 
 	export let blogArticle: BlogArticle;
 
-	let title = '';
 	let editor: Editor;
 
 	async function modify() {
-		let response = await blogApi.writeBlogArticle({
+		let response = await blogApi.modifyBlogArticle({
 			blogId: $page.params.blogId,
-			title: title,
+			blogArticleId: blogArticle.blogArticleId,
+			title: blogArticle.title,
 			content: editor.getMarkdown()
 		});
 
