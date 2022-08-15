@@ -19,8 +19,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// console.log('event.locals.loginInfo js : ', event.locals.loginInfo);
 
-	const response = await resolve(event);
-	return response;
+	return await resolve(event);
 };
 
 export const getSession: GetSession = (event) => {

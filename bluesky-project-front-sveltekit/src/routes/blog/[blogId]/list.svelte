@@ -24,7 +24,44 @@
 	import type { BlogArticlePage } from '$lib/types';
 	import { blogViewUrl } from '$lib/blog';
 	import { foramtDate } from '$lib/date';
+	import { marked } from 'marked';
 	export let blogArticlePage: BlogArticlePage;
+
+	let htmlEscapeToText = function (text) {
+		return text.replace(/\&\#[0-9]*;|&amp;/g, function (escapeCode) {
+			if (escapeCode.match(/amp/)) {
+				return '&';
+			}
+
+			return String.fromCharCode(escapeCode.match(/[0-9]+/));
+		});
+	};
+	// return a custom renderer for marked.
+	let render_plain = function () {
+		var render = new marked.Renderer();
+
+		// render just the text of a link
+		render.link = function (href, title, text) {
+			return text;
+		};
+
+		// render just the text of a paragraph
+		render.paragraph = function (text) {
+			return htmlEscapeToText(text) + '\r\n';
+		};
+
+		// render just the text of a heading element, but indecate level
+		render.heading = function (text, level) {
+			return text + '\r\n';
+		};
+
+		// render nothing for images
+		render.image = function (href, title, text) {
+			return '';
+		};
+
+		return render;
+	};
 
 	function hasBlogArticle(): boolean {
 		return (
@@ -41,13 +78,15 @@
 		<ul class="w-full lg:w-1/2">
 			{#if hasBlogArticle()}
 				{#each blogArticlePage.content as blogArticle}
-					<li class="border-b border-b-gray-500 p-2">
+					<li class="border-b border-b-gray-500 p-2 py-6">
 						<article>
 							<h2 class="text-3xl">
 								<a href={blogViewUrl.view(blogArticle)}>{blogArticle.title}</a>
 							</h2>
-							<p class="py-2 h-16">{blogArticle.content}</p>
-							<div><time>{foramtDate(blogArticle.createdDate)}</time></div>
+							<p class="py-2 h-20 overflow-hidden  ">
+								{marked(blogArticle.content, { renderer: render_plain() })}
+							</p>
+							<div class="pt-2"><time>{foramtDate(blogArticle.createdDate)}</time></div>
 						</article>
 					</li>
 				{/each}
@@ -57,4 +96,3 @@
 		</ul>
 	</div>
 </div>
-로그인 체크: {$session.loginInfo}
