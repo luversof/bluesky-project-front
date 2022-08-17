@@ -1,29 +1,3 @@
-<script type="ts" context="module">
-	import type { LoadEvent } from '@sveltejs/kit';
-	import { blogStore } from '$lib/store';
-	const { userBlogList } = blogStore;
-
-	import { blogApi } from '$lib/blog';
-
-	export async function load({ params, fetch, session }: LoadEvent) {
-		if (session.loginInfo != null) {
-			const userBlogListResponse = await fetch(blogApi.getUserBlogListUrl(), {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
-			});
-
-			userBlogList.set(await userBlogListResponse.json());
-		}
-
-		return {
-			status: 200
-		};
-	}
-</script>
-
 <script type="ts">
 	import { page } from '$app/stores';
 	import type { BlogArticlePage } from '$lib/types';

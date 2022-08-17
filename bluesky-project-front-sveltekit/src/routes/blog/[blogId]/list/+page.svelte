@@ -1,24 +1,3 @@
-<script type="ts" context="module">
-	import type { LoadEvent } from '@sveltejs/kit';
-	import { blogApi } from '$lib/blog';
-	export async function load({ params, fetch, session }: LoadEvent) {
-		const blogArticlePageResponse = await fetch(blogApi.getBlogArticleListPageUrl(params.blogId), {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			}
-		});
-
-		return {
-			status: blogArticlePageResponse.status,
-			props: {
-				blogArticlePage: blogArticlePageResponse.ok && (await blogArticlePageResponse.json())
-			}
-		};
-	}
-</script>
-
 <script type="ts">
 	import { session } from '$app/stores';
 	import type { BlogArticlePage } from '$lib/types';
@@ -83,7 +62,7 @@
 							<h2 class="text-3xl">
 								<a href={blogViewUrl.view(blogArticle)}>{blogArticle.title}</a>
 							</h2>
-							<p class="py-2 h-20 overflow-hidden  ">
+							<p class="py-2 h-20 overflow-hidden max-w-fit">
 								{marked(blogArticle.content, { renderer: render_plain() })}
 							</p>
 							<div class="pt-2"><time>{foramtDate(blogArticle.createdDate)}</time></div>

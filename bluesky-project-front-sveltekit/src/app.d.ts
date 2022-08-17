@@ -9,10 +9,7 @@ declare global {
 		interface Locals {
 			loginInfo: LoginInfo | null;
 		}
-		// interface Platform {}
-		interface Session {
-			loginInfo: LoginInfo | null;
-		}
+
 		// interface Stuff {}
 	}
 }

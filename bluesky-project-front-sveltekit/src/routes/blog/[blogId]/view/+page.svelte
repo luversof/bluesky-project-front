@@ -1,36 +1,40 @@
 <script type="ts" context="module">
-	import type { LoadEvent } from '@sveltejs/kit';
-	import { blogApi, blogViewUrl } from '$lib/blog';
-	export async function load({ params, fetch, session, url }: LoadEvent) {
-		const blogArticleId = url.searchParams.get('blogArticleId');
+	throw new Error("@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)");
 
-		if (blogArticleId == null) {
-			// 에러 처리
-			return {
-				status: 303,
-				redirect: blogViewUrl.list(params.blogId)
-			};
-		}
+	// import type { LoadEvent } from '@sveltejs/kit';
+	// import { blogApi, blogViewUrl } from '$lib/blog';
+	// export async function load({ params, fetch, session, url }: LoadEvent) {
+	// 	const blogArticleId = url.searchParams.get('blogArticleId');
 
-		const blogArticleResponse = await fetch(blogApi.getBlogArticleUrl(blogArticleId), {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			}
-		});
+	// 	if (blogArticleId == null) {
+	// 		// 에러 처리
+	// 		return {
+	// 			status: 303,
+	// 			redirect: blogViewUrl.list(params.blogId)
+	// 		};
+	// 	}
 
-		return {
-			status: blogArticleResponse.status,
-			props: {
-				blogArticle: blogArticleResponse.ok && (await blogArticleResponse.json()),
-				blogId: params.blogId
-			}
-		};
-	}
+	// 	const blogArticleResponse = await fetch(blogApi.getBlogArticleUrl(blogArticleId), {
+	// 		method: 'GET',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			Accept: 'application/json'
+	// 		}
+	// 	});
+
+	// 	return {
+	// 		status: blogArticleResponse.status,
+	// 		props: {
+	// 			blogArticle: blogArticleResponse.ok && (await blogArticleResponse.json()),
+	// 			blogId: params.blogId
+	// 		}
+	// 	};
+	// }
 </script>
 
 <script type="ts">
+	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
+
 	import { onMount } from 'svelte';
 	import { session } from '$app/stores';
 	import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';

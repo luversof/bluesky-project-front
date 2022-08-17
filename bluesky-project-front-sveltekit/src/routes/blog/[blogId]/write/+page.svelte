@@ -1,5 +1,4 @@
-<script type="ts" context="module">
-</script>
+
 
 <script type="ts">
 	import { onMount } from 'svelte';
