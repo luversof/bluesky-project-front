@@ -3,6 +3,14 @@ import type { Writable } from 'svelte/store';
 
 import type { Blog } from '$lib/types';
 
+class UserInfoStore {
+	constructor(public userInfo: WriteAble<UserInfo> = writable()) {
+		this.userInfo = userInfo;
+	}
+}
+
+export const userInfoStore = new UserInfoStore();
+
 class BlogStore {
 	constructor(public userBlogList: Writable<Array<Blog>> = writable([])) {
 		this.userBlogList = userBlogList;

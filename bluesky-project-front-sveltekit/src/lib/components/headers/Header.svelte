@@ -1,10 +1,11 @@
 <script type="ts">
 	import Menu from '$lib/components/headers/Menu.svelte';
-	import { session, page } from '$app/stores';
+	import { page } from '$app/stores';
 	import { getCurrentRootMenu } from '$lib/navigation';
 
 	$: currentMenu = getCurrentRootMenu($page.url.pathname)?.name;
 
+	console.log('SSDAAA', $page.data);
 	let isMenuShow = true;
 	function menuToggle() {
 		isMenuShow = !isMenuShow;
@@ -47,9 +48,9 @@
 		</ul>
 
 		<ul class="flex-1 flex justify-end">
-			{#if $session.loginInfo != null}
+			{#if $page.data.loginInfo != null}
 				<li class="mr-3">
-					<Menu>{$session.loginInfo.name}</Menu>
+					<Menu>{$page.data.loginInfo.name}</Menu>
 				</li>
 			{:else}
 				<li>
