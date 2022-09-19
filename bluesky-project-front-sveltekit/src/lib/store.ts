@@ -5,7 +5,7 @@ import type { UserInfo } from '$lib/user';
 import type { Blog } from '$lib/blog';
 
 class UserInfoStore {
-	constructor(public userInfo: WriteAble<UserInfo> = writable()) {
+	constructor(public userInfo: Writable<UserInfo> = writable()) {
 		this.userInfo = userInfo;
 	}
 }
