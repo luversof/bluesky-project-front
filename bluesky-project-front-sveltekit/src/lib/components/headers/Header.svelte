@@ -3,9 +3,15 @@
 	import { page } from '$app/stores';
 	import { getCurrentRootMenu } from '$lib/navigation';
 
+	import { userApi } from '$lib/user';
+
 	$: currentMenu = getCurrentRootMenu($page.url.pathname)?.name;
 
 	console.log('SSDAAA', $page.data);
+
+	let response = userApi.getLoginInfo();
+
+	console.log('userInfo : ', response);
 	let isMenuShow = true;
 	function menuToggle() {
 		isMenuShow = !isMenuShow;

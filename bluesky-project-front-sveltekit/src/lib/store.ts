@@ -1,10 +1,10 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
-import type { Blog } from '$lib/types';
+import type { UserInfo, Blog } from '$lib/types';
 
 class UserInfoStore {
-	constructor(public userInfo: WriteAble<UserInfo> = writable()) {
+	constructor(public userInfo: Writable<UserInfo> = writable()) {
 		this.userInfo = userInfo;
 	}
 }
