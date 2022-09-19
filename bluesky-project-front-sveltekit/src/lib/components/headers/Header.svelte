@@ -3,6 +3,10 @@
 	import { page } from '$app/stores';
 	import { getCurrentRootMenu } from '$lib/navigation';
 
+	import { getLoginInfo } from '$lib/user';
+
+	console.log('getLoginInfo : ', getLoginInfo());
+
 	$: currentMenu = getCurrentRootMenu($page.url.pathname)?.name;
 
 	console.log('SSDAAA', $page.data);

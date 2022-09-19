@@ -1,4 +1,44 @@
-import type { Blog, BlogArticle } from '$lib/types';
+import type { Page } from '$lib/types';
+
+export interface Blog {
+	idx: number;
+	blogId: string;
+	userId: string;
+	blogArticleCategoryList?: BlogArticleCategory[];
+	createdDate: string;
+}
+
+export interface BlogArticle {
+	idx?: number;
+	blogArticleId?: string;
+	blogId?: string;
+	blogArticleCategory?: BlogArticleCategory;
+	blogArticleCommentList?: BlogArticleComment[];
+	title: string;
+	content: string;
+	createdDate?: string;
+	lastModifiedDate?: string;
+	userId?: string;
+}
+
+export interface BlogArticleComment {
+	idx: number;
+	blogArticleCommentId: string;
+	blogArticleId: string;
+	comment: string;
+	createdDate: string;
+	lastModifiedDate: string;
+	userId: string;
+}
+
+export interface BlogArticleCategory {
+	idx: number;
+	blogArticleCategoryId?: string;
+	blogId: string;
+	name: string;
+}
+
+export interface BlogArticlePage extends Page<BlogArticle> {}
 
 /**
  * 로그인한 유저의 blog인지 확인
