@@ -1,11 +1,14 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import '../app.css';
-	import Header from '$lib/components/headers/Header.svelte';
-	import '@fortawesome/fontawesome-free/js/all.min.js';
+
+	export let data;
+
+	console.log('layout data :  ', data);
 </script>
 
-<Header />
+레이아웃
+<a href="/">루트 페이지 이동</a>
+<a href="/login">로그인 페이지 이동</a>
 
-<div class="mt-14">
-	<slot />
-</div>
+<slot />
