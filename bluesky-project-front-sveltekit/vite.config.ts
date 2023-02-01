@@ -3,8 +3,21 @@ import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
+	server: {
+		proxy: {
+			'/api': {
+				target: 'http://gate.api.bluesky.local',
+				changeOrigin: true
+			},
+			'/login': {
+				target: 'http://gate.api.bluesky.local',
+				changeOrigin: true
+			},
+			'/oauth2': {
+				target: 'http://gate.api.bluesky.local',
+				changeOrigin: true
+			}
+		}
 	}
 };
 
