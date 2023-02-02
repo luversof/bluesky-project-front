@@ -1,6 +1,8 @@
-import type { LayoutServerLoad } from './$types';
+import type { LayoutLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
+export const ssr = false;
+
+export const load: LayoutLoad = async () => {
 	return {
 		session: await fetch('/api/user/loginInfo', {
 			method: 'GET',

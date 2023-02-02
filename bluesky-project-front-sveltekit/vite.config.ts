@@ -6,15 +6,15 @@ const config: UserConfig = {
 	server: {
 		proxy: {
 			'/api': {
-				target: 'http://gate.api.bluesky.local',
+				target: 'http://gate.web.bluesky.local',
 				changeOrigin: true
 			},
 			'/login': {
-				target: 'http://gate.api.bluesky.local',
+				target: 'http://gate.web.bluesky.local',
 				changeOrigin: true
 			},
 			'/oauth2': {
-				target: 'http://gate.api.bluesky.local',
+				target: 'http://gate.web.bluesky.local',
 				changeOrigin: true
 			}
 		}
