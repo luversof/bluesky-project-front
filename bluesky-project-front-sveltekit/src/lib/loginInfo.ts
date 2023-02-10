@@ -2,7 +2,7 @@ import { getStores, navigating, page, updated } from '$app/stores';
 
 import { writable } from 'svelte/store';
 
-interface LoginInfo {
+export interface LoginInfo {
 	login: boolean;
 	username?: string;
 	authorities?: any;
@@ -12,7 +12,7 @@ interface LoginInfo {
 export const loginInfoStore = writable<LoginInfo>();
 
 export const getLoginInfo = async (): Promise<LoginInfo> => {
-	let loginInfoPromise = await fetch('/api/user/loginInfo', {
+	let loginInfo: LoginInfo = await fetch('/api/user/loginInfo', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export const getLoginInfo = async (): Promise<LoginInfo> => {
 		}
 	}).then((response) => response.json());
 
-	loginInfoStore.set(loginInfoPromise);
+	loginInfoStore.set(loginInfo);
 
-	return loginInfoPromise;
+	return loginInfo;
 };
