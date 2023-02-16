@@ -1,3 +1,5 @@
+import type { Page } from '$lib/page';
+
 export interface Board {
 	id?: number;
 	boardId?: string;
@@ -19,6 +21,8 @@ export interface BoardArticle {
 	lastMidifiedDate?: Date;
 }
 
+export interface BoardArticlePage extends Page<BoardArticle> {}
+
 class BoardClient {
 	async findByAlias({ alias }: Board): Promise<Board> {
 		return await fetch('/api/board/findByAlias?alias=' + alias, {
@@ -39,6 +43,7 @@ class BoardArticleClient {
 			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json'
+				// Accept: 'application/json'
 			},
 			body: JSON.stringify({
 				boardId,
@@ -55,6 +60,18 @@ class BoardArticleClient {
 				'Content-Type': 'application/json'
 			}
 		}).then((response) => response.json());
+	}
+
+	async findByBoardAlias(boardAlias: string, page: number = 0) {
+		return await fetch(
+			'/api/board/article/findByBoardAlias?boardAlias=' + boardAlias + '&page=' + page,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}
+		).then((response) => response.json());
 	}
 }
 

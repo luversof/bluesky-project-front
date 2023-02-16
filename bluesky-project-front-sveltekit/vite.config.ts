@@ -7,7 +7,9 @@ const config: UserConfig = {
 		proxy: {
 			'/api': {
 				target: 'http://gate.web.bluesky.local',
-				changeOrigin: true
+				//target: 'http://dev.bluesky.local:40122',
+				changeOrigin: true,
+				secure: false
 			},
 			'/login': {
 				target: 'http://gate.web.bluesky.local',
