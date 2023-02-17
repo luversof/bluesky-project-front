@@ -1,6 +1,6 @@
 import type { Page } from '$lib/page';
 
-export interface Board {
+export type Board = {
 	id?: number;
 	boardId?: string;
 	alias: string;
@@ -8,24 +8,33 @@ export interface Board {
 	replyActivated?: boolean;
 	commentActivated?: boolean;
 	articleActivated?: boolean;
-}
+};
 
-export interface BoardArticle {
+export type BoardArticle = {
 	id?: number;
 	boardArticleId?: string;
 	userId?: string;
 	boardId?: string;
-	title: string;
-	content: string;
+	title?: string;
+	content?: string;
 	createdDate?: Date;
 	lastMidifiedDate?: Date;
-}
+};
 
 export interface BoardArticlePage extends Page<BoardArticle> {}
 
+export const boardViewUrl = {
+	list: (boardAlias: string) => `/board/${boardAlias}/list`,
+	write: (boardAlias: string) => `/board/${boardAlias}/write`,
+	view: (boardAlias: string, boardArticleId: string) =>
+		`/board/${boardAlias}/view/${boardArticleId}`,
+	modify: (boardAlias: string, boardArticleId: string) =>
+		`/board/${boardAlias}/modify/${boardArticleId}`
+};
+
 class BoardClient {
-	async findByAlias({ alias }: Board): Promise<Board> {
-		return await fetch('/api/board/findByAlias?alias=' + alias, {
+	findByAlias({ alias }: Board): Promise<Board> {
+		return fetch('/api/board/findByAlias?alias=' + alias, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -37,8 +46,8 @@ class BoardClient {
 export const boardClient = new BoardClient();
 
 class BoardArticleClient {
-	async create({ boardId, title, content }: BoardArticle): Promise<BoardArticle> {
-		return await fetch('/api/board/article', {
+	create({ boardId, title, content }: BoardArticle): Promise<BoardArticle> {
+		return fetch('/api/board/article', {
 			method: 'POST',
 			mode: 'cors',
 			headers: {
@@ -53,8 +62,9 @@ class BoardArticleClient {
 		}).then((response) => response.json());
 	}
 
-	async findByBoardArticleId(boardArticleId: string): Promise<BoardArticle> {
-		return await fetch('/api/board/article/findByBoardArticleId?boardArticleId=' + boardArticleId, {
+	findByBoardArticleId({ boardArticleId }: BoardArticle): Promise<BoardArticle> {
+		console.log('findByBoardArticleId : ', boardArticleId);
+		return fetch('/api/board/article/findByBoardArticleId?boardArticleId=' + boardArticleId, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -62,16 +72,23 @@ class BoardArticleClient {
 		}).then((response) => response.json());
 	}
 
-	async findByBoardAlias(boardAlias: string, page: number = 0) {
-		return await fetch(
-			'/api/board/article/findByBoardAlias?boardAlias=' + boardAlias + '&page=' + page,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
+	findByBoardAlias(boardAlias: string, page: number = 0): Promise<BoardArticlePage> {
+		return fetch('/api/board/article/findByBoardAlias?boardAlias=' + boardAlias + '&page=' + page, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
 			}
-		).then((response) => response.json());
+		}).then((response) => response.json());
+	}
+
+	delete({ boardArticleId, userId }: BoardArticle) {
+		return fetch('/api/board/article', {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ boardArticleId, userId })
+		}).then((response) => response.json());
 	}
 }
 

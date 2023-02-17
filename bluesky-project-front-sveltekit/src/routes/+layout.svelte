@@ -4,9 +4,11 @@
 	import '../app.css';
 	import Navbars from '$lib/Navbars.svelte';
 
-	beforeUpdate(() => {
+	//beforeUpdate가 두번 실행되는 버그가 있어서 임시로 afterUpdate로 변경함
+	//https://github.com/sveltejs/svelte/issues/6016
+	afterUpdate(() => {
 		getLoginInfo();
-		console.log('layout beforeUpdate');
+		console.log('layout afterUpdate');
 	});
 </script>
 

@@ -2,12 +2,12 @@ import { getStores, navigating, page, updated } from '$app/stores';
 
 import { writable } from 'svelte/store';
 
-export interface LoginInfo {
+export type LoginInfo = {
 	login: boolean;
 	username?: string;
 	authorities?: any;
 	principalName?: string;
-}
+};
 
 export const loginInfoStore = writable<LoginInfo>();
 

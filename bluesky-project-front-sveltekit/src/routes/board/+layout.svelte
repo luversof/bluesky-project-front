@@ -2,9 +2,9 @@
 	import { loginInfoStore } from '$lib/loginInfo';
 </script>
 
-<div class="grid gap-1 grid-flow-col auto-cols-max">
-	<aside class="w-48 px-2 py-2">
-		<ul class="space-y-2">
+<div class="grid grid-flow-col">
+	<aside class="col-span-1">
+		<ul>
 			<li class="hover:bg-gray-100 rounded-lg p-3">
 				<a href="/board/free/list">자유 게시판</a>
 			</li>
@@ -13,5 +13,5 @@
 			</li>
 		</ul>
 	</aside>
-	<div><slot /></div>
+	<div class="col-span-12"><slot /></div>
 </div>
