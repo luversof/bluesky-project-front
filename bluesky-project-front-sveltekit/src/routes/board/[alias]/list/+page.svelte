@@ -35,10 +35,11 @@
 					{#each boardArticlePage.content as boardArticle}
 						<tr class="px-3 cursor-pointer" on:click={() => gotoView(boardArticle)}>
 							<!--
-					{JSON.stringify(boardArticle)}
-					-->
+								{JSON.stringify(boardArticle)}
+							-->
 							<td>{boardArticle.title}</td>
 							<td>{dayjs(boardArticle.createdDate).fromNow()}</td>
+							<td>{boardArticle.userId}</td>
 						</tr>
 					{:else}
 						<tr>

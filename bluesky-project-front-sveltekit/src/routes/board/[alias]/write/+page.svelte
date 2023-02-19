@@ -15,7 +15,7 @@
 		board = await boardClient.findByAlias({ alias: $page.params.alias });
 		console.log('board : ' + board.boardId);
 		editor = new Editor({
-			el: document.querySelector('#editor')
+			el: document.querySelector('#editor') as HTMLElement
 		});
 	});
 	async function create() {
