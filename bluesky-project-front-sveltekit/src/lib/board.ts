@@ -69,7 +69,6 @@ class BoardArticleClient {
 	async findByBoardArticleId({
 		boardArticleId
 	}: Pick<BoardArticle, 'boardArticleId'>): Promise<BoardArticle> {
-		console.log('findByBoardArticleId : ', boardArticleId);
 		return fetch('/api/board/article/findByBoardArticleId?boardArticleId=' + boardArticleId, {
 			method: 'GET',
 			headers: {
@@ -87,13 +86,35 @@ class BoardArticleClient {
 		}).then((response) => response.json());
 	}
 
-	async delete({ boardArticleId, userId }: Pick<BoardArticle, 'boardArticleId' | 'userId'>) {
+	async modify({
+		boardArticleId,
+		boardId,
+		title,
+		content
+	}: Pick<
+		BoardArticle,
+		'boardArticleId' | 'boardId' | 'title' | 'content'
+	>): Promise<BoardArticle> {
 		return fetch('/api/board/article', {
-			method: 'DELETE',
+			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ boardArticleId, userId })
+			body: JSON.stringify({
+				boardArticleId,
+				boardId,
+				title,
+				content
+			})
+		}).then((response) => response.json());
+	}
+
+	async delete({ boardArticleId }: Pick<BoardArticle, 'boardArticleId'>) {
+		return fetch('/api/board/article?boardArticleId=' + boardArticleId, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		}).then((response) => response.json());
 	}
 }

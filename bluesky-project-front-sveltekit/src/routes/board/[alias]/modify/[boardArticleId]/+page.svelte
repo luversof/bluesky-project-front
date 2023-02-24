@@ -1,28 +1,32 @@
 <script lang="ts">
+	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { boardArticleClient, boardClient, boardViewUrl, type Board } from '$lib/board';
+	import { boardArticleClient, boardViewUrl, type Board } from '$lib/board';
 	import Button from '$lib/components/Button.svelte';
+	import Input from '$lib/components/Input.svelte';
+
 	import Editor from '@toast-ui/editor';
 	import '@toast-ui/editor/dist/toastui-editor.css';
+	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import Input from '$lib/components/Input.svelte';
-	let board: Board;
-	let title = '';
+
+	export let data: PageData;
+	$: boardArticle = data;
+
 	let editor: Editor;
 
 	onMount(async () => {
-		board = await boardClient.findByAlias({ alias: $page.params.alias });
-		console.log('board : ' + board.boardId);
 		editor = new Editor({
 			el: document.querySelector('#editor') as HTMLElement,
-			placeholder: '내용'
+			initialValue: boardArticle.content
 		});
 	});
-	let create = async () => {
-		let resultBlogArticle = await boardArticleClient.create({
-			boardId: board.boardId,
-			title: title,
+	let modify = async () => {
+		let resultBlogArticle = await boardArticleClient.modify({
+			boardArticleId: boardArticle.boardArticleId,
+			boardId: boardArticle.boardId,
+			title: boardArticle.title,
 			content: editor.getMarkdown()
 		});
 		if (resultBlogArticle.boardArticleId)
@@ -35,11 +39,10 @@
 
 <div class="grid grid-flow-row gap-3 p-2">
 	<div>
-		<Input type="text" id="title" bind:value={title} placeholder="제목" />
+		<Input type="text" id="title" bind:value={boardArticle.title} placeholder="제목" />
 	</div>
 	<div id="editor" />
-	<div>
-		<Button on:click={create} style="primary">쓰기</Button>
-		<Button on:click={() => history.back()}>취소</Button>
+	<div class="text-center">
+		<Button on:click={modify}>수정</Button>
 	</div>
 </div>
