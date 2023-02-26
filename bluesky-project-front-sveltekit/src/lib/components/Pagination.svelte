@@ -35,13 +35,15 @@
 	for (let i = startPage; i <= endPage; i++) {
 		pageList.push(i);
 	}
+
+	console.log('pageList : ', pageList);
 </script>
 
 <div class="flex ">
 	{#each pageList as pageNumber}
 		{#if pageNumber == page.number}
 			<button
-				class="items-center px-4 py-2 mx-1 text-gray-700 bg-white rounded-md sm:flex bg-blue-500 dark:bg-blue-500 text-white dark:text-gray-200"
+				class="items-center px-4 py-2 mx-1 rounded-md sm:flex bg-blue-500 dark:bg-blue-500 text-white dark:text-gray-200"
 			>
 				{pageNumber + 1}
 			</button>

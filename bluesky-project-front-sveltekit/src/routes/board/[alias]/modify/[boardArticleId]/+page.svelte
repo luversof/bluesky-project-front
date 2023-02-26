@@ -38,6 +38,7 @@
 </script>
 
 <div class="grid grid-flow-row gap-3 p-2">
+	<h1 class="text-2xl py-2">글 수정</h1>
 	<div>
 		<Input type="text" id="title" bind:value={boardArticle.title} placeholder="제목" />
 	</div>

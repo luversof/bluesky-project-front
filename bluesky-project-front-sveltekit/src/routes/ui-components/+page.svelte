@@ -1,6 +1,20 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
+	import type { Page } from '$lib/page';
+
+	var page: Page<any> = {
+		content: [],
+		number: 3,
+		size: 20,
+		totalElements: 400,
+		numberOfElements: 400,
+		totalPages: 40,
+		hasContent: true,
+		first: false,
+		last: false
+	};
 </script>
 
 컴포넌트 테스트
@@ -24,4 +38,5 @@
 
 <div>
 	<h1>pagination</h1>
+	<Pagination {page} />
 </div>

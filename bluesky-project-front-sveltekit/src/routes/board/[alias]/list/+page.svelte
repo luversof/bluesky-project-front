@@ -23,16 +23,15 @@
 </script>
 
 <div class="grid grid-flow-row gap-3">
-	<div>
-		<h1 class="text-2xl">글 목록</h1>
-	</div>
+	<h1 class="text-2xl py-2">글 목록</h1>
+
 	<div>
 		<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 			<thead class="bg-gray-50 dark:bg-gray-800">
 				<tr>
 					<th
 						scope="col"
-						class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+						class="w-3/5 py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
 						>제목</th
 					>
 
@@ -75,12 +74,12 @@
 		</table>
 	</div>
 
-	<div class="flex justify-between">
+	<div class="flex justify-between px-5 py-2">
 		<div />
-		<div class="px-5 py-2">
+		<div>
 			<Pagination page={boardArticlePage} />
 		</div>
-		<div class="px-5 py-2">
+		<div>
 			{#if $loginInfoStore && $loginInfoStore.login}
 				<Button href="write" style="primary">글 쓰기</Button>
 			{/if}

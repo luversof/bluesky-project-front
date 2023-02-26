@@ -1,15 +1,16 @@
 export interface Page<T> {
 	content: T[];
-	pabeable: Pageable;
+	first: boolean;
+	hasContent: boolean;
+	last: boolean;
+	number: number;
+	numberOfElements: number;
+	size: number;
 	totalElements: number;
 	totalPages: number;
-	last: boolean;
-	size: number;
-	number: number;
-	sort: Sort;
-	first: boolean;
-	numberOfElements: number;
-	empty: boolean;
+	// pabeable: Pageable;
+	// sort: Sort;
+	// empty: boolean;
 }
 
 export interface Pageable {
