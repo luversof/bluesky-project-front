@@ -11,7 +11,7 @@
 	});
 </script>
 
-<div class="border border-red-400">
+<div>
 	<div>
 		<Navbars />
 	</div>

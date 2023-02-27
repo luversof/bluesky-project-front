@@ -2,5 +2,4 @@
 	import { loginInfoStore } from '$lib/loginInfo';
 </script>
 
-bookkeeping index
-{$loginInfoStore?.username}
+없으면 생성

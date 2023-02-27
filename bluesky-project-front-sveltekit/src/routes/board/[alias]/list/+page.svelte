@@ -31,7 +31,7 @@
 				<tr>
 					<th
 						scope="col"
-						class="w-3/5 py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+						class="w-9/12 py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
 						>제목</th
 					>
 
@@ -43,7 +43,7 @@
 
 					<th
 						scope="col"
-						class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+						class="w-1/12 px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
 						>날짜</th
 					>
 				</tr>
@@ -74,12 +74,12 @@
 		</table>
 	</div>
 
-	<div class="flex justify-between px-5 py-2">
+	<div class="flex justify-between py-2">
 		<div />
 		<div>
 			<Pagination page={boardArticlePage} />
 		</div>
-		<div>
+		<div class="px-3">
 			{#if $loginInfoStore && $loginInfoStore.login}
 				<Button href="write" style="primary">글 쓰기</Button>
 			{/if}

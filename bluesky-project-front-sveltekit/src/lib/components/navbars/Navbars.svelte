@@ -3,7 +3,7 @@
 	import Button from '$lib/components/navbars/Button.svelte';
 </script>
 
-<nav class="border border-gray-400 grid grid-cols-2 items-center">
+<nav class="grid grid-cols-2 items-center">
 	<div class="">
 		<ul class="flex">
 			<li><Button href="/">Home</Button></li>

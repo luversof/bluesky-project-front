@@ -37,7 +37,7 @@
 
 <div>
 	<div>
-		<h1 class="text-2xl">글 보기</h1>
+		<h1 class="text-2xl py-2">글 보기</h1>
 	</div>
 
 	<div>
@@ -49,16 +49,16 @@
 		<div id="viewer" />
 	</div>
 
-	<div>
-		<Button href={boardViewUrl.list($page.params.alias)} type="primary">목록</Button>
-		<Button href={boardViewUrl.write($page.params.alias)} type="primary">쓰기</Button>
+	<div class="py-2">
+		<Button href={boardViewUrl.list($page.params.alias)} style="primary">목록</Button>
+		<Button href={boardViewUrl.write($page.params.alias)} style="primary">쓰기</Button>
 
 		{#if $loginInfoStore && boardArticle.boardArticleId && boardArticle.userId === $loginInfoStore.username}
 			<Button
 				href={boardViewUrl.modify($page.params.alias, boardArticle.boardArticleId)}
-				type="primary">수정</Button
+				style="primary">수정</Button
 			>
-			<Button on:click={deleteArticle} type="primary">삭제</Button>
+			<Button on:click={deleteArticle} style="primary">삭제</Button>
 		{/if}
 	</div>
 </div>

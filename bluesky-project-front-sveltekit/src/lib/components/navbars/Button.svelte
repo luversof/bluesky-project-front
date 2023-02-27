@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	export let href: string | undefined = undefined;
+	export let hrefTarget: string | undefined = href;
 	let classProp: string = '';
 	export { classProp as class };
 
@@ -9,11 +10,11 @@
 	page.subscribe((value) => {
 		pathname = value.url.pathname;
 		isActive = false;
-		if (href === undefined) {
+		if (hrefTarget === undefined) {
 			isActive = false;
-		} else if (href == '/' && pathname == '/') {
+		} else if (hrefTarget == '/' && pathname == '/') {
 			isActive = true;
-		} else if (href != '/' && pathname.startsWith(href)) {
+		} else if (hrefTarget != '/' && pathname.startsWith(hrefTarget)) {
 			isActive = true;
 		}
 	});
@@ -21,7 +22,7 @@
 </script>
 
 <a {href}>
-	<button class="px-5 pt-1 h-10 border-b-4 transition duration-300 {classProp} {activeCss}">
+	<button class="px-5 pt-1 h-12 border-b transition duration-300 {classProp} {activeCss}">
 		<slot />
 	</button>
 </a>
