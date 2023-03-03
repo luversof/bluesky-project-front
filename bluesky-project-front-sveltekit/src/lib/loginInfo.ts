@@ -1,26 +1,18 @@
-import { getStores, navigating, page, updated } from '$app/stores';
+import axios from 'axios';
 
 import { writable } from 'svelte/store';
 
 export type LoginInfo = {
 	login: boolean;
-	username?: string;
-	authorities?: any;
-	principalName?: string;
+	username: string;
+	authorities: any;
+	principalName: string;
 };
 
 export const loginInfoStore = writable<LoginInfo>();
 
 export const getLoginInfo = async (): Promise<LoginInfo> => {
-	let loginInfo: LoginInfo = await fetch('/api/user/loginInfo', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Accept: 'application/json'
-		}
-	}).then((response) => response.json());
-
+	let loginInfo = (await axios.get('/api/user/loginInfo')).data;
 	loginInfoStore.set(loginInfo);
-
 	return loginInfo;
 };

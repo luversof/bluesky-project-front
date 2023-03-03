@@ -23,20 +23,20 @@
 	startPage = Math.floor(page.number / pageSize) * pageSize;
 	endPage = Math.ceil((page.number + 1) / 10) * pageSize - 1;
 
-	console.log('startPage : ' + startPage + ', endPage : ' + endPage);
+	// console.log('startPage : ' + startPage + ', endPage : ' + endPage);
 
 	if (endPage >= page.totalPages) {
 		endPage = page.totalPages - 1;
 	}
 
-	console.log('startPage : ' + startPage + ', endPage : ' + endPage);
+	// console.log('startPage : ' + startPage + ', endPage : ' + endPage);
 
 	let pageList: number[] = [];
 	for (let i = startPage; i <= endPage; i++) {
 		pageList.push(i);
 	}
 
-	console.log('pageList : ', pageList);
+	// console.log('pageList : ', pageList);
 </script>
 
 <div class="flex ">

@@ -1,6 +1,7 @@
 import type { Page } from '$lib/page';
+import axios from 'axios';
 
-export type Board = {
+export interface Board {
 	id: number;
 	boardId: string;
 	alias: string;
@@ -8,9 +9,9 @@ export type Board = {
 	replyActivated: boolean;
 	commentActivated: boolean;
 	articleActivated: boolean;
-};
+}
 
-export type BoardArticle = {
+export interface BoardArticle {
 	id: number;
 	boardArticleId: string;
 	userId: string;
@@ -19,7 +20,7 @@ export type BoardArticle = {
 	content: string;
 	createdDate: Date;
 	lastMidifiedDate: Date;
-};
+}
 
 export interface BoardArticlePage extends Page<BoardArticle> {}
 
@@ -34,12 +35,8 @@ export const boardViewUrl = {
 
 class BoardClient {
 	async findByAlias({ alias }: Pick<Board, 'alias'>): Promise<Board> {
-		return fetch('/api/board/findByAlias?alias=' + alias, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then((response) => response.json());
+		let response = axios.get('/api/board/findByAlias?alias=' + alias);
+		return (await response).data;
 	}
 }
 
@@ -51,39 +48,28 @@ class BoardArticleClient {
 		title,
 		content
 	}: Pick<BoardArticle, 'boardId' | 'title' | 'content'>): Promise<BoardArticle> {
-		return fetch('/api/board/article', {
-			method: 'POST',
-			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json'
-				// Accept: 'application/json'
-			},
-			body: JSON.stringify({
-				boardId,
-				title,
-				content
-			})
-		}).then((response) => response.json());
+		let response = axios.post('/api/board/article', {
+			boardId,
+			title,
+			content
+		});
+		return (await response).data;
 	}
 
 	async findByBoardArticleId({
 		boardArticleId
 	}: Pick<BoardArticle, 'boardArticleId'>): Promise<BoardArticle> {
-		return fetch('/api/board/article/findByBoardArticleId?boardArticleId=' + boardArticleId, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then((response) => response.json());
+		let response = axios.get('/api/board/article/findByBoardArticleId', {
+			params: { boardArticleId }
+		});
+		return (await response).data;
 	}
 
-	async findByBoardAlias(boardAlias: string, page: number = 0): Promise<BoardArticlePage> {
-		return fetch('/api/board/article/findByBoardAlias?boardAlias=' + boardAlias + '&page=' + page, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then((response) => response.json());
+	async findByBoardAlias(boardAlias: string, page: number = 0): Promise<BoardArticle> {
+		let response = axios.get('/api/board/article/findByBoardAlias', {
+			params: { boardAlias, page }
+		});
+		return (await response).data;
 	}
 
 	async modify({
@@ -95,27 +81,18 @@ class BoardArticleClient {
 		BoardArticle,
 		'boardArticleId' | 'boardId' | 'title' | 'content'
 	>): Promise<BoardArticle> {
-		return fetch('/api/board/article', {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				boardArticleId,
-				boardId,
-				title,
-				content
-			})
-		}).then((response) => response.json());
+		let response = axios.put('/api/board/article', {
+			boardArticleId,
+			boardId,
+			title,
+			content
+		});
+		return (await response).data;
 	}
 
 	async delete({ boardArticleId }: Pick<BoardArticle, 'boardArticleId'>) {
-		return fetch('/api/board/article?boardArticleId=' + boardArticleId, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then((response) => response.json());
+		let response = axios.delete('/api/board/article', { data: { boardArticleId } });
+		return (await response).data;
 	}
 }
 
