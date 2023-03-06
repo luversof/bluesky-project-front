@@ -2,7 +2,7 @@
 	import Button from '$lib/components/navbars/Button.svelte';
 </script>
 
-<div class="flex">
+<div class="flex px-2">
 	<aside class="w-64">
 		<ul>
 			<li>

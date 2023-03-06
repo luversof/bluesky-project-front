@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { boardArticleClient, boardViewUrl } from '$lib/board';
+	import { blogArticleClient, blogViewUrl } from '$lib/blog';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 
@@ -11,35 +11,34 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	$: boardArticle = data;
+	$: blogArticle = data;
 
 	let editor: Editor;
 
 	onMount(async () => {
 		editor = new Editor({
 			el: document.querySelector('#editor') as HTMLElement,
-			initialValue: boardArticle.content
+			initialValue: blogArticle.content
 		});
 	});
 	let modify = async () => {
-		let resultBlogArticle = await boardArticleClient.modify({
-			boardArticleId: boardArticle.boardArticleId,
-			boardId: boardArticle.boardId,
-			title: boardArticle.title,
+		let resultBlogArticle = await blogArticleClient.update({
+			blogArticleId: blogArticle.blogArticleId,
+			title: blogArticle.title,
 			content: editor.getMarkdown()
 		});
-		if (resultBlogArticle.boardArticleId)
-			goto(boardViewUrl.view($page.params.alias, resultBlogArticle.boardArticleId));
+		if (resultBlogArticle.blogArticleId)
+			goto(blogViewUrl.view($page.params.blogId, resultBlogArticle.blogArticleId));
 		else {
 			alert('오류');
 		}
 	};
 </script>
 
-<div class="grid grid-flow-row gap-3">
+<div class="grid grid-flow-row gap-3 px-2">
 	<h1 class="text-2xl py-2">글 수정</h1>
 	<div>
-		<Input type="text" id="title" bind:value={boardArticle.title} placeholder="제목" />
+		<Input type="text" id="title" bind:value={blogArticle.title} placeholder="제목" />
 	</div>
 	<div id="editor" />
 	<div class="text-center py-2">

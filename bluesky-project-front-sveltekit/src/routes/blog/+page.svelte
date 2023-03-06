@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { loginInfoStore } from '$lib/loginInfo';
-	import { blogClient, blogViewUrl, type Blog } from '$lib/blog';
+	import Button from '$lib/components/Button.svelte';
+	import { blogClient, blogViewUrl, type Blog, loginUserBlogListStore } from '$lib/blog';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 
@@ -15,18 +16,21 @@
 		let blog = await blogClient.create();
 		goto(blogViewUrl.list(blog.blogId));
 	};
-
-	$: if (loginInfo != null) {
-		blogListPromise = blogClient.findByUserId(loginInfo.username);
-	}
 </script>
 
-{#if blogListPromise != null}
-	{#await blogListPromise then blogList}
-		{#if blogList.length > 0}
-			<a href="/blog/{blogList[0].blogId}/list">목록 이동</a>
+<div class="grid grid-flow-row gap-3 px-2">
+	{#if $loginUserBlogListStore}
+		{#if $loginUserBlogListStore.length > 0}
+			<h1>블로그 목록</h1>
+			<ul>
+				{#each $loginUserBlogListStore as blog}
+					<li>
+						<a href="/blog/{blog.blogId}/list">{blog.blogId} 이동</a>
+					</li>
+				{/each}
+			</ul>
 		{:else}
-			<button on:click={create}> 생성 </button>
+			<Button on:click={create} style="primary">생성</Button>?
 		{/if}
-	{/await}
-{/if}
+	{/if}
+</div>

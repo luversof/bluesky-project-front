@@ -3,7 +3,7 @@
 	import Button from '$lib/components/navbars/Button.svelte';
 </script>
 
-<nav class="grid grid-cols-2 items-center">
+<nav class="grid grid-cols-2 items-center px-2">
 	<div class="">
 		<ul class="flex">
 			<li><Button href="/">Home</Button></li>
@@ -14,7 +14,7 @@
 		</ul>
 	</div>
 
-	<div class="text-right">
+	<div class="text-right px-3">
 		{#if $loginInfoStore}
 			{#if $loginInfoStore.login}
 				username : {$loginInfoStore.username}

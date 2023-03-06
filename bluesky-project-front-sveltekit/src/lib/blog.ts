@@ -1,4 +1,7 @@
+import type { Page } from '$lib/page';
 import axios from 'axios';
+import { writable, get } from 'svelte/store';
+import { loginInfoStore } from '$lib/loginInfo';
 
 export interface Blog {
 	idx: number;
@@ -38,6 +41,10 @@ export interface BlogArticleComment {
 	lastModifiedDate: Date;
 }
 
+export interface BlogArticlePage extends Page<BlogArticle> {}
+
+export interface BlogArticleCommentPage extends Page<BlogArticleComment> {}
+
 export const blogViewUrl = {
 	list: (blogId: string) => `/blog/${blogId}/list`,
 	write: (blogId: string) => `/blog/${blogId}/write`,
@@ -51,12 +58,12 @@ class BlogClient {
 		return (await response).data;
 	}
 
-	async findByBlogId(blogId: string): Promise<Blog> {
+	async findByBlogId({ blogId }: Pick<Blog, 'blogId'>): Promise<Blog> {
 		let response = axios.get('/api/blog/findByBlogId', { params: { blogId } });
 		return (await response).data;
 	}
 
-	async findByUserId(userId: string): Promise<Blog[]> {
+	async findByUserId({ userId }: Pick<Blog, 'userId'>): Promise<Blog[]> {
 		let response = axios.get('/api/blog/findByUserId', { params: { userId } });
 		return (await response).data;
 	}
@@ -78,12 +85,14 @@ class BlogArticleClient {
 		return (await response).data;
 	}
 
-	async findByBlogId(blogId: string, page: number = 0): Promise<BlogArticle> {
+	async findByBlogId(blogId: string, page: number = 0): Promise<BlogArticlePage> {
 		let response = axios.get('/api/blog/article/findByBlogId', { params: { blogId, page } });
 		return (await response).data;
 	}
 
-	async findByBlogArticleId(blogArticleId: string): Promise<BlogArticle> {
+	async findByBlogArticleId({
+		blogArticleId
+	}: Pick<BlogArticle, 'blogArticleId'>): Promise<BlogArticle> {
 		let response = axios.get('/api/blog/article/findByBlogArticleId', {
 			params: { blogArticleId }
 		});
@@ -123,7 +132,9 @@ class BlogArticleCategoryClient {
 		return (await response).data;
 	}
 
-	async findByBlogId(blogId: string): Promise<BlogArticleCategory> {
+	async findByBlogId({
+		blogId
+	}: Pick<BlogArticleCategory, 'blogId'>): Promise<BlogArticleCategory> {
 		let response = axios.get('/api/blog/articleCategory/findByBlogId', { params: { blogId } });
 		return (await response).data;
 	}
@@ -159,14 +170,19 @@ class BlogArticleCommentClient {
 		return (await response).data;
 	}
 
-	async findByBlogArticleId(blogArticleId: string, page: number = 0): Promise<BlogArticleComment> {
+	async findByBlogArticleId(
+		blogArticleId: string,
+		page: number = 0
+	): Promise<BlogArticleCommentPage> {
 		let response = axios.get('/api/blog/articleComment/findByBlogArticleId', {
 			params: { blogArticleId, page }
 		});
 		return (await response).data;
 	}
 
-	async findByBlogArticleCommentId(blogArticleCommentId: string): Promise<BlogArticleComment> {
+	async findByBlogArticleCommentId({
+		blogArticleCommentId
+	}: Pick<BlogArticleComment, 'blogArticleCommentId'>): Promise<BlogArticleComment> {
 		let response = axios.get('/api/blog/articleComment/findByBlogArticleCommentId', {
 			params: { blogArticleCommentId }
 		});
@@ -201,3 +217,18 @@ class BlogArticleCommentClient {
 }
 
 export const blogArticleCommentClient = new BlogArticleCommentClient();
+
+export const loginUserBlogListStore = writable<Blog[]>();
+
+export const getLoginUserBlogList = async ({ userId }: Pick<Blog, 'userId'>): Promise<Blog[]> => {
+	let blogList = await blogClient.findByUserId({ userId });
+	loginUserBlogListStore.set(blogList);
+	return blogList;
+};
+
+loginInfoStore.subscribe((value) => {
+	if (value != undefined && get(loginUserBlogListStore) == undefined) {
+		console.log('call', get(loginUserBlogListStore));
+		getLoginUserBlogList({ userId: value.username });
+	}
+});

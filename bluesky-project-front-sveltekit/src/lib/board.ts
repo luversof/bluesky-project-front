@@ -65,7 +65,7 @@ class BoardArticleClient {
 		return (await response).data;
 	}
 
-	async findByBoardAlias(boardAlias: string, page: number = 0): Promise<BoardArticle> {
+	async findByBoardAlias(boardAlias: string, page: number = 0): Promise<BoardArticlePage> {
 		let response = axios.get('/api/board/article/findByBoardAlias', {
 			params: { boardAlias, page }
 		});

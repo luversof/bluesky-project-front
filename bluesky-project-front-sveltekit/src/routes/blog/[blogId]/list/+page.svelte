@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import type { BoardArticle } from '$lib/board';
-	import { boardViewUrl } from '$lib/board';
+	import type { BlogArticle } from '$lib/blog';
+	import { blogViewUrl } from '$lib/blog';
 	import Button from '$lib/components/Button.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import { loginInfoStore } from '$lib/loginInfo';
@@ -12,19 +12,18 @@
 	import type { PageData } from './$types';
 	dayjs.extend(relativeTime);
 	dayjs.locale('ko');
-
 	export let data: PageData;
-	$: boardArticlePage = data;
+	$: blog = data.blog;
+	$: blogArticlePage = data.blogArticlePage;
 
-	let gotoView = (boardArticle: BoardArticle) => {
-		if (boardArticle.boardArticleId)
-			goto(boardViewUrl.view($page.params.alias, boardArticle.boardArticleId));
+	let gotoView = (blogArticle: BlogArticle) => {
+		if (blogArticle.blogArticleId)
+			goto(blogViewUrl.view($page.params.blogId, blogArticle.blogArticleId));
 	};
 </script>
 
-<div class="grid grid-flow-row gap-3">
+<div class="grid grid-flow-row gap-3 px-3">
 	<h1 class="text-2xl py-2">글 목록</h1>
-
 	<div>
 		<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 			<thead class="bg-gray-50 dark:bg-gray-800">
@@ -49,20 +48,20 @@
 				</tr>
 			</thead>
 			<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-				{#each boardArticlePage.content as boardArticle}
+				{#each blogArticlePage.content as blogArticle}
 					<tr>
 						<td class="text-sm">
-							<button on:click={() => gotoView(boardArticle)} class="px-4 py-4 text-left w-full">
-								{boardArticle.title}
+							<button on:click={() => gotoView(blogArticle)} class="px-4 py-4 text-left w-full">
+								{blogArticle.title}
 							</button>
 						</td>
 
 						<td class="px-4 py-4 text-sm whitespace-nowrap">
-							{boardArticle.userId}
+							{blogArticle.userId}
 						</td>
 
 						<td class="px-4 py-4 text-sm whitespace-nowrap">
-							{dayjs(boardArticle.createdDate).fromNow()}
+							{dayjs(blogArticle.createdDate).fromNow()}
 						</td>
 					</tr>
 				{:else}
@@ -77,10 +76,10 @@
 	<div class="flex justify-between py-2">
 		<div />
 		<div>
-			<Pagination page={boardArticlePage} />
+			<Pagination page={blogArticlePage} />
 		</div>
-		<div class="px-3">
-			{#if $loginInfoStore && $loginInfoStore.login}
+		<div>
+			{#if $loginInfoStore && $loginInfoStore.login && $loginInfoStore.username === blog.userId}
 				<Button href="write" style="primary">글 쓰기</Button>
 			{/if}
 		</div>
