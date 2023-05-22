@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { loginInfoStore } from '$lib/loginInfo';
-	import Button from '$lib/components/Button.svelte';
-	import { blogClient, blogViewUrl, type Blog, loginUserBlogListStore } from '$lib/blog';
-	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
-
-	$: loginInfo = get(loginInfoStore);
-	let blogListPromise: Promise<Blog[]>;
-
-	loginInfoStore.subscribe((value) => {
-		loginInfo = value;
-	});
+	import { blogClient, blogViewUrl, loginUserBlogListStore } from '$lib/blog';
+	import Button from '$lib/components/Button.svelte';
 
 	let create = async () => {
 		let blog = await blogClient.create();
