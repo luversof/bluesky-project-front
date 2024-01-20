@@ -22,7 +22,7 @@
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.22.0",
     "lodash.merge": "^4.6.2",
-    "nuxt": "^3.4.3",
+    "nuxt": "^3.9.3",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^6.28.1",
     "vue-router": "^3.5.3"
