@@ -19,7 +19,7 @@
     "@nuxtjs/dayjs": "^1.4.1",
     "@nuxtjs/proxy": "^2.1.0",
     "@toast-ui/vue-editor": "^2.5.4",
-    "bootstrap": "^5.0.0",
+    "bootstrap": "^5.0.1",
     "bootstrap-vue": "^2.22.0",
     "lodash.merge": "^4.6.2",
     "nuxt": "^3.12.4",
